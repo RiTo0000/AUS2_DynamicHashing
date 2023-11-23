@@ -13,7 +13,7 @@ import java.util.BitSet;
  */
 public interface IRecord {
     
-    public boolean equeals();
+    public boolean equals(IRecord object);
     public BitSet getHash();
     public int getSize();
     public byte [] toByteArray();

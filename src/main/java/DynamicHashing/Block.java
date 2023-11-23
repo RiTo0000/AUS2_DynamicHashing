@@ -5,6 +5,8 @@
  */
 package DynamicHashing;
 
+import java.nio.ByteBuffer;
+
 /**
  *
  * @author namer
@@ -12,6 +14,10 @@ package DynamicHashing;
 public class Block {
     private IRecord [] records;
     private int validCount;
+    
+    public Block() {
+        
+    }
     
     public int getSize(){
         //TODO
@@ -23,6 +29,10 @@ public class Block {
         return null;
     }
     public void fromByteArray(byte[] input){
-        //TODO
+        
+        int i = ByteBuffer.wrap(input).getInt();
+        if (true) {
+            
+        }
     }
 }

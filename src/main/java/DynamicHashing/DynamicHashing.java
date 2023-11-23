@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.util.BitSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +27,7 @@ public class DynamicHashing {
     private RandomAccessFile mainFile;
     
     public DynamicHashing(String mainFilePath) {
+        this.BlockingFactorMain = 1;
         try {
             this.mainFile = new RandomAccessFile(mainFilePath, "rw");
         } catch (FileNotFoundException ex) {
@@ -33,14 +35,23 @@ public class DynamicHashing {
         }
     }
     
-    public void writeToFile() {
+    public void writeToFile(BitSet hash, IRecord record) {
         BigInteger tst = BigInteger.valueOf(2147483646);
+//        try {
+//            this.mainFile.seek(0);
+//            this.mainFile.write(tst.toByteArray());
+//        } catch (IOException ex) {
+//            Logger.getLogger(DynamicHashing.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
+        Block blok = new Block();
+        byte b[] = new byte[5];
         try {
-            this.mainFile.seek(0);
-            this.mainFile.write(tst.toByteArray());
+            this.mainFile.read(b, 0, 4);
         } catch (IOException ex) {
             Logger.getLogger(DynamicHashing.class.getName()).log(Level.SEVERE, null, ex);
         }
+        blok.fromByteArray(b);
     }
     
     public void readFromFile() {

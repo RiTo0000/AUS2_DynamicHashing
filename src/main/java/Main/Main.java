@@ -15,7 +15,8 @@ public class Main {
     public static void main (String [] args) {
         DynamicHashing dh = new DynamicHashing("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin");
         
-        dh.writeToFile();
+        TestElement tst = new TestElement(134, 9674);
+        dh.writeToFile(tst.getHash(), tst);
         dh.readFromFile();
     }
 }

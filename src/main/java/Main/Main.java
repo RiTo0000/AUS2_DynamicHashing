@@ -6,6 +6,9 @@
 package Main;
 
 import DynamicHashing.DynamicHashing;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,10 +16,16 @@ import DynamicHashing.DynamicHashing;
  */
 public class Main {
     public static void main (String [] args) {
-        DynamicHashing dh = new DynamicHashing("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin");
+        DynamicHashing<TestElement> dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin");
         
         TestElement tst = new TestElement(134, 9674);
-        dh.writeToFile(tst.getHash(), tst);
-        dh.readFromFile();
+        TestElement tst2 = new TestElement(11, 7456);
+        try {
+            dh.writeToFile(tst);
+            dh.writeToFile(tst2);
+//            dh.readFromFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

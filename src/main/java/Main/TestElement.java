@@ -6,6 +6,7 @@
 package Main;
 
 import DynamicHashing.IRecord;
+import java.nio.ByteBuffer;
 import java.util.BitSet;
 
 /**
@@ -17,6 +18,9 @@ public class TestElement implements IRecord{
     private int key;
     private int number;
     
+    public TestElement() {
+    }
+    
     public TestElement(int key, int number) {
         this.key = key;
         this.number = number;
@@ -24,8 +28,8 @@ public class TestElement implements IRecord{
 
     @Override
     public boolean equals(IRecord object) {
-        //TODO
-        return true;
+        TestElement element = (TestElement) object;
+        return this.key == element.key;
     }
 
     @Override
@@ -40,12 +44,12 @@ public class TestElement implements IRecord{
 
     @Override
     public byte[] toByteArray() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ByteBuffer.allocate(4).putInt(this.number).array();
     }
 
     @Override
     public void fromByteArray(byte[] input) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.number = ByteBuffer.wrap(input).getInt();
     }
     
 }

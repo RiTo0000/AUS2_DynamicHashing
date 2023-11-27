@@ -13,9 +13,10 @@ public class ExternalNode extends Node {
     private int Address;
     private int Count;
     
-    public ExternalNode() {
+    public ExternalNode(InternalNode parent) {
         this.Count = 0;
         this.Address = -1;
+        super.setParent(parent);
     }
 
     public int getAddress() {
@@ -32,6 +33,11 @@ public class ExternalNode extends Node {
 
     public void setCount(int Count) {
         this.Count = Count;
+    }
+
+    @Override
+    public boolean isExternal() {
+        return true;
     }
     
 }

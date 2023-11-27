@@ -9,6 +9,16 @@ package DynamicHashing;
  *
  * @author namer
  */
-public class Node {
-    private Node parent;
+public abstract class Node {
+    private InternalNode parent;
+    
+    public abstract boolean isExternal();
+
+    public InternalNode getParent() {
+        return parent;
+    }
+
+    public void setParent(InternalNode parent) {
+        this.parent = parent;
+    }
 }

@@ -13,8 +13,8 @@ public class InternalNode extends Node{
     private Node Left;
     private Node Right;
     
-    public InternalNode() {
-        
+    public InternalNode(InternalNode parent) {
+        super.setParent(parent);
     }
 
     public Node getLeft() {
@@ -31,6 +31,11 @@ public class InternalNode extends Node{
 
     public void setRight(Node Right) {
         this.Right = Right;
+    }
+
+    @Override
+    public boolean isExternal() {
+        return false;
     }
     
     

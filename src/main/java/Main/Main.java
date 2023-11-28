@@ -16,13 +16,15 @@ import java.util.logging.Logger;
  */
 public class Main {
     public static void main (String [] args) {
-        DynamicHashing<TestElement> dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin");
+        DynamicHashing<TestElement> dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", TestElement.class);
         
-        TestElement tst = new TestElement(134, 9674);
-        TestElement tst2 = new TestElement(11, 7456);
+        TestElement tst = new TestElement(1, 9674);
+        TestElement tst2 = new TestElement(2, 7456);
         try {
-            dh.writeToFile(tst);
-            dh.writeToFile(tst2);
+            dh.insert(tst);
+            System.out.println(dh.readWholeFile());
+            dh.insert(tst2);
+            System.out.println(dh.readWholeFile());
 //            dh.readFromFile();
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

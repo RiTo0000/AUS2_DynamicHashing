@@ -19,56 +19,117 @@ import java.util.logging.Logger;
 public class Block <T extends IRecord> {
     
     private int Address;
-    private Block nextBlock;
+    private int nextBlockAddress;
     private ArrayList<T> records;
-//    private T [] records;
+    private int BlockingFactor;
     private int validCount;
     
-    public Block(int blockingFactor) {
-//        this.records = new T [ blockingFactor];
+    private Class<T> classType;
+    
+    public Block(int Address, int blockingFactor, Class<T> classType) {
+        this.Address = Address;
+        this.BlockingFactor = blockingFactor;
         this.records = new ArrayList<>();
+        this.classType = classType;
+        this.validCount = 8; //pociatocna hodnota 8 lebo taku velkost potrebuju riadiace zaznamy
     }
     
     public int getSize(){
-        //TODO
-        return 0;    
+        T dummyRecord;
+        try {
+            dummyRecord = (T) classType.newInstance().createClass();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(Block.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
+        }
+        //blocking factor * dummyRecord.getSize() + velkost objektov riadiacich na zaciatku
+        return this.BlockingFactor * dummyRecord.getSize() + 8;    
     }
     
     public void insert(T insertedRecord) {
-//        for (IRecord record : records) {
-//            if (record == null) {
-//                record = insertedRecord;
-//                break;
-//            }
-//        }
         this.records.add(insertedRecord);
+        this.validCount += insertedRecord.getSize();
     }
     
     public byte [] toByteArray(int blockingFactor) {
-        byte [] recordOutput = null;
+        
+        byte[] result = new byte[this.getSize()];
+        byte[] tmp;
+        int index = 0;
+        
+        tmp = ByteBuffer.allocate(4).putInt(this.nextBlockAddress).array();
+        for (byte b : tmp) {
+            result[index] = b;
+            index++;
+        }
+        tmp = ByteBuffer.allocate(4).putInt(this.validCount).array();
+        for (byte b : tmp) {
+            result[index] = b;
+            index++;
+        }
         
         if (!this.records.isEmpty()) {
-            recordOutput = new byte[blockingFactor * this.records.get(0).getSize()];
-            //TODO 
-            for (T record : records) {
+            for (T record : this.records) {
                 if (record != null) {
-                    recordOutput = record.toByteArray();
+                    tmp = record.toByteArray();
+                    for (byte b : tmp) {
+                        result[index] = b;
+                        index++;
+                    }
                 }
             }
         }
-        return recordOutput;
+        return result;
     }
-    public void fromByteArray(byte[] input){
+    public void fromByteArray(byte[] input, int blockingFactor){
+        byte[] tmp;
+        int startIndex = 0;
+        T record;
         
-        for (T record : this.records) {
-            record = (T) new TestElement(); //TODO docastne lebo neviem ako spravit genericky
-            record.fromByteArray(input);
+        //nacitanie riadiacich zaznamov bloku
+        tmp = Arrays.copyOfRange(input, startIndex, startIndex + 4);
+        this.nextBlockAddress = ByteBuffer.wrap(tmp).getInt();
+        startIndex += 4;
+        
+        tmp = Arrays.copyOfRange(input, startIndex, startIndex + 4);
+        this.validCount = ByteBuffer.wrap(tmp).getInt();
+        startIndex += 4;
+        
+        if (this.validCount <= startIndex) {
+            return;
         }
         
-        T record = (T) new TestElement(); //TODO docastne lebo neviem ako spravit genericky
-        record.fromByteArray(input);
+        for (int i = 0; i < blockingFactor; i++) {
+            
+            try {
+                record = (T) classType.newInstance().createClass();
+            } catch (InstantiationException | IllegalAccessException ex) {
+                Logger.getLogger(Block.class.getName()).log(Level.SEVERE, null, ex);
+                return;
+            }
+            tmp = Arrays.copyOfRange(input, startIndex, startIndex + record.getSize());
+            record.fromByteArray(tmp);
+            this.records.add(record);
+            
+            startIndex += record.getSize();
+            
+            if (this.validCount <= startIndex) {
+                return;
+            }
+        }
+    }
+    
+    public String blockToString() {
+        String result = Integer.toString(this.nextBlockAddress) + " " + 
+                        Integer.toString(this.validCount) + " ";
         
-        this.records.add(record);
+        for (T record : this.records) {
+            result += record.recordToString();
+        }
+        
+        result += "\n";
+        
+        return result;
     }
 
     public int getAddress() {
@@ -79,12 +140,12 @@ public class Block <T extends IRecord> {
         this.Address = Address;
     }
 
-    public Block getNextBlock() {
-        return this.nextBlock;
+    public int getNextBlockAddress() {
+        return this.nextBlockAddress;
     }
 
-    public void setNextBlock(Block nextBlock) {
-        this.nextBlock = nextBlock;
+    public void setNextBlockAddress(int nextBlockAddress) {
+        this.nextBlockAddress = nextBlockAddress;
     }
 
     public ArrayList<T> getRecords() {

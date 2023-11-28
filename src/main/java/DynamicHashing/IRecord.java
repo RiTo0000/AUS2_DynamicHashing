@@ -18,4 +18,6 @@ public interface IRecord {
     public int getSize();
     public byte [] toByteArray();
     public void fromByteArray(byte[] input);
+    public IRecord createClass();
+    public String recordToString();
 }

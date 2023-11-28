@@ -25,35 +25,52 @@ public class DynamicHashing <T extends IRecord> {
     private int BlockingFactorSecond;
     private String SecondFile;
     
-    private Block freeMainBlock;
+    private int freeMainBlockAddress;
     
     private RandomAccessFile mainFile;
     
-    public DynamicHashing(String mainFilePath) {
+    private Class<T> classType;
+    
+    public DynamicHashing(String mainFilePath, Class<T> classType) {
         this.Root = new ExternalNode(null);
         this.BlockingFactorMain = 1;
+        this.freeMainBlockAddress = -1;
         try {
             this.mainFile = new RandomAccessFile(mainFilePath, "rw");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DynamicHashing.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        this.classType = classType;
+        
     }
     
     private int getFreeBlockAddress() throws IOException {
         int freeBlockAddress = 0;
-        if (this.freeMainBlock == null) {
+        if (this.freeMainBlockAddress == -1) {
             freeBlockAddress = (int) this.mainFile.length();
         }
         else {
-            freeBlockAddress = this.freeMainBlock.getAddress();
-            this.freeMainBlock = this.freeMainBlock.getNextBlock();
+            freeBlockAddress = this.freeMainBlockAddress;
+            this.freeMainBlockAddress = this.readFromFile(freeBlockAddress).getNextBlockAddress();
         }
         return freeBlockAddress;
     }
     
-    public void insert(T element) {
+    private void addFreeBlockAddress(int Address) throws IOException {
+        //TODO pozriet ci nie je na konci suboru ze by sa dalo uvolnit miesto
+        Block<T> blok = new Block(Address, this.BlockingFactorMain, this.classType);
+        blok.setNextBlockAddress(this.freeMainBlockAddress);
         
+        this.writeToFile(Address, blok);
+        
+        this.freeMainBlockAddress = Address;
+    }
+    
+    public void insert(T element) throws IOException {
+        ExternalNode nodeForInsert = this.findNode(element.getHash());
+        
+        this.insertOnNode(nodeForInsert, element);
     }
     
     private ExternalNode findNode(BitSet hash) throws IOException {
@@ -69,18 +86,23 @@ public class DynamicHashing <T extends IRecord> {
                 else {
                     InternalNode newParent = new InternalNode(actualNode.getParent());
                     actualNode.setParent(newParent);
-                    if (hash.get(actualLvl) == true) { //pojde do prava lebo je 1
-                        newParent.setRight(actualNode);
-                        newParent.setLeft(new ExternalNode(newParent));
-                    }
-                    else {
-                        newParent.setLeft(actualNode);
-                        newParent.setRight(new ExternalNode(newParent));
-                    }
+                    newParent.setLeft(actualNode);
+                    newParent.setRight(new ExternalNode(newParent));
+
                     Block block = this.readFromFile(((ExternalNode) actualNode).getAddress());
                     ArrayList<T> records = block.getRecords();
+                    ((ExternalNode) actualNode).setCount(0); //nastavime count na 0 lebo vsetky objekty sa budu na novo insertovat
+                    ((ExternalNode) actualNode).setAddress(-1); //nastavime adresu na -1 (nepriradena adresa)
+                    
+                    actualNode = newParent; //Nastavime si aktualnu Nodu na toho otca ktorym sme ho nahradili
+                    this.addFreeBlockAddress(block.getAddress());
                     for ( T record : records) {
-                        //TODO prejst objekty a skontrolovat kam maju ist sa presuvat ci vlavo alebo vpravo podla ich hashu kluca
+                        if (record.getHash().get(actualLvl) == true) { //pojde do prava lebo je 1
+                            this.insertOnNode((ExternalNode) ((InternalNode) actualNode).getRight(), record);
+                        }
+                        else {
+                            this.insertOnNode((ExternalNode) ((InternalNode) actualNode).getLeft(), record);
+                        }
                     }
                     
                     //nastavim novy actualNode
@@ -106,55 +128,56 @@ public class DynamicHashing <T extends IRecord> {
         return (ExternalNode) actualNode;
     }
     
-    public void writeToFile(T record) throws IOException {
-        ExternalNode nodeForWrite = this.findNode(record.getHash());
-        
-        if (nodeForWrite.getAddress() == -1) {
-            nodeForWrite.setAddress(this.getFreeBlockAddress());
+    private void insertOnNode(ExternalNode node, T record) throws IOException {
+        Block blok;
+        if (node.getAddress() == -1) { //nema adresu teda nemozu tam byt ziadne elementy
+            node.setAddress(this.getFreeBlockAddress());
+            blok = new Block(node.getAddress(), this.BlockingFactorMain, this.classType);
+        }
+        else { // ma adrese mozu byt elementy treba najprv nacitat existujuce
+            blok = this.readFromFile(node.getAddress());
         }
         
-//        BigInteger tst = BigInteger.valueOf(2147483646);
-//        try {
-//            this.mainFile.seek(0);
-//            this.mainFile.write(tst.toByteArray());
-//        } catch (IOException ex) {
-//            Logger.getLogger(DynamicHashing.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        
-        Block<T> block = new Block <>(this.BlockingFactorMain);
-        block.insert(record);
-        byte b[] = block.toByteArray(this.BlockingFactorMain);
-        this.mainFile.seek(nodeForWrite.getAddress()); 
-        this.mainFile.write(b);
-        
-        nodeForWrite.setCount(nodeForWrite.getCount()+1);
-        
-//        byte b[] = new byte[this.BlockingFactorMain * record.getSize()];
-//        try {
-//            this.mainFile.read(b, nodeForWrite.getAddress(), this.BlockingFactorMain * record.getSize());
-//        } catch (IOException ex) {
-//            Logger.getLogger(DynamicHashing.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        blok.fromByteArray(b);
+        blok.insert(record);
+        this.writeToFile(node.getAddress(), blok);
+
+        node.setCount(node.getCount()+1);
     }
     
-    public Block readFromFile(int Address) throws IOException {
-        byte[] b = new byte[this.BlockingFactorMain * 4]; //TODO konstanta zatial
+    public void writeToFile(int Address, Block blok) throws IOException {
+        byte b[] = blok.toByteArray(this.BlockingFactorMain);
+        this.mainFile.seek(Address); 
+        this.mainFile.write(b);
+
+    }
+    
+    public Block readFromFile(int Address) throws IOException {    
+        Block<T> block = new Block <>(Address, this.BlockingFactorMain, this.classType);
+        
+        byte[] b = new byte[block.getSize()];
 
         this.mainFile.seek(Address);
         this.mainFile.read(b, 0, b.length);
         
-        Block<T> block = new Block <>(this.BlockingFactorMain);
-        block.fromByteArray(b);
+        block.fromByteArray(b, this.BlockingFactorMain);
         
         return block;
-            
-//            this.mainFile.read(bytes);
-            
-
     }
     
-    
-    
+    public String readWholeFile() throws IOException {
+        String result = "";
+        int index = 0;
+        Block<T> blok;
+        
+        while (index < this.mainFile.length()) {            
+            blok = this.readFromFile(index);
+            result += blok.blockToString();
+            
+            index += blok.getSize();
+        }
+        
+        
+        return result;
+    }
     
 }

@@ -24,6 +24,7 @@ public class Main {
             dh.insert(tst);
             System.out.println(dh.readWholeFile());
             dh.insert(tst2);
+            dh.find(tst);
             System.out.println(dh.readWholeFile());
 //            dh.readFromFile();
         } catch (IOException ex) {

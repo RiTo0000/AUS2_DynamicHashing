@@ -68,54 +68,81 @@ public class DynamicHashing <T extends IRecord> {
     }
     
     public void insert(T element) throws IOException {
-        ExternalNode nodeForInsert = this.findNode(element.getHash());
+        ExternalNode nodeForInsert = this.findNode(element.getHash(), true);
         
         this.insertOnNode(nodeForInsert, element);
     }
     
-    private ExternalNode findNode(BitSet hash) throws IOException {
+    public T find(T element) throws IOException {
+        ExternalNode nodeForInsert = this.findNode(element.getHash(), false);
+        
+        Block blok = this.readFromFile(nodeForInsert.getAddress());
+        
+        ArrayList<T> records = blok.getRecords();
+        
+        for (T record : records) {
+            if (record.equals(element)) {
+                return record;
+            }
+        }
+        
+        //ak sa nenasiel doteraz tak nie je cize vratim null (nenajdeny objekt)
+        return null;
+    }
+    
+    private ExternalNode findNode(BitSet hash, boolean insertNode) throws IOException {
         Node actualNode = this.Root;
         int actualLvl = 0;
         boolean found = false;
         
         while(!found) {
-            if (actualNode.isExternal()) { //ak je externa tak sa pokusim insertnut tam 
-                if (((ExternalNode) actualNode).getCount() < this.BlockingFactorMain ) { //este sa vojde sem do nodu
-                    found = true;
-                }
-                else {
-                    InternalNode newParent = new InternalNode(actualNode.getParent());
-                    actualNode.setParent(newParent);
-                    newParent.setLeft(actualNode);
-                    newParent.setRight(new ExternalNode(newParent));
+            if (actualNode.isExternal()) { //je to externy node
+                if (insertNode) {  
+                    //ak hladam insertNode tak musim robit kontrolu ci je v node miesto ak nie snazim sa rozdelit 
+                    if (((ExternalNode) actualNode).getCount() < this.BlockingFactorMain ) { //este sa vojde sem do nodu
+                        found = true;
+                    }
+                    else { //nevojde sa musim delit node podla dalsieho bitu hashu
+                        InternalNode newParent = new InternalNode(actualNode.getParent());
+                        actualNode.setParent(newParent);
+                        newParent.setLeft(actualNode);
+                        newParent.setRight(new ExternalNode(newParent));
+                        
+                        if (actualLvl == 0) { //ak sme na lvl 0 tak musime prepisat aj referenciu na Root node
+                            this.Root = newParent;
+                        }
 
-                    Block block = this.readFromFile(((ExternalNode) actualNode).getAddress());
-                    ArrayList<T> records = block.getRecords();
-                    ((ExternalNode) actualNode).setCount(0); //nastavime count na 0 lebo vsetky objekty sa budu na novo insertovat
-                    ((ExternalNode) actualNode).setAddress(-1); //nastavime adresu na -1 (nepriradena adresa)
-                    
-                    actualNode = newParent; //Nastavime si aktualnu Nodu na toho otca ktorym sme ho nahradili
-                    this.addFreeBlockAddress(block.getAddress());
-                    for ( T record : records) {
-                        if (record.getHash().get(actualLvl) == true) { //pojde do prava lebo je 1
-                            this.insertOnNode((ExternalNode) ((InternalNode) actualNode).getRight(), record);
+                        Block block = this.readFromFile(((ExternalNode) actualNode).getAddress());
+                        ArrayList<T> records = block.getRecords();
+                        ((ExternalNode) actualNode).setCount(0); //nastavime count na 0 lebo vsetky objekty sa budu na novo insertovat
+                        ((ExternalNode) actualNode).setAddress(-1); //nastavime adresu na -1 (nepriradena adresa)
+
+                        actualNode = newParent; //Nastavime si aktualnu Nodu na toho otca ktorym sme ho nahradili
+                        this.addFreeBlockAddress(block.getAddress());
+                        for ( T record : records) {
+                            if (record.getHash().get(actualLvl) == true) { //pojde do prava lebo je 1
+                                this.insertOnNode((ExternalNode) ((InternalNode) actualNode).getRight(), record);
+                            }
+                            else {
+                                this.insertOnNode((ExternalNode) ((InternalNode) actualNode).getLeft(), record);
+                            }
+                        }
+
+                        //nastavim novy actualNode
+                        if (hash.get(actualLvl) == true) { //pojde do prava lebo je 1
+                            actualNode = ((InternalNode) actualNode).getRight();
                         }
                         else {
-                            this.insertOnNode((ExternalNode) ((InternalNode) actualNode).getLeft(), record);
-                        }
+                            actualNode = ((InternalNode) actualNode).getLeft();
+                        } 
+                        actualLvl++;
                     }
-                    
-                    //nastavim novy actualNode
-                    if (hash.get(actualLvl) == true) { //pojde do prava lebo je 1
-                        actualNode = ((InternalNode) actualNode).getRight();
-                    }
-                    else {
-                        actualNode = ((InternalNode) actualNode).getLeft();
-                    } 
-                    actualLvl++;
+                }
+                else {
+                    found = true;
                 }
             }
-            else { //je interna musim najst kam ist dalej
+            else { //je to interny node hladam kam sa vetvim dalej
                 if (hash.get(actualLvl) == true) { //pojde do prava lebo je 1
                     actualNode = ((InternalNode) actualNode).getRight();
                 }

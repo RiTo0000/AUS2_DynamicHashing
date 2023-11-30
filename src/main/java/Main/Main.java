@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class Main {
     public static void main (String [] args) {
-        DynamicHashing<TestElement> dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", TestElement.class);
+        DynamicHashing<TestElement> dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", TestElement.class, 1);
         
         TestElement tst = new TestElement(1, 9674);
         TestElement tst2 = new TestElement(2, 7456);

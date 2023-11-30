@@ -31,9 +31,9 @@ public class DynamicHashing <T extends IRecord> {
     
     private Class<T> classType;
     
-    public DynamicHashing(String mainFilePath, Class<T> classType) {
+    public DynamicHashing(String mainFilePath, Class<T> classType, int blockingFactorMain) {
         this.Root = new ExternalNode(null);
-        this.BlockingFactorMain = 1;
+        this.BlockingFactorMain = blockingFactorMain;
         this.freeMainBlockAddress = -1;
         try {
             this.mainFile = new RandomAccessFile(mainFilePath, "rw");
@@ -91,6 +91,7 @@ public class DynamicHashing <T extends IRecord> {
     }
     
     private ExternalNode findNode(BitSet hash, boolean insertNode) throws IOException {
+        InternalNode parent;
         Node actualNode = this.Root;
         int actualLvl = 0;
         boolean found = false;
@@ -104,12 +105,22 @@ public class DynamicHashing <T extends IRecord> {
                     }
                     else { //nevojde sa musim delit node podla dalsieho bitu hashu
                         InternalNode newParent = new InternalNode(actualNode.getParent());
+                        parent = actualNode.getParent();
                         actualNode.setParent(newParent);
                         newParent.setLeft(actualNode);
                         newParent.setRight(new ExternalNode(newParent));
                         
                         if (actualLvl == 0) { //ak sme na lvl 0 tak musime prepisat aj referenciu na Root node
                             this.Root = newParent;
+                        }
+                        else { //parent uz bude nastaveny
+                            //potrebujeme updatnut parentovi laveho alebo praveho syna
+                            if (hash.get(actualLvl - 1) == true) { //isli sme do prava lebo 1
+                                parent.setRight(newParent);
+                            }
+                            else { //isli sme do lava lebo 0
+                                parent.setLeft(newParent);
+                            }
                         }
 
                         Block block = this.readFromFile(((ExternalNode) actualNode).getAddress());

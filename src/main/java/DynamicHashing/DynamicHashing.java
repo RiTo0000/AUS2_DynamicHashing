@@ -93,6 +93,7 @@ public class DynamicHashing <T extends IRecord> {
     public boolean delete(T element) throws IOException {
         Block blok;
         ArrayList<T> records;
+        boolean result = false;
         
         ExternalNode nodeForDelete = this.findNode(element.getHash(), false);
         
@@ -102,13 +103,18 @@ public class DynamicHashing <T extends IRecord> {
             records = blok.getRecords();
             for (T record : records) {
                 if (element.equals(record)) {
-                    return records.remove(record);
+                    result = records.remove(record);
+                    break;
                 }
+            }
+            
+            if (records.isEmpty()) { //ak nema rekord treba odstranit prazdny node a nahradit ho 
+                //TODO
             }
         }
         
         //ak sa do teraz nezmazal tak asi nie je 
-        return false;        
+        return result;        
     }
     
     private ExternalNode findNode(BitSet hash, boolean insertNode) throws IOException {

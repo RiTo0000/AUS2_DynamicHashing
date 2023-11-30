@@ -90,6 +90,27 @@ public class DynamicHashing <T extends IRecord> {
         return null;
     }
     
+    public boolean delete(T element) throws IOException {
+        Block blok;
+        ArrayList<T> records;
+        
+        ExternalNode nodeForDelete = this.findNode(element.getHash(), false);
+        
+        if (nodeForDelete.getAddress() != -1) { //adresa je definovana
+            blok = this.readFromFile(nodeForDelete.getAddress());
+            
+            records = blok.getRecords();
+            for (T record : records) {
+                if (element.equals(record)) {
+                    return records.remove(record);
+                }
+            }
+        }
+        
+        //ak sa do teraz nezmazal tak asi nie je 
+        return false;        
+    }
+    
     private ExternalNode findNode(BitSet hash, boolean insertNode) throws IOException {
         InternalNode parent;
         Node actualNode = this.Root;
@@ -104,6 +125,11 @@ public class DynamicHashing <T extends IRecord> {
                         found = true;
                     }
                     else { //nevojde sa musim delit node podla dalsieho bitu hashu
+                        if (actualLvl == hash.length()) { //ak uz nemozem delit lebo som na konci hashu tak vratim posledny najdeny
+                            break; //ukoncim cyklus a spodny return vrati doteraz najdeny node
+                        }
+                        
+                        //delenie nodu na externe a presuvanie prvkov v aktualnom node
                         InternalNode newParent = new InternalNode(actualNode.getParent());
                         parent = actualNode.getParent();
                         actualNode.setParent(newParent);

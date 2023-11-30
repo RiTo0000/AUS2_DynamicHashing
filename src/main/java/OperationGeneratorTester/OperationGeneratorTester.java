@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class OperationGeneratorTester {
     
-    public static int numOfOperations = 100;
+    public static int numOfOperations = 1000;
     public static int numOfInitialInserts = 10;
     
     public static void main (String[] args) {
@@ -67,12 +67,13 @@ public class OperationGeneratorTester {
                     }
                 }
                 else if ( randNum > 0.5 && randNum <= 0.8) { //delete
-                    System.out.println("");
-////                System.out.println(" operation delete");
-//                if (!insertedElements.isEmpty()) {
-//                    tst = insertedElements.remove(rand.nextInt(insertedElements.size()));
-//                    tree.delete(tst.getSpace(), tst.getKey());
-//                }
+                    System.out.println(" operation delete");
+                    if (!insertedElements.isEmpty()) {
+                        tst = insertedElements.remove(rand.nextInt(insertedElements.size()));
+                        if (!dh.delete(tst)) {
+                            System.out.println("Operacia nejako zle prebehla");
+                        }
+                    }
                 }   
                 else { //find
                     System.out.println(" operation find");

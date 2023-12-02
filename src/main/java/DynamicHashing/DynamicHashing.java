@@ -181,7 +181,7 @@ public class DynamicHashing <T extends IRecord> {
             
             if (result) { //vymaz sa podaril
                 if (records.isEmpty()) { //ak nema rekord treba odstranit prazdny node a nahradit ho 
-                    this.clearNode(nodeForDelete); //vycistenie nodu a zaradenie adresy medzi prazdne
+                    this.clearNode(nodeForDelete, true); //vycistenie nodu a zaradenie adresy medzi prazdne
                 }
                 else { //zapisanie upraveneho bloku do suboru
                     this.writeToFile(blok);
@@ -234,7 +234,7 @@ public class DynamicHashing <T extends IRecord> {
 
                         Block block = this.readFromFile(((ExternalNode) actualNode).getAddress());
                         ArrayList<T> records = block.getRecords();
-                        this.clearNode((ExternalNode) actualNode); //node si vycistim
+                        this.clearNode((ExternalNode) actualNode, false); //node si vycistim
 
                         actualNode = newParent; //Nastavime si aktualnu Nodu na toho otca ktorym sme ho nahradili
                         for ( T record : records) {
@@ -336,15 +336,48 @@ public class DynamicHashing <T extends IRecord> {
      * - prida jeho adresu medzi volne bloky
      * - resetuje adresu na danom node
      * - resetuje pocitadlo vlozenych elementov
+     * - preusporiada nody
      * @param nodeToClear node na vycistenie
+     * @param rearrangeNodes true ak chceme aj preusporiadan nody (napriklad po vymazani), false inak
      * @throws IOException 
      */
-    public void clearNode(ExternalNode nodeToClear) throws IOException {
+    public void clearNode(ExternalNode nodeToClear, boolean rearrangeNodes) throws IOException {
         this.addFreeBlockAddress(nodeToClear.getAddress());
         nodeToClear.setAddress(-1);
         nodeToClear.setCount(0);
         
-        //TODO spravit preusporiadanie nodu a vyhodenie jedneho interneho
+        //preusporiadanie nodov
+        if (rearrangeNodes) {
+            InternalNode parent = nodeToClear.getParent();
+            InternalNode superParent;
+            Node newSonOfSuperParent = null;
+
+            if (parent != null) { //ak je to Root node tak nemusi nic usporiadat
+                superParent = parent.getParent();
+                if (parent.getLeft() == nodeToClear) { //Node ktory cistim je vlavo
+                    newSonOfSuperParent = parent.getRight();
+                }
+                else { //Node ktory cistim je vpravo
+                    newSonOfSuperParent = parent.getLeft();
+                }
+
+                newSonOfSuperParent.setParent(superParent);
+
+                //uprava laveho/praveho nodu rodica rodica
+                if (superParent != null) {            
+                    if (superParent.getLeft() == parent) { //Rodic je vlavo
+                        superParent.setLeft(newSonOfSuperParent);
+                    }
+                    else { //Rodic je vpravo
+                        superParent.setRight(newSonOfSuperParent);
+                    }
+                }
+                else { //Treba upravit adresu Root nodu
+                    this.Root = newSonOfSuperParent;
+                }
+            }
+        }
+      
     }
     
 }

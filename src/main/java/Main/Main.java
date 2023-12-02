@@ -46,11 +46,14 @@ public class Main {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             tst2 = insertedElements.remove(0);
             try {
-                tst = dh.find(tst2);
+                dh.delete(tst2);
+                System.out.println("MainFile:");
                 System.out.println(dh.readWholeMainFile());
+                System.out.println("SecondFile:");
+                System.out.println(dh.readWholeSecondFile());
             } catch (IOException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {

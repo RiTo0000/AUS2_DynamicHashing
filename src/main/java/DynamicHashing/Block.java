@@ -183,7 +183,7 @@ public class Block <T extends IRecord> {
      * @return true ak je blok prazdny, false inak
      */
     public boolean isEmpty() {
-        return this.validCount == blockInfoSize;
+        return this.validCount == blockInfoSize && this.nextBlockAddress == -1;
     }
     
     /**

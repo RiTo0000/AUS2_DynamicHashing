@@ -91,15 +91,16 @@ public class DynamicHashing <T extends IRecord> {
         return freeBlockAddress;
     }
     
-    private void addFreeBlockAddress(long Address) throws IOException {
+    private long addFreeBlockAddress(long Address, RandomAccessFile file, int blockingFactor, long pFreeBlockAddress) throws IOException {
+        long freeBlockAddress = pFreeBlockAddress;
         long newFileLength;
         boolean fileLengthOptimal = false;
         Block<T> hlpBlock;
         
-        Block<T> lastBlock = new Block(Address, this.BlockingFactorMain, this.classType);
+        Block<T> lastBlock = new Block(Address, blockingFactor, this.classType);
         
-        //TODO pozriet ci nie je na konci suboru ze by sa dalo uvolnit miesto
-        newFileLength = this.mainFile.length() - lastBlock.getSize();
+        
+        newFileLength = file.length() - lastBlock.getSize();
         if (newFileLength == Address) { //odstranovane miesto je na konci suboru tak ho skratim
             
             while (!fileLengthOptimal) {                
@@ -111,7 +112,7 @@ public class DynamicHashing <T extends IRecord> {
                     newFileLength += lastBlock.getSize(); //musim naspat navysit lebo uz sa nieje kam posunut (dosiahol som zaciatok suboru)
                 }
                 else {//kontrola ci predchadzajuci blok tiez nie je prazdny
-                    lastBlock = this.readFromFile(newFileLength, this.mainFile, this.BlockingFactorMain);
+                    lastBlock = this.readFromFile(newFileLength, file, blockingFactor);
                     if (!lastBlock.isEmpty()) {
                         fileLengthOptimal = true;
 
@@ -122,45 +123,49 @@ public class DynamicHashing <T extends IRecord> {
                         long nextAdr = lastBlock.getNextBlockAddress();
 
                         if (prevAdr != -1) {
-                            hlpBlock = this.readFromFile(prevAdr, this.mainFile, this.BlockingFactorMain);
+                            hlpBlock = this.readFromFile(prevAdr, file, blockingFactor);
                             hlpBlock.setNextBlockAddress(nextAdr);
-                            this.writeToFile(hlpBlock, this.mainFile);
+                            this.writeToFile(hlpBlock, file);
                         }
                         else { // uvolnili sme prvy blok v zretazeni teda potrebujeme si na novo nastavit adresu prveho volneho bloku
-                            this.freeMainBlockAddress = nextAdr;
+                            freeBlockAddress = nextAdr;
                         }
 
                         if (nextAdr != -1) {
-                            hlpBlock = this.readFromFile(nextAdr, this.mainFile, this.BlockingFactorMain);
+                            hlpBlock = this.readFromFile(nextAdr, file, blockingFactor);
                             hlpBlock.setPreviousBlockAddress(prevAdr);
-                            this.writeToFile(hlpBlock, this.mainFile);
+                            this.writeToFile(hlpBlock, file);
                         }
                     }
                 }
             }
             
-            this.mainFile.setLength(newFileLength);
+            file.setLength(newFileLength);
             
         }
         else { //odstranovane miesto nie je na konci nemozem subor skratit
             
-            Block<T> newFreeBlok = new Block(Address, this.BlockingFactorMain, this.classType);
+            Block<T> newFreeBlok = new Block(Address, blockingFactor, this.classType);
             newFreeBlok.setPreviousBlockAddress(-1);
-            newFreeBlok.setNextBlockAddress(this.freeMainBlockAddress);
+            newFreeBlok.setNextBlockAddress(freeBlockAddress);
 
-            this.writeToFile(newFreeBlok, this.mainFile);
+            this.writeToFile(newFreeBlok, file);
 
-            if (this.freeMainBlockAddress != -1) { // ak sa adresa na volny blok rovna -1 tak netreba vkladat stary volny blok lebo neexistuje
-                Block<T> oldFreeBlok = this.readFromFile(this.freeMainBlockAddress, this.mainFile, this.BlockingFactorMain);
+            if (freeBlockAddress != -1) { // ak sa adresa na volny blok rovna -1 tak netreba vkladat stary volny blok lebo neexistuje
+                Block<T> oldFreeBlok = this.readFromFile(freeBlockAddress, file, blockingFactor);
                 oldFreeBlok.setPreviousBlockAddress(Address);
 
-                this.writeToFile(oldFreeBlok, this.mainFile);
+                this.writeToFile(oldFreeBlok, file);
             }
 
 
-            this.freeMainBlockAddress = Address;
+            freeBlockAddress = Address;
         
         }
+        
+        
+        //nakoniec vratime aktualnu adresu prazdneho bloku
+        return freeBlockAddress;
     }
     
     public void insert(T element) throws IOException, Exception {
@@ -206,8 +211,12 @@ public class DynamicHashing <T extends IRecord> {
     
     public boolean delete(T element) throws IOException, Exception {
         Block blok = null;
+        Block hlpBlok = null;
         ArrayList<T> records;
         boolean result = false;
+        
+        Block<T> secondBlock;
+        long nextSecondBlockAddress;
         
         ExternalNode nodeForDelete = this.findNode(element.getHash(), false);
         
@@ -223,12 +232,56 @@ public class DynamicHashing <T extends IRecord> {
             }
             
             if (result) { //vymaz sa podaril
-                if (records.isEmpty()) { //ak nema rekord treba odstranit prazdny node a nahradit ho 
+                if (blok.isEmpty()) { //ak nema rekord treba odstranit prazdny node a nahradit ho 
                     this.clearNode(nodeForDelete, true); //vycistenie nodu a zaradenie adresy medzi prazdne
                 }
                 else { //zapisanie upraveneho bloku do suboru
                     this.writeToFile(blok, this.mainFile);
                     nodeForDelete.setCount(nodeForDelete.getCount() - 1);
+                }
+            }
+            else { // vymaz sa doteraz nepodaril snazim sa najst v preplnujucom subore
+                nextSecondBlockAddress = blok.getNextBlockAddress();
+                while (nextSecondBlockAddress != -1 && !result) { //ak ma nasledujuci blok a este nie je najdeny
+                    secondBlock = this.readFromFile(nextSecondBlockAddress, this.secondFile, this.BlockingFactorSecond);
+                    records = secondBlock.getRecords();
+
+                    for (T record : records) {
+                        if (record.equals(element)) {
+                            result = secondBlock.removeRecord(record);
+                            break;
+                        }
+                    }
+                    
+                    if (!result) { //ak som ho nenasiel tak pokracujem na dalsom zretazenom bloku
+                        nextSecondBlockAddress = secondBlock.getNextBlockAddress();
+                    }
+                    else { //nasiel som ho 
+                                                
+                        if (records.isEmpty()) { //ak nema rekord treba blok pridat medzi prazdne
+                            this.freeSecondBlockAddress = this.addFreeBlockAddress(secondBlock.getAddress(), this.secondFile, this.BlockingFactorSecond, this.freeSecondBlockAddress);
+                            //prepojenie ak boli zretazene
+                            long prevAdr = secondBlock.getPreviousBlockAddress();
+                            long nextAdr = secondBlock.getNextBlockAddress();
+                            
+                            if (prevAdr != -1) {
+                                hlpBlok = this.readFromFile(prevAdr, this.secondFile, this.BlockingFactorSecond);
+                                hlpBlok.setNextBlockAddress(nextAdr);
+                                this.writeToFile(hlpBlok, this.secondFile);
+                            }
+
+                            if (nextAdr != -1) {
+                                hlpBlok = this.readFromFile(nextAdr, this.secondFile, this.BlockingFactorSecond);
+                                hlpBlok.setPreviousBlockAddress(prevAdr);
+                                this.writeToFile(hlpBlok, this.secondFile);
+                            }
+                        }
+                        else { //zapisanie upraveneho bloku do suboru
+                            this.writeToFile(secondBlock, this.secondFile);
+                            nodeForDelete.setCount(nodeForDelete.getCount() - 1);
+                        }
+                        //TODO striasanie
+                    }
                 }
             }
         }
@@ -463,7 +516,7 @@ public class DynamicHashing <T extends IRecord> {
      * @throws IOException 
      */
     public void clearNode(ExternalNode nodeToClear, boolean rearrangeNodes) throws IOException {
-        this.addFreeBlockAddress(nodeToClear.getAddress());
+        this.freeMainBlockAddress = this.addFreeBlockAddress(nodeToClear.getAddress(), this.mainFile, this.BlockingFactorMain, this.freeMainBlockAddress);
         nodeToClear.setAddress(-1);
         nodeToClear.setCount(0);
         

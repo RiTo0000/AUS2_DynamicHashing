@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class OperationGeneratorTester {
     
-    public static int numOfOperations = 1000;
+    public static int numOfOperations = 50;
     public static int numOfInitialInserts = 10;
     
     public static void main (String[] args) {
@@ -36,7 +36,7 @@ public class OperationGeneratorTester {
         ArrayList<TestElement> foundElements;
         ArrayList<TestElement> insertedElements = new ArrayList<TestElement>();
         
-        DynamicHashing<TestElement> dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", TestElement.class, 3);
+        DynamicHashing<TestElement> dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", TestElement.class, 2);
 
         
         for (int i = 0; i < numOfInitialInserts; i++) {
@@ -56,7 +56,7 @@ public class OperationGeneratorTester {
             for (int i = 0; i < numOfOperations; i++) {
                 System.out.print("Operation num: " + i);
                 randNum = rand.nextDouble();
-                if ( randNum <= 0.5) { //insert
+                if ( randNum <= 0.2) { //insert
                     System.out.println(" operation insert");
                     tst = new TestElement((numOfInitialInserts+i), ((numOfInitialInserts+i)*100));
                     try {
@@ -65,6 +65,8 @@ public class OperationGeneratorTester {
                     } catch (IOException ex) {
                         Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    
+                    System.out.println(dh.readWholeFile());
                 }
                 else if ( randNum > 0.5 && randNum <= 0.8) { //delete
                     System.out.println(" operation delete");
@@ -74,6 +76,8 @@ public class OperationGeneratorTester {
                             System.out.println("Operacia nejako zle prebehla");
                         }
                     }
+                    
+                    System.out.println(dh.readWholeFile());
                 }   
                 else { //find
                     System.out.println(" operation find");

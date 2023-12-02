@@ -46,23 +46,42 @@ public class DynamicHashing <T extends IRecord> {
     }
     
     private int getFreeBlockAddress() throws IOException {
+        Block<T> actualFreeBlock, nextFreeBlock;
+        
         int freeBlockAddress = 0;
         if (this.freeMainBlockAddress == -1) {
             freeBlockAddress = (int) this.mainFile.length();
         }
         else {
             freeBlockAddress = this.freeMainBlockAddress;
-            this.freeMainBlockAddress = this.readFromFile(freeBlockAddress).getNextBlockAddress();
+            actualFreeBlock = this.readFromFile(freeBlockAddress);
+            if (actualFreeBlock.getNextBlockAddress() != -1) { // ak ma naslednovny blok musim mu upravit predchodcu
+                nextFreeBlock = this.readFromFile(actualFreeBlock.getNextBlockAddress());
+                nextFreeBlock.setPreviousBlockAddress(-1); //predchodcu nema lebo je prvy v zretazeni
+                this.writeToFile(nextFreeBlock);
+            }
+            
+            this.freeMainBlockAddress = actualFreeBlock.getNextBlockAddress(); //nastavime adresu volneho bloku na nasledujucu po aktualnom volnom bloku
         }
         return freeBlockAddress;
     }
     
     private void addFreeBlockAddress(int Address) throws IOException {
         //TODO pozriet ci nie je na konci suboru ze by sa dalo uvolnit miesto
-        Block<T> blok = new Block(Address, this.BlockingFactorMain, this.classType);
-        blok.setNextBlockAddress(this.freeMainBlockAddress);
+        Block<T> newFreeBlok = new Block(Address, this.BlockingFactorMain, this.classType);
+        newFreeBlok.setPreviousBlockAddress(-1);
+        newFreeBlok.setNextBlockAddress(this.freeMainBlockAddress);
         
-        this.writeToFile(Address, blok);
+        this.writeToFile(newFreeBlok);
+        
+        if (this.freeMainBlockAddress != -1) { // ak sa adresa na volny blok rovna -1 tak netreba vkladat stary volny blok lebo neexistuje
+            Block<T> oldFreeBlok = this.readFromFile(this.freeMainBlockAddress);
+//            Block<T> oldFreeBlok = new Block(this.freeMainBlockAddress, this.BlockingFactorMain, this.classType);
+            oldFreeBlok.setPreviousBlockAddress(Address);
+        
+            this.writeToFile(oldFreeBlok);
+        }
+        
         
         this.freeMainBlockAddress = Address;
     }
@@ -91,7 +110,7 @@ public class DynamicHashing <T extends IRecord> {
     }
     
     public boolean delete(T element) throws IOException {
-        Block blok;
+        Block blok = null;
         ArrayList<T> records;
         boolean result = false;
         
@@ -103,16 +122,22 @@ public class DynamicHashing <T extends IRecord> {
             records = blok.getRecords();
             for (T record : records) {
                 if (element.equals(record)) {
-                    result = records.remove(record);
+                    result = blok.removeRecord(record);
                     break;
                 }
             }
             
-            if (records.isEmpty()) { //ak nema rekord treba odstranit prazdny node a nahradit ho 
-                //TODO
+            if (result) { //vymaz sa podaril
+                if (records.isEmpty()) { //ak nema rekord treba odstranit prazdny node a nahradit ho 
+                    this.clearNode(nodeForDelete); //vycistenie nodu a zaradenie adresy medzi prazdne
+                }
+                else { //zapisanie upraveneho bloku do suboru
+                    this.writeToFile(blok);
+                    nodeForDelete.setCount(nodeForDelete.getCount() - 1);
+                }
             }
         }
-        
+       
         //ak sa do teraz nezmazal tak asi nie je 
         return result;        
     }
@@ -157,11 +182,9 @@ public class DynamicHashing <T extends IRecord> {
 
                         Block block = this.readFromFile(((ExternalNode) actualNode).getAddress());
                         ArrayList<T> records = block.getRecords();
-                        ((ExternalNode) actualNode).setCount(0); //nastavime count na 0 lebo vsetky objekty sa budu na novo insertovat
-                        ((ExternalNode) actualNode).setAddress(-1); //nastavime adresu na -1 (nepriradena adresa)
+                        this.clearNode((ExternalNode) actualNode); //node si vycistim
 
                         actualNode = newParent; //Nastavime si aktualnu Nodu na toho otca ktorym sme ho nahradili
-                        this.addFreeBlockAddress(block.getAddress());
                         for ( T record : records) {
                             if (record.getHash().get(actualLvl) == true) { //pojde do prava lebo je 1
                                 this.insertOnNode((ExternalNode) ((InternalNode) actualNode).getRight(), record);
@@ -206,17 +229,20 @@ public class DynamicHashing <T extends IRecord> {
         }
         else { // ma adrese mozu byt elementy treba najprv nacitat existujuce
             blok = this.readFromFile(node.getAddress());
+            //TODO kontrola nakluc ci uz neexistuje nahodou a ak hej vyhodit chybu alebo neinsertnut
         }
         
         blok.insert(record);
-        this.writeToFile(node.getAddress(), blok);
+        this.writeToFile(blok);
 
         node.setCount(node.getCount()+1);
     }
     
-    public void writeToFile(int Address, Block blok) throws IOException {
+    public void writeToFile(Block blok) throws IOException {
+        int address = blok.getAddress();
+        
         byte b[] = blok.toByteArray(this.BlockingFactorMain);
-        this.mainFile.seek(Address); 
+        this.mainFile.seek(address); 
         this.mainFile.write(b);
 
     }
@@ -224,12 +250,15 @@ public class DynamicHashing <T extends IRecord> {
     public Block readFromFile(int Address) throws IOException {    
         Block<T> block = new Block <>(Address, this.BlockingFactorMain, this.classType);
         
-        byte[] b = new byte[block.getSize()];
+        if (Address != -1) { //kontrola aby adresa nebola inicialna
+            
+            byte[] b = new byte[block.getSize()];
 
-        this.mainFile.seek(Address);
-        this.mainFile.read(b, 0, b.length);
-        
-        block.fromByteArray(b, this.BlockingFactorMain);
+            this.mainFile.seek(Address);
+            this.mainFile.read(b, 0, b.length);
+
+            block.fromByteArray(b, this.BlockingFactorMain);
+        }
         
         return block;
     }
@@ -239,15 +268,31 @@ public class DynamicHashing <T extends IRecord> {
         int index = 0;
         Block<T> blok;
         
-        while (index < this.mainFile.length()) {            
+        while (index < this.mainFile.length()) {
             blok = this.readFromFile(index);
+            result += blok.getAddress() + ": ";
             result += blok.blockToString();
             
             index += blok.getSize();
         }
         
-        
         return result;
+    }
+    
+    /**
+     * Metoda pre spravne vycistenie Externeho nodu
+     * - prida jeho adresu medzi volne bloky
+     * - resetuje adresu na danom node
+     * - resetuje pocitadlo vlozenych elementov
+     * @param nodeToClear node na vycistenie
+     * @throws IOException 
+     */
+    public void clearNode(ExternalNode nodeToClear) throws IOException {
+        this.addFreeBlockAddress(nodeToClear.getAddress());
+        nodeToClear.setAddress(-1);
+        nodeToClear.setCount(0);
+        
+        //TODO spravit preusporiadanie nodu a vyhodenie jedneho interneho
     }
     
 }

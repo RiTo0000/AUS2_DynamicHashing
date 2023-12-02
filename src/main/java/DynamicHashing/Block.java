@@ -18,10 +18,19 @@ import java.util.logging.Logger;
  */
 public class Block <T extends IRecord> {
     
+    /**
+     * Velkost v subore ktoru zaberaju riadiace zaznamy
+     */
+    private static final int blockInfoSize = 12;
+    
     private int Address;
     private int nextBlockAddress;
+    private int previousBlockAddress;
     private ArrayList<T> records;
     private int BlockingFactor;
+    /**
+     * Pocet platnych bitov v bloku
+     */
     private int validCount;
     
     private Class<T> classType;
@@ -31,7 +40,7 @@ public class Block <T extends IRecord> {
         this.BlockingFactor = blockingFactor;
         this.records = new ArrayList<>();
         this.classType = classType;
-        this.validCount = 8; //pociatocna hodnota 8 lebo taku velkost potrebuju riadiace zaznamy
+        this.validCount = blockInfoSize; //pociatocna hodnota blockInfoSize lebo taku velkost potrebuju riadiace zaznamy
     }
     
     public int getSize(){
@@ -43,7 +52,7 @@ public class Block <T extends IRecord> {
             return -1;
         }
         //blocking factor * dummyRecord.getSize() + velkost objektov riadiacich na zaciatku
-        return this.BlockingFactor * dummyRecord.getSize() + 8;    
+        return this.BlockingFactor * dummyRecord.getSize() + blockInfoSize;    
     }
     
     public void insert(T insertedRecord) {
@@ -56,6 +65,12 @@ public class Block <T extends IRecord> {
         byte[] result = new byte[this.getSize()];
         byte[] tmp;
         int index = 0;
+        
+        tmp = ByteBuffer.allocate(4).putInt(this.previousBlockAddress).array();
+        for (byte b : tmp) {
+            result[index] = b;
+            index++;
+        }
         
         tmp = ByteBuffer.allocate(4).putInt(this.nextBlockAddress).array();
         for (byte b : tmp) {
@@ -87,6 +102,10 @@ public class Block <T extends IRecord> {
         T record;
         
         //nacitanie riadiacich zaznamov bloku
+        tmp = Arrays.copyOfRange(input, startIndex, startIndex + 4);
+        this.previousBlockAddress = ByteBuffer.wrap(tmp).getInt();
+        startIndex += 4;
+        
         tmp = Arrays.copyOfRange(input, startIndex, startIndex + 4);
         this.nextBlockAddress = ByteBuffer.wrap(tmp).getInt();
         startIndex += 4;
@@ -120,7 +139,8 @@ public class Block <T extends IRecord> {
     }
     
     public String blockToString() {
-        String result = Integer.toString(this.nextBlockAddress) + " " + 
+        String result = Integer.toString(this.previousBlockAddress) + " " +
+                        Integer.toString(this.nextBlockAddress) + " " + 
                         Integer.toString(this.validCount) + " ";
         
         for (T record : this.records) {
@@ -148,9 +168,35 @@ public class Block <T extends IRecord> {
         this.nextBlockAddress = nextBlockAddress;
     }
 
+    public int getPreviousBlockAddress() {
+        return this.previousBlockAddress;
+    }
+
+    public void setPreviousBlockAddress(int previousBlockAddress) {
+        this.previousBlockAddress = previousBlockAddress;
+    }
+    
+    
+
     public ArrayList<T> getRecords() {
         return this.records;
-    }    
+    }  
+    
+    /**
+     * Metoda na spravne odstranenie zaznamu z bloku
+     * @param record zaznam na odstranenie
+     * @return true ak sa odstranenie zanzamu podarilo, false ak nie
+     */
+    public boolean removeRecord(T record) {
+        boolean result;
+        
+        result = this.records.remove(record); //odstranenie zaznamu zo zoznamu zaznamov
+        
+        if (result) 
+            this.validCount -= record.getSize(); //Znizenie validCountu
+        
+        return result;
+    }
     
 
 }

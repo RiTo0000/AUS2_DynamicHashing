@@ -40,7 +40,7 @@ public class OperationGeneratorTester {
         DynamicHashing<TestElement> dh = null;
         try {
             dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", 
-                                        "C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test_second.bin", TestElement.class, 1, 1, 3);
+                                        "C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test_second.bin", TestElement.class, 1, 2, 2);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,7 +60,10 @@ public class OperationGeneratorTester {
         
         try {
             System.out.println("Po uvodnom inserte:");
+            System.out.println("MainFile:");
             System.out.println(dh.readWholeMainFile());
+            System.out.println("SecondFile:");
+            System.out.println(dh.readWholeSecondFile());
             
             for (int i = 0; i < numOfOperations; i++) {
                 System.out.print("Operation num: " + i);
@@ -77,7 +80,10 @@ public class OperationGeneratorTester {
                         Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
+                    System.out.println("MainFile:");
                     System.out.println(dh.readWholeMainFile());
+                    System.out.println("SecondFile:");
+                    System.out.println(dh.readWholeSecondFile());
                 }
                 else if ( randNum > 0.5 && randNum <= 0.8) { //delete
                     System.out.println(" operation delete");
@@ -88,7 +94,10 @@ public class OperationGeneratorTester {
                         }
                     }
                     
+                    System.out.println("MainFile:");
                     System.out.println(dh.readWholeMainFile());
+                    System.out.println("SecondFile:");
+                    System.out.println(dh.readWholeSecondFile());
                 }   
                 else { //find
                     System.out.println(" operation find");

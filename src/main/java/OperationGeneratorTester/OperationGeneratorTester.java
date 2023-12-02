@@ -46,6 +46,8 @@ public class OperationGeneratorTester {
                 insertedElements.add(tst);
             } catch (IOException ex) {
                 Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -63,6 +65,8 @@ public class OperationGeneratorTester {
                         dh.insert(tst);
                         insertedElements.add(tst);
                     } catch (IOException ex) {
+                        Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
                         Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
@@ -100,6 +104,8 @@ public class OperationGeneratorTester {
             } 
             
         } catch (IOException ex) {
+            Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
         }
         

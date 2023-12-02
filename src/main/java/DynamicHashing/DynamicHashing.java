@@ -138,13 +138,13 @@ public class DynamicHashing <T extends IRecord> {
         }
     }
     
-    public void insert(T element) throws IOException {
+    public void insert(T element) throws IOException, Exception {
         ExternalNode nodeForInsert = this.findNode(element.getHash(), true);
         
         this.insertOnNode(nodeForInsert, element);
     }
     
-    public T find(T element) throws IOException {
+    public T find(T element) throws IOException, Exception {
         ExternalNode nodeForInsert = this.findNode(element.getHash(), false);
         
         Block blok = this.readFromFile(nodeForInsert.getAddress());
@@ -161,7 +161,7 @@ public class DynamicHashing <T extends IRecord> {
         return null;
     }
     
-    public boolean delete(T element) throws IOException {
+    public boolean delete(T element) throws IOException, Exception {
         Block blok = null;
         ArrayList<T> records;
         boolean result = false;
@@ -194,7 +194,7 @@ public class DynamicHashing <T extends IRecord> {
         return result;        
     }
     
-    private ExternalNode findNode(BitSet hash, boolean insertNode) throws IOException {
+    private ExternalNode findNode(BitSet hash, boolean insertNode) throws IOException, Exception {
         InternalNode parent;
         Node actualNode = this.Root;
         int actualLvl = 0;
@@ -273,7 +273,7 @@ public class DynamicHashing <T extends IRecord> {
         return (ExternalNode) actualNode;
     }
     
-    private void insertOnNode(ExternalNode node, T record) throws IOException {
+    private void insertOnNode(ExternalNode node, T record) throws IOException, Exception {
         Block blok;
         if (node.getAddress() == -1) { //nema adresu teda nemozu tam byt ziadne elementy
             node.setAddress(this.getFreeBlockAddress());
@@ -281,7 +281,12 @@ public class DynamicHashing <T extends IRecord> {
         }
         else { // ma adrese mozu byt elementy treba najprv nacitat existujuce
             blok = this.readFromFile(node.getAddress());
-            //TODO kontrola nakluc ci uz neexistuje nahodou a ak hej vyhodit chybu alebo neinsertnut
+            ArrayList<T> oldRecords = blok.getRecords();
+            for (T oldRecord : oldRecords) {
+                if (oldRecord.equals(record)) {
+                    throw new Exception("Non-unique key on insert");
+                }
+            }
         }
         
         blok.insert(record);

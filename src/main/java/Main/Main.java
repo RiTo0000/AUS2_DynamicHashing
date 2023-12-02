@@ -32,6 +32,8 @@ public class Main {
                 insertedElements.add(tst);
             } catch (IOException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         for (int i = 0; i < 5; i++) {
@@ -40,6 +42,8 @@ public class Main {
                 dh.delete(tst2);
                 System.out.println(dh.readWholeFile());
             } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
             
@@ -52,6 +56,8 @@ public class Main {
                 System.out.println(dh.readWholeFile());
                 insertedElements.add(tst);
             } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

@@ -46,18 +46,18 @@ public class Main {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-//        for (int i = 0; i < 5; i++) {
-//            tst2 = insertedElements.remove(0);
-//            try {
-//                dh.delete(tst2);
-//                System.out.println(dh.readWholeMainFile());
-//            } catch (IOException ex) {
-//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (Exception ex) {
-//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            
-//        }
+        for (int i = 0; i < 5; i++) {
+            tst2 = insertedElements.remove(0);
+            try {
+                tst = dh.find(tst2);
+                System.out.println(dh.readWholeMainFile());
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
 //        
 //        for (int i = 0; i < 5; i++) {
 //            tst = new TestElement(i, i*100);

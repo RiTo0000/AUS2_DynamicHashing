@@ -170,9 +170,12 @@ public class DynamicHashing <T extends IRecord> {
     }
     
     public T find(T element) throws IOException, Exception {
-        ExternalNode nodeForInsert = this.findNode(element.getHash(), false);
+        ExternalNode nodeForFind = this.findNode(element.getHash(), false);
         
-        Block blok = this.readFromFile(nodeForInsert.getAddress(), this.mainFile, this.BlockingFactorMain);
+        Block blok = this.readFromFile(nodeForFind.getAddress(), this.mainFile, this.BlockingFactorMain);
+        
+        Block<T> secondBlock;
+        long nextSecondBlockAddress;
         
         ArrayList<T> records = blok.getRecords();
         
@@ -180,6 +183,21 @@ public class DynamicHashing <T extends IRecord> {
             if (record.equals(element)) {
                 return record;
             }
+        }
+        
+        //ak sa nenaslo do teraz hladam v preplunujucom subore
+        nextSecondBlockAddress = blok.getNextBlockAddress();
+        while (nextSecondBlockAddress != -1) {
+            secondBlock = this.readFromFile(nextSecondBlockAddress, this.secondFile, this.BlockingFactorSecond);
+            records = secondBlock.getRecords();
+        
+            for (T record : records) {
+                if (record.equals(element)) {
+                    return record;
+                }
+            }
+            
+            nextSecondBlockAddress = secondBlock.getNextBlockAddress();
         }
         
         //ak sa nenasiel doteraz tak nie je cize vratim null (nenajdeny objekt)

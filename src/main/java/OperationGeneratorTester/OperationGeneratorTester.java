@@ -6,6 +6,7 @@ package OperationGeneratorTester;
 
 import DynamicHashing.DynamicHashing;
 import Main.TestElement;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -36,7 +37,13 @@ public class OperationGeneratorTester {
         ArrayList<TestElement> foundElements;
         ArrayList<TestElement> insertedElements = new ArrayList<TestElement>();
         
-        DynamicHashing<TestElement> dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", TestElement.class, 1);
+        DynamicHashing<TestElement> dh = null;
+        try {
+            dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", 
+                                        "C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test_second.bin", TestElement.class, 1, 1, 3);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         
         for (int i = 0; i < numOfInitialInserts; i++) {
@@ -53,7 +60,7 @@ public class OperationGeneratorTester {
         
         try {
             System.out.println("Po uvodnom inserte:");
-            System.out.println(dh.readWholeFile());
+            System.out.println(dh.readWholeMainFile());
             
             for (int i = 0; i < numOfOperations; i++) {
                 System.out.print("Operation num: " + i);
@@ -70,7 +77,7 @@ public class OperationGeneratorTester {
                         Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
-                    System.out.println(dh.readWholeFile());
+                    System.out.println(dh.readWholeMainFile());
                 }
                 else if ( randNum > 0.5 && randNum <= 0.8) { //delete
                     System.out.println(" operation delete");
@@ -81,7 +88,7 @@ public class OperationGeneratorTester {
                         }
                     }
                     
-                    System.out.println(dh.readWholeFile());
+                    System.out.println(dh.readWholeMainFile());
                 }   
                 else { //find
                     System.out.println(" operation find");
@@ -91,12 +98,10 @@ public class OperationGeneratorTester {
 
                         if (foundElement == null) {
                             System.out.println("Operacia nejako zle prebehla");
-                            foundElement = dh.find(tst);
                         }
                         else {
                             if (!tst.equals(foundElement)) {
                                 System.out.println("Operacia nejako zle prebehla");
-                                foundElement = dh.find(tst);
                             }
                         }
                     }

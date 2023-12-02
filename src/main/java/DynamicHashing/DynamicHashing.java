@@ -23,29 +23,33 @@ public class DynamicHashing <T extends IRecord> {
     private Node Root;
     private int BlockingFactorMain;
     private int BlockingFactorSecond;
-    private String SecondFile;
     
     private long freeMainBlockAddress;
+    private long freeSecondBlockAddress;
     
     private RandomAccessFile mainFile;
+    private RandomAccessFile secondFile;
+    
+    private int maxDepth;
     
     private Class<T> classType;
     
-    public DynamicHashing(String mainFilePath, Class<T> classType, int blockingFactorMain) {
+    public DynamicHashing(String mainFilePath, String secondFilePath, Class<T> classType, int blockingFactorMain, int blockingFactorSecond, int maxDepth) throws FileNotFoundException {
         this.Root = new ExternalNode(null);
         this.BlockingFactorMain = blockingFactorMain;
+        this.BlockingFactorSecond = blockingFactorSecond;
         this.freeMainBlockAddress = -1;
-        try {
-            this.mainFile = new RandomAccessFile(mainFilePath, "rw");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DynamicHashing.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.freeSecondBlockAddress = -1;
+        this.mainFile = new RandomAccessFile(mainFilePath, "rw");
+        this.secondFile = new RandomAccessFile(secondFilePath, "rw");
         
         this.classType = classType;
         
+        this.maxDepth = maxDepth;
+        
     }
     
-    private long getFreeBlockAddress() throws IOException {
+    private long getFreeMainBlockAddress() throws IOException {
         Block<T> actualFreeBlock, nextFreeBlock;
         
         long freeBlockAddress = 0;
@@ -54,14 +58,35 @@ public class DynamicHashing <T extends IRecord> {
         }
         else {
             freeBlockAddress = this.freeMainBlockAddress;
-            actualFreeBlock = this.readFromFile(freeBlockAddress);
+            actualFreeBlock = this.readFromFile(freeBlockAddress, this.mainFile, this.BlockingFactorMain);
             if (actualFreeBlock.getNextBlockAddress() != -1) { // ak ma naslednovny blok musim mu upravit predchodcu
-                nextFreeBlock = this.readFromFile(actualFreeBlock.getNextBlockAddress());
+                nextFreeBlock = this.readFromFile(actualFreeBlock.getNextBlockAddress(), this.mainFile, this.BlockingFactorMain);
                 nextFreeBlock.setPreviousBlockAddress(-1); //predchodcu nema lebo je prvy v zretazeni
-                this.writeToFile(nextFreeBlock);
+                this.writeToFile(nextFreeBlock, this.mainFile);
             }
             
             this.freeMainBlockAddress = actualFreeBlock.getNextBlockAddress(); //nastavime adresu volneho bloku na nasledujucu po aktualnom volnom bloku
+        }
+        return freeBlockAddress;
+    }
+    
+    private long getFreeSecondBlockAddress() throws IOException {
+        Block<T> actualFreeBlock, nextFreeBlock;
+        
+        long freeBlockAddress = 0;
+        if (this.freeSecondBlockAddress == -1) {
+            freeBlockAddress = this.secondFile.length();
+        }
+        else {
+            freeBlockAddress = this.freeSecondBlockAddress;
+            actualFreeBlock = this.readFromFile(freeBlockAddress, this.secondFile, this.BlockingFactorSecond);
+            if (actualFreeBlock.getNextBlockAddress() != -1) { // ak ma naslednovny blok musim mu upravit predchodcu
+                nextFreeBlock = this.readFromFile(actualFreeBlock.getNextBlockAddress(), this.secondFile, this.BlockingFactorSecond);
+                nextFreeBlock.setPreviousBlockAddress(-1); //predchodcu nema lebo je prvy v zretazeni
+                this.writeToFile(nextFreeBlock, this.secondFile);
+            }
+            
+            this.freeSecondBlockAddress = actualFreeBlock.getNextBlockAddress(); //nastavime adresu volneho bloku na nasledujucu po aktualnom volnom bloku
         }
         return freeBlockAddress;
     }
@@ -86,7 +111,7 @@ public class DynamicHashing <T extends IRecord> {
                     newFileLength += lastBlock.getSize(); //musim naspat navysit lebo uz sa nieje kam posunut (dosiahol som zaciatok suboru)
                 }
                 else {//kontrola ci predchadzajuci blok tiez nie je prazdny
-                    lastBlock = this.readFromFile(newFileLength);
+                    lastBlock = this.readFromFile(newFileLength, this.mainFile, this.BlockingFactorMain);
                     if (!lastBlock.isEmpty()) {
                         fileLengthOptimal = true;
 
@@ -97,18 +122,18 @@ public class DynamicHashing <T extends IRecord> {
                         long nextAdr = lastBlock.getNextBlockAddress();
 
                         if (prevAdr != -1) {
-                            hlpBlock = this.readFromFile(prevAdr);
+                            hlpBlock = this.readFromFile(prevAdr, this.mainFile, this.BlockingFactorMain);
                             hlpBlock.setNextBlockAddress(nextAdr);
-                            this.writeToFile(hlpBlock);
+                            this.writeToFile(hlpBlock, this.mainFile);
                         }
                         else { // uvolnili sme prvy blok v zretazeni teda potrebujeme si na novo nastavit adresu prveho volneho bloku
                             this.freeMainBlockAddress = nextAdr;
                         }
 
                         if (nextAdr != -1) {
-                            hlpBlock = this.readFromFile(nextAdr);
+                            hlpBlock = this.readFromFile(nextAdr, this.mainFile, this.BlockingFactorMain);
                             hlpBlock.setPreviousBlockAddress(prevAdr);
-                            this.writeToFile(hlpBlock);
+                            this.writeToFile(hlpBlock, this.mainFile);
                         }
                     }
                 }
@@ -123,13 +148,13 @@ public class DynamicHashing <T extends IRecord> {
             newFreeBlok.setPreviousBlockAddress(-1);
             newFreeBlok.setNextBlockAddress(this.freeMainBlockAddress);
 
-            this.writeToFile(newFreeBlok);
+            this.writeToFile(newFreeBlok, this.mainFile);
 
             if (this.freeMainBlockAddress != -1) { // ak sa adresa na volny blok rovna -1 tak netreba vkladat stary volny blok lebo neexistuje
-                Block<T> oldFreeBlok = this.readFromFile(this.freeMainBlockAddress);
+                Block<T> oldFreeBlok = this.readFromFile(this.freeMainBlockAddress, this.mainFile, this.BlockingFactorMain);
                 oldFreeBlok.setPreviousBlockAddress(Address);
 
-                this.writeToFile(oldFreeBlok);
+                this.writeToFile(oldFreeBlok, this.mainFile);
             }
 
 
@@ -147,7 +172,7 @@ public class DynamicHashing <T extends IRecord> {
     public T find(T element) throws IOException, Exception {
         ExternalNode nodeForInsert = this.findNode(element.getHash(), false);
         
-        Block blok = this.readFromFile(nodeForInsert.getAddress());
+        Block blok = this.readFromFile(nodeForInsert.getAddress(), this.mainFile, this.BlockingFactorMain);
         
         ArrayList<T> records = blok.getRecords();
         
@@ -169,7 +194,7 @@ public class DynamicHashing <T extends IRecord> {
         ExternalNode nodeForDelete = this.findNode(element.getHash(), false);
         
         if (nodeForDelete.getAddress() != -1) { //adresa je definovana
-            blok = this.readFromFile(nodeForDelete.getAddress());
+            blok = this.readFromFile(nodeForDelete.getAddress(), this.mainFile, this.BlockingFactorMain);
             
             records = blok.getRecords();
             for (T record : records) {
@@ -184,7 +209,7 @@ public class DynamicHashing <T extends IRecord> {
                     this.clearNode(nodeForDelete, true); //vycistenie nodu a zaradenie adresy medzi prazdne
                 }
                 else { //zapisanie upraveneho bloku do suboru
-                    this.writeToFile(blok);
+                    this.writeToFile(blok, this.mainFile);
                     nodeForDelete.setCount(nodeForDelete.getCount() - 1);
                 }
             }
@@ -208,7 +233,7 @@ public class DynamicHashing <T extends IRecord> {
                         found = true;
                     }
                     else { //nevojde sa musim delit node podla dalsieho bitu hashu
-                        if (actualLvl == hash.length()) { //ak uz nemozem delit lebo som na konci hashu tak vratim posledny najdeny
+                        if (actualLvl == this.maxDepth) { //ak uz nemozem delit lebo som na maximalnom lvl tak vratim posledny najdeny
                             break; //ukoncim cyklus a spodny return vrati doteraz najdeny node
                         }
                         
@@ -232,7 +257,7 @@ public class DynamicHashing <T extends IRecord> {
                             }
                         }
 
-                        Block block = this.readFromFile(((ExternalNode) actualNode).getAddress());
+                        Block block = this.readFromFile(((ExternalNode) actualNode).getAddress(), this.mainFile, this.BlockingFactorMain);
                         ArrayList<T> records = block.getRecords();
                         this.clearNode((ExternalNode) actualNode, false); //node si vycistim
 
@@ -274,59 +299,132 @@ public class DynamicHashing <T extends IRecord> {
     }
     
     private void insertOnNode(ExternalNode node, T record) throws IOException, Exception {
-        Block blok;
+        boolean secondFile = false;
+        ArrayList<T> oldRecords;
+        Block mainBlock;
+        Block secondBlock = null;
+        Block tmpSecondBlock = null;
+        long secondBlockAddress;
+        boolean secondBlockFound = false;
+        
         if (node.getAddress() == -1) { //nema adresu teda nemozu tam byt ziadne elementy
-            node.setAddress(this.getFreeBlockAddress());
-            blok = new Block(node.getAddress(), this.BlockingFactorMain, this.classType);
+            node.setAddress(this.getFreeMainBlockAddress());
+            mainBlock = new Block(node.getAddress(), this.BlockingFactorMain, this.classType);
         }
         else { // ma adrese mozu byt elementy treba najprv nacitat existujuce
-            blok = this.readFromFile(node.getAddress());
-            ArrayList<T> oldRecords = blok.getRecords();
+            mainBlock = this.readFromFile(node.getAddress(), this.mainFile, this.BlockingFactorMain);
+            oldRecords = mainBlock.getRecords();
+            
+            //kontrola na unikatnost kluca
             for (T oldRecord : oldRecords) {
                 if (oldRecord.equals(record)) {
                     throw new Exception("Non-unique key on insert");
                 }
             }
+            
+            if (!mainBlock.isFull()) { //vojde sa do hlavneho suboru
+                   
+            }
+            else { //ide do preplnujuceho suboru
+                secondFile = true;
+                secondBlockAddress = mainBlock.getNextBlockAddress();
+                if (secondBlockAddress == -1) { //este nie je blok v preplnujucom subore
+                    secondBlock = new Block(this.getFreeSecondBlockAddress(), this.BlockingFactorSecond, this.classType);
+                    mainBlock.setNextBlockAddress(secondBlock.getAddress());
+                    this.writeToFile(mainBlock, this.mainFile); //zapisem zmeneny blok spat do suboru
+                    
+                    //TODO second block setPrevBlockAdd
+                }
+                else { //uz je blok v preplnujucom subore
+                    while (!secondBlockFound) {                        
+                        secondBlock = this.readFromFile(secondBlockAddress, this.secondFile, this.BlockingFactorSecond);
+                        
+                        oldRecords = secondBlock.getRecords();
+                        //kontrola na unikatnost kluca
+                        for (T oldRecord : oldRecords) {
+                            if (oldRecord.equals(record)) {
+                                throw new Exception("Non-unique key on insert");
+                            }
+                        }
+                        
+                        //najdenie vhodneho bloku v preplnujucom subore
+                        if (secondBlock.isFull()) { //preplnovaci blok je plny
+                            if (secondBlock.getNextBlockAddress() == -1) { //nema definovany nasledujuci blok
+                                secondBlockAddress = this.getFreeSecondBlockAddress(); //vygenerujeme novu adresu pre nasledujuci blok
+                                secondBlock.setNextBlockAddress(secondBlockAddress); //nastavime novu vygenerovanu adresu do plneho bloku ako nasledovnika
+                                this.writeToFile(secondBlock, this.secondFile); //zapisem upraveny blok do preplnujuceho suboru
+                                
+                                //vygenerujem novy blok v preplnujucom subore
+                                tmpSecondBlock = new Block(secondBlockAddress, this.BlockingFactorSecond, this.classType);
+                                tmpSecondBlock.setPreviousBlockAddress(secondBlock.getAddress()); //nastavim adresu predchadzajuceho bloku
+                                secondBlock = tmpSecondBlock;
+                                secondBlockFound = true;
+                            }
+                            else { //prejdem na nasledujuci blok v preplnujucom subore
+                                secondBlockAddress = secondBlock.getNextBlockAddress();
+                            }
+                        }
+                        else { //nie je plny tak budem insertovat don
+                            secondBlockFound = true;
+                        }
+                    }
+                  
+                }
+            }
         }
         
-        blok.insert(record);
-        this.writeToFile(blok);
+        if (secondFile) {//ide do preplnujuceho suboru
+            secondBlock.insert(record);
+            this.writeToFile(secondBlock, this.secondFile);
+        }
+        else {
+            mainBlock.insert(record);
+            this.writeToFile(mainBlock, this.mainFile);
+        }
 
         node.setCount(node.getCount()+1);
     }
     
-    public void writeToFile(Block blok) throws IOException {
+    public void writeToFile(Block blok, RandomAccessFile file) throws IOException {
         long address = blok.getAddress();
         
-        byte b[] = blok.toByteArray(this.BlockingFactorMain);
-        this.mainFile.seek(address); 
-        this.mainFile.write(b);
+        byte b[] = blok.toByteArray();
+        file.seek(address); 
+        file.write(b);
 
     }
     
-    public Block readFromFile(long Address) throws IOException {    
-        Block<T> block = new Block <>(Address, this.BlockingFactorMain, this.classType);
+    public Block readFromFile(long Address, RandomAccessFile file, int blockingFactor) throws IOException {    
+        Block<T> block = new Block <>(Address, blockingFactor, this.classType);
         
         if (Address != -1) { //kontrola aby adresa nebola inicialna
             
             byte[] b = new byte[block.getSize()];
 
-            this.mainFile.seek(Address);
-            this.mainFile.read(b, 0, b.length);
+            file.seek(Address);
+            file.read(b, 0, b.length);
 
-            block.fromByteArray(b, this.BlockingFactorMain);
+            block.fromByteArray(b);
         }
         
         return block;
     }
     
-    public String readWholeFile() throws IOException {
+    public String readWholeMainFile() throws IOException {
+        return this.readWholeFile(this.mainFile, this.BlockingFactorMain);
+    }
+    
+    public String readWholeSecondFile() throws IOException {
+        return this.readWholeFile(this.secondFile, this.BlockingFactorSecond);
+    }
+    
+    public String readWholeFile(RandomAccessFile file, int blockingFactor) throws IOException {
         String result = "";
         int index = 0;
         Block<T> blok;
         
-        while (index < this.mainFile.length()) {
-            blok = this.readFromFile(index);
+        while (index < file.length()) {
+            blok = this.readFromFile(index, file, blockingFactor);
             result += blok.getAddress() + ": ";
             result += blok.blockToString();
             

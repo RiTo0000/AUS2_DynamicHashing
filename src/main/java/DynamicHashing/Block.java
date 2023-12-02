@@ -37,6 +37,8 @@ public class Block <T extends IRecord> {
     
     public Block(long Address, int blockingFactor, Class<T> classType) {
         this.Address = Address;
+        this.nextBlockAddress = -1;
+        this.previousBlockAddress = -1;
         this.BlockingFactor = blockingFactor;
         this.records = new ArrayList<>();
         this.classType = classType;
@@ -60,7 +62,7 @@ public class Block <T extends IRecord> {
         this.validCount += insertedRecord.getSize();
     }
     
-    public byte [] toByteArray(int blockingFactor) {
+    public byte [] toByteArray() {
         
         byte[] result = new byte[this.getSize()];
         byte[] tmp;
@@ -96,7 +98,7 @@ public class Block <T extends IRecord> {
         }
         return result;
     }
-    public void fromByteArray(byte[] input, int blockingFactor){
+    public void fromByteArray(byte[] input){
         byte[] tmp;
         int startIndex = 0;
         T record;
@@ -118,7 +120,7 @@ public class Block <T extends IRecord> {
             return;
         }
         
-        for (int i = 0; i < blockingFactor; i++) {
+        for (int i = 0; i < this.BlockingFactor; i++) {
             
             try {
                 record = (T) classType.newInstance().createClass();
@@ -182,6 +184,14 @@ public class Block <T extends IRecord> {
      */
     public boolean isEmpty() {
         return this.validCount == blockInfoSize;
+    }
+    
+    /**
+     * Vrati info ci je blok plny
+     * @return true ak je blok plny, false inak
+     */
+    public boolean isFull() {
+        return this.records.size() == BlockingFactor;
     }
 
     public ArrayList<T> getRecords() {

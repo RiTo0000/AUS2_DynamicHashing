@@ -21,11 +21,11 @@ public class Block <T extends IRecord> {
     /**
      * Velkost v subore ktoru zaberaju riadiace zaznamy
      */
-    private static final int blockInfoSize = 12;
+    private static final int blockInfoSize = Long.BYTES + Long.BYTES + Integer.BYTES;
     
-    private int Address;
-    private int nextBlockAddress;
-    private int previousBlockAddress;
+    private long Address;
+    private long nextBlockAddress;
+    private long previousBlockAddress;
     private ArrayList<T> records;
     private int BlockingFactor;
     /**
@@ -35,7 +35,7 @@ public class Block <T extends IRecord> {
     
     private Class<T> classType;
     
-    public Block(int Address, int blockingFactor, Class<T> classType) {
+    public Block(long Address, int blockingFactor, Class<T> classType) {
         this.Address = Address;
         this.BlockingFactor = blockingFactor;
         this.records = new ArrayList<>();
@@ -66,18 +66,18 @@ public class Block <T extends IRecord> {
         byte[] tmp;
         int index = 0;
         
-        tmp = ByteBuffer.allocate(4).putInt(this.previousBlockAddress).array();
+        tmp = ByteBuffer.allocate(Long.BYTES).putLong(this.previousBlockAddress).array();
         for (byte b : tmp) {
             result[index] = b;
             index++;
         }
         
-        tmp = ByteBuffer.allocate(4).putInt(this.nextBlockAddress).array();
+        tmp = ByteBuffer.allocate(Long.BYTES).putLong(this.nextBlockAddress).array();
         for (byte b : tmp) {
             result[index] = b;
             index++;
         }
-        tmp = ByteBuffer.allocate(4).putInt(this.validCount).array();
+        tmp = ByteBuffer.allocate(Integer.BYTES).putInt(this.validCount).array();
         for (byte b : tmp) {
             result[index] = b;
             index++;
@@ -102,17 +102,17 @@ public class Block <T extends IRecord> {
         T record;
         
         //nacitanie riadiacich zaznamov bloku
-        tmp = Arrays.copyOfRange(input, startIndex, startIndex + 4);
-        this.previousBlockAddress = ByteBuffer.wrap(tmp).getInt();
-        startIndex += 4;
+        tmp = Arrays.copyOfRange(input, startIndex, startIndex + Long.BYTES);
+        this.previousBlockAddress = ByteBuffer.wrap(tmp).getLong();
+        startIndex += Long.BYTES;
         
-        tmp = Arrays.copyOfRange(input, startIndex, startIndex + 4);
-        this.nextBlockAddress = ByteBuffer.wrap(tmp).getInt();
-        startIndex += 4;
+        tmp = Arrays.copyOfRange(input, startIndex, startIndex + Long.BYTES);
+        this.nextBlockAddress = ByteBuffer.wrap(tmp).getLong();
+        startIndex += Long.BYTES;
         
-        tmp = Arrays.copyOfRange(input, startIndex, startIndex + 4);
+        tmp = Arrays.copyOfRange(input, startIndex, startIndex + Integer.BYTES);
         this.validCount = ByteBuffer.wrap(tmp).getInt();
-        startIndex += 4;
+        startIndex += Integer.BYTES;
         
         if (this.validCount <= startIndex) {
             return;
@@ -139,8 +139,8 @@ public class Block <T extends IRecord> {
     }
     
     public String blockToString() {
-        String result = Integer.toString(this.previousBlockAddress) + " " +
-                        Integer.toString(this.nextBlockAddress) + " " + 
+        String result = Long.toString(this.previousBlockAddress) + " " +
+                        Long.toString(this.nextBlockAddress) + " " + 
                         Integer.toString(this.validCount) + " ";
         
         for (T record : this.records) {
@@ -152,31 +152,37 @@ public class Block <T extends IRecord> {
         return result;
     }
 
-    public int getAddress() {
+    public long getAddress() {
         return this.Address;
     }
 
-    public void setAddress(int Address) {
+    public void setAddress(long Address) {
         this.Address = Address;
     }
 
-    public int getNextBlockAddress() {
+    public long getNextBlockAddress() {
         return this.nextBlockAddress;
     }
 
-    public void setNextBlockAddress(int nextBlockAddress) {
+    public void setNextBlockAddress(long nextBlockAddress) {
         this.nextBlockAddress = nextBlockAddress;
     }
 
-    public int getPreviousBlockAddress() {
+    public long getPreviousBlockAddress() {
         return this.previousBlockAddress;
     }
 
-    public void setPreviousBlockAddress(int previousBlockAddress) {
+    public void setPreviousBlockAddress(long previousBlockAddress) {
         this.previousBlockAddress = previousBlockAddress;
     }
     
-    
+    /**
+     * Vrati info ci je blok prazdny (obsahuje iba informacne zaznamy o bloku)
+     * @return true ak je blok prazdny, false inak
+     */
+    public boolean isEmpty() {
+        return this.validCount == blockInfoSize;
+    }
 
     public ArrayList<T> getRecords() {
         return this.records;

@@ -25,7 +25,7 @@ public class DynamicHashing <T extends IRecord> {
     private int BlockingFactorSecond;
     private String SecondFile;
     
-    private int freeMainBlockAddress;
+    private long freeMainBlockAddress;
     
     private RandomAccessFile mainFile;
     
@@ -45,12 +45,12 @@ public class DynamicHashing <T extends IRecord> {
         
     }
     
-    private int getFreeBlockAddress() throws IOException {
+    private long getFreeBlockAddress() throws IOException {
         Block<T> actualFreeBlock, nextFreeBlock;
         
-        int freeBlockAddress = 0;
+        long freeBlockAddress = 0;
         if (this.freeMainBlockAddress == -1) {
-            freeBlockAddress = (int) this.mainFile.length();
+            freeBlockAddress = this.mainFile.length();
         }
         else {
             freeBlockAddress = this.freeMainBlockAddress;
@@ -66,24 +66,76 @@ public class DynamicHashing <T extends IRecord> {
         return freeBlockAddress;
     }
     
-    private void addFreeBlockAddress(int Address) throws IOException {
+    private void addFreeBlockAddress(long Address) throws IOException {
+        long newFileLength;
+        boolean fileLengthOptimal = false;
+        Block<T> hlpBlock;
+        
+        Block<T> lastBlock = new Block(Address, this.BlockingFactorMain, this.classType);
+        
         //TODO pozriet ci nie je na konci suboru ze by sa dalo uvolnit miesto
-        Block<T> newFreeBlok = new Block(Address, this.BlockingFactorMain, this.classType);
-        newFreeBlok.setPreviousBlockAddress(-1);
-        newFreeBlok.setNextBlockAddress(this.freeMainBlockAddress);
-        
-        this.writeToFile(newFreeBlok);
-        
-        if (this.freeMainBlockAddress != -1) { // ak sa adresa na volny blok rovna -1 tak netreba vkladat stary volny blok lebo neexistuje
-            Block<T> oldFreeBlok = this.readFromFile(this.freeMainBlockAddress);
-//            Block<T> oldFreeBlok = new Block(this.freeMainBlockAddress, this.BlockingFactorMain, this.classType);
-            oldFreeBlok.setPreviousBlockAddress(Address);
-        
-            this.writeToFile(oldFreeBlok);
+        newFileLength = this.mainFile.length() - lastBlock.getSize();
+        if (newFileLength == Address) { //odstranovane miesto je na konci suboru tak ho skratim
+            
+            while (!fileLengthOptimal) {                
+                newFileLength -= lastBlock.getSize();
+                
+                if (newFileLength < 0) { //uz nie je aky blok uvolnit
+                    fileLengthOptimal = true;
+                    
+                    newFileLength += lastBlock.getSize(); //musim naspat navysit lebo uz sa nieje kam posunut (dosiahol som zaciatok suboru)
+                }
+                else {//kontrola ci predchadzajuci blok tiez nie je prazdny
+                    lastBlock = this.readFromFile(newFileLength);
+                    if (!lastBlock.isEmpty()) {
+                        fileLengthOptimal = true;
+
+                        newFileLength += lastBlock.getSize(); //musim naspat navysit lebo posledny blok uz nebol prazdny
+                    }
+                    else { //opravit prepojenie blokov aby stale fungovalo
+                        long prevAdr = lastBlock.getPreviousBlockAddress();
+                        long nextAdr = lastBlock.getNextBlockAddress();
+
+                        if (prevAdr != -1) {
+                            hlpBlock = this.readFromFile(prevAdr);
+                            hlpBlock.setNextBlockAddress(nextAdr);
+                            this.writeToFile(hlpBlock);
+                        }
+                        else { // uvolnili sme prvy blok v zretazeni teda potrebujeme si na novo nastavit adresu prveho volneho bloku
+                            this.freeMainBlockAddress = nextAdr;
+                        }
+
+                        if (nextAdr != -1) {
+                            hlpBlock = this.readFromFile(nextAdr);
+                            hlpBlock.setPreviousBlockAddress(prevAdr);
+                            this.writeToFile(hlpBlock);
+                        }
+                    }
+                }
+            }
+            
+            this.mainFile.setLength(newFileLength);
+            
         }
+        else { //odstranovane miesto nie je na konci nemozem subor skratit
+            
+            Block<T> newFreeBlok = new Block(Address, this.BlockingFactorMain, this.classType);
+            newFreeBlok.setPreviousBlockAddress(-1);
+            newFreeBlok.setNextBlockAddress(this.freeMainBlockAddress);
+
+            this.writeToFile(newFreeBlok);
+
+            if (this.freeMainBlockAddress != -1) { // ak sa adresa na volny blok rovna -1 tak netreba vkladat stary volny blok lebo neexistuje
+                Block<T> oldFreeBlok = this.readFromFile(this.freeMainBlockAddress);
+                oldFreeBlok.setPreviousBlockAddress(Address);
+
+                this.writeToFile(oldFreeBlok);
+            }
+
+
+            this.freeMainBlockAddress = Address;
         
-        
-        this.freeMainBlockAddress = Address;
+        }
     }
     
     public void insert(T element) throws IOException {
@@ -239,7 +291,7 @@ public class DynamicHashing <T extends IRecord> {
     }
     
     public void writeToFile(Block blok) throws IOException {
-        int address = blok.getAddress();
+        long address = blok.getAddress();
         
         byte b[] = blok.toByteArray(this.BlockingFactorMain);
         this.mainFile.seek(address); 
@@ -247,7 +299,7 @@ public class DynamicHashing <T extends IRecord> {
 
     }
     
-    public Block readFromFile(int Address) throws IOException {    
+    public Block readFromFile(long Address) throws IOException {    
         Block<T> block = new Block <>(Address, this.BlockingFactorMain, this.classType);
         
         if (Address != -1) { //kontrola aby adresa nebola inicialna

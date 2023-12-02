@@ -10,7 +10,7 @@ package DynamicHashing;
  * @author namer
  */
 public class ExternalNode extends Node {
-    private int Address;
+    private long Address;
     private int Count;
     
     public ExternalNode(InternalNode parent) {
@@ -19,11 +19,11 @@ public class ExternalNode extends Node {
         super.setParent(parent);
     }
 
-    public int getAddress() {
+    public long getAddress() {
         return this.Address;
     }
 
-    public void setAddress(int Address) {
+    public void setAddress(long Address) {
         this.Address = Address;
     }
 

@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class OperationGeneratorTester {
     
-    public static int numOfOperations = 50;
+    public static int numOfOperations = 100;
     public static int numOfInitialInserts = 10;
     
     public static void main (String[] args) {
@@ -36,7 +36,7 @@ public class OperationGeneratorTester {
         ArrayList<TestElement> foundElements;
         ArrayList<TestElement> insertedElements = new ArrayList<TestElement>();
         
-        DynamicHashing<TestElement> dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", TestElement.class, 2);
+        DynamicHashing<TestElement> dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", TestElement.class, 1);
 
         
         for (int i = 0; i < numOfInitialInserts; i++) {

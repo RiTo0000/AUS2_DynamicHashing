@@ -269,6 +269,16 @@ public class DynamicHashing <T extends IRecord> {
                                 hlpBlok.setNextBlockAddress(nextAdr);
                                 this.writeToFile(hlpBlok, this.secondFile);
                             }
+                            else { //predchadzajuci blok je v hlavnom subore ten treba upravit v nom adresu do preplnujuceho suboru (nastavit na -1)
+                                if (nextAdr == -1) { //zaroven musi byt aj nasledujuca adresa -1 aby som si neodmazal prvy blok zretazenia
+                                    blok.setNextBlockAddress(-1);
+                                    this.writeToFile(blok, this.mainFile);
+                                }
+                                else {
+                                    blok.setNextBlockAddress(nextAdr);
+                                    this.writeToFile(blok, this.mainFile);
+                                }
+                            }
 
                             if (nextAdr != -1) {
                                 hlpBlok = this.readFromFile(nextAdr, this.secondFile, this.BlockingFactorSecond);
@@ -370,6 +380,7 @@ public class DynamicHashing <T extends IRecord> {
     }
     
     private void insertOnNode(ExternalNode node, T record) throws IOException, Exception {
+        //TODO treba si skontrolovat vsetky nody v zretazeni kvoli tomu klucu a ked sa nenajde az potom ist insert 
         boolean secondFile = false;
         ArrayList<T> oldRecords;
         Block mainBlock;
@@ -456,6 +467,26 @@ public class DynamicHashing <T extends IRecord> {
         node.setCount(node.getCount()+1);
     }
     
+    private ArrayList<T> getAllRecords(long Address) throws IOException { //TODO
+        ArrayList<T> result;
+        
+        Block<T> mainBlok = this.readFromFile(Address, this.mainFile, this.BlockingFactorMain);
+        Block<T> secondBlok;
+        
+        result = mainBlok.getRecords();
+        
+        if (mainBlok.getNextBlockAddress() != -1) { //ma definovaneho nasledovnika v preplnujucom subore
+            secondBlok = this.readFromFile(mainBlok.getNextBlockAddress(), this.secondFile, this.BlockingFactorSecond);
+            while (secondBlok.getNextBlockAddress() != -1) {
+                result.addAll(secondBlok.getRecords());
+                
+                secondBlok = this.readFromFile(secondBlok.getNextBlockAddress(), this.secondFile, this.BlockingFactorSecond);
+            }
+        }
+        
+        return result;
+    }
+    
     public void writeToFile(Block blok, RandomAccessFile file) throws IOException {
         long address = blok.getAddress();
         
@@ -520,7 +551,7 @@ public class DynamicHashing <T extends IRecord> {
         nodeToClear.setAddress(-1);
         nodeToClear.setCount(0);
         
-        //preusporiadanie nodov
+        //preusporiadanie nodov //TODO pri zlucovani prvkov musia byt oba externe vrcholy
         if (rearrangeNodes) {
             InternalNode parent = nodeToClear.getParent();
             InternalNode superParent;
@@ -533,6 +564,16 @@ public class DynamicHashing <T extends IRecord> {
                 }
                 else { //Node ktory cistim je vpravo
                     newSonOfSuperParent = parent.getLeft();
+                }
+                
+                //kontrola ci je to externy node
+                if (!newSonOfSuperParent.isExternal()) {
+                    return;
+                }
+                
+                //kontrola aby ked sme na poslednom lvl sme nepresunuli node ktory ma viac zaznamov ako sa vojde do hlavneho suboru
+                if (((ExternalNode) newSonOfSuperParent).getCount() > this.BlockingFactorMain) {
+                    return;
                 }
 
                 newSonOfSuperParent.setParent(superParent);

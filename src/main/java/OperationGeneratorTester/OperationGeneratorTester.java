@@ -19,16 +19,16 @@ import java.util.logging.Logger;
  */
 public class OperationGeneratorTester {
     
-    public static int numOfOperations = 50;
+    public static int numOfOperations = 500000;
     public static int numOfInitialInserts = 10;
     
     public static void main (String[] args) {
         
         int numOfErrOperation = 100;
         long bestSeed = 0;
-        long seed = 399;
+        long seed = 554;//32
         
-//        for (seed = 0; seed < 1000; seed++) {
+//        for (; seed < 1000; seed++) {
 
             Random rand = new Random(seed); 
             double randNum;
@@ -70,18 +70,19 @@ public class OperationGeneratorTester {
             }
 
             try {
-                System.out.println("Po uvodnom inserte:");
-                System.out.println("MainFile:");
-                System.out.println(dh.readWholeMainFile());
-                System.out.println("SecondFile:");
-                System.out.println(dh.readWholeSecondFile());
+//                System.out.println("Po uvodnom inserte:");
+//                System.out.println("MainFile:");
+//                System.out.println(dh.readWholeMainFile());
+//                System.out.println("SecondFile:");
+//                System.out.println(dh.readWholeSecondFile());
 
                 for (int i = 0; i < numOfOperations; i++) {
                     System.out.print("Operation num: " + i);
                     randNum = rand.nextDouble();
-                    if ( randNum <= 0.2) { //insert
+                    if ( randNum <= 0.5) { //insert
                         System.out.println(" operation insert");
                         tst = new TestElement((numOfInitialInserts+i), ((numOfInitialInserts+i)*100));
+                        System.out.println(tst.recordToString());
                         try {
                             dh.insert(tst);
                             insertedElements.add(tst);
@@ -91,15 +92,16 @@ public class OperationGeneratorTester {
                             Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
-                        System.out.println("MainFile:");
-                        System.out.println(dh.readWholeMainFile());
-                        System.out.println("SecondFile:");
-                        System.out.println(dh.readWholeSecondFile());
+//                        System.out.println("MainFile:");
+//                        System.out.println(dh.readWholeMainFile());
+//                        System.out.println("SecondFile:");
+//                        System.out.println(dh.readWholeSecondFile());
                     }
                     else if ( randNum > 0.5 && randNum <= 0.8) { //delete
                         System.out.println(" operation delete");
                         if (!insertedElements.isEmpty()) {
                             tst = insertedElements.remove(rand.nextInt(insertedElements.size()));
+                            System.out.println(tst.recordToString());
                             if (!dh.delete(tst)) {
                                 System.out.println("Operacia nejako zle prebehla");
                                 
@@ -113,15 +115,16 @@ public class OperationGeneratorTester {
 
                         //TODO skusit find ten prvok nemal by sa najst
 
-                        System.out.println("MainFile:");
-                        System.out.println(dh.readWholeMainFile());
-                        System.out.println("SecondFile:");
-                        System.out.println(dh.readWholeSecondFile());
+//                        System.out.println("MainFile:");
+//                        System.out.println(dh.readWholeMainFile());
+//                        System.out.println("SecondFile:");
+//                        System.out.println(dh.readWholeSecondFile());
                     }   
                     else { //find
                         System.out.println(" operation find");
                         if (!insertedElements.isEmpty()) {
                             tst = insertedElements.get(rand.nextInt(insertedElements.size()));
+                            System.out.println(tst.recordToString());
                             foundElement = dh.find(tst);
 
                             if (foundElement == null) {
@@ -145,10 +148,10 @@ public class OperationGeneratorTester {
                                 }
                             }
 
-                            System.out.println("MainFile:");
-                            System.out.println(dh.readWholeMainFile());
-                            System.out.println("SecondFile:");
-                            System.out.println(dh.readWholeSecondFile());
+//                            System.out.println("MainFile:");
+//                            System.out.println(dh.readWholeMainFile());
+//                            System.out.println("SecondFile:");
+//                            System.out.println(dh.readWholeSecondFile());
                         }
                     }
                 } 
@@ -158,7 +161,7 @@ public class OperationGeneratorTester {
             } catch (Exception ex) {
                 Logger.getLogger(OperationGeneratorTester.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
+//            System.out.println("Operat. num.: " + numOfErrOperation + " seed: " + seed);
 //        }
 //        
 //        System.out.println("Best seed: " + bestSeed);

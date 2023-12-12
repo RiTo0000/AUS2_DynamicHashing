@@ -13,9 +13,12 @@ public class ExternalNode extends Node {
     private long Address;
     private int Count;
     
+    private int numOfBlocksInExtFile;
+    
     public ExternalNode(InternalNode parent) {
         this.Count = 0;
         this.Address = -1;
+        this.numOfBlocksInExtFile = 0;
         super.setParent(parent);
     }
 
@@ -39,5 +42,15 @@ public class ExternalNode extends Node {
     public boolean isExternal() {
         return true;
     }
+
+    public int getNumOfBlocksInExtFile() {
+        return this.numOfBlocksInExtFile;
+    }
+
+    public void setNumOfBlocksInExtFile(int numOfBlocksInExtFile) {
+        this.numOfBlocksInExtFile = numOfBlocksInExtFile;
+    }
+    
+    
     
 }

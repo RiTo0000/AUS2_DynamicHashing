@@ -227,6 +227,7 @@ public class DynamicHashing <T extends IRecord> {
             for (T record : records) {
                 if (element.equals(record)) {
                     result = blok.removeRecord(record);
+                    nodeForDelete.setCount(nodeForDelete.getCount() - 1);
                     break;
                 }
             }
@@ -237,7 +238,6 @@ public class DynamicHashing <T extends IRecord> {
                 }
                 else { //zapisanie upraveneho bloku do suboru
                     this.writeToFile(blok, this.mainFile);
-                    nodeForDelete.setCount(nodeForDelete.getCount() - 1);
                 }
             }
             else { // vymaz sa doteraz nepodaril snazim sa najst v preplnujucom subore
@@ -249,6 +249,7 @@ public class DynamicHashing <T extends IRecord> {
                     for (T record : records) {
                         if (record.equals(element)) {
                             result = secondBlock.removeRecord(record);
+                            nodeForDelete.setCount(nodeForDelete.getCount() - 1);
                             break;
                         }
                     }
@@ -260,6 +261,9 @@ public class DynamicHashing <T extends IRecord> {
                                                 
                         if (records.isEmpty()) { //ak nema rekord treba blok pridat medzi prazdne
                             this.freeSecondBlockAddress = this.addFreeBlockAddress(secondBlock.getAddress(), this.secondFile, this.BlockingFactorSecond, this.freeSecondBlockAddress);
+                            
+                            nodeForDelete.setNumOfBlocksInExtFile(nodeForDelete.getNumOfBlocksInExtFile() - 1); //uberie pocet preplnujucich blokov lebo tento blok sa odstranuje
+                            
                             //prepojenie ak boli zretazene
                             long prevAdr = secondBlock.getPreviousBlockAddress();
                             long nextAdr = secondBlock.getNextBlockAddress();
@@ -272,10 +276,12 @@ public class DynamicHashing <T extends IRecord> {
                             else { //predchadzajuci blok je v hlavnom subore ten treba upravit v nom adresu do preplnujuceho suboru (nastavit na -1)
                                 if (nextAdr == -1) { //zaroven musi byt aj nasledujuca adresa -1 aby som si neodmazal prvy blok zretazenia
                                     blok.setNextBlockAddress(-1);
+                                    blok.setNextBlockInSecondFile(false);
                                     this.writeToFile(blok, this.mainFile);
                                 }
                                 else {
                                     blok.setNextBlockAddress(nextAdr);
+                                    blok.setNextBlockInSecondFile(true);
                                     this.writeToFile(blok, this.mainFile);
                                 }
                             }
@@ -288,11 +294,16 @@ public class DynamicHashing <T extends IRecord> {
                         }
                         else { //zapisanie upraveneho bloku do suboru
                             this.writeToFile(secondBlock, this.secondFile);
-                            nodeForDelete.setCount(nodeForDelete.getCount() - 1);
                         }
-                        //TODO striasanie
                     }
                 }
+            }
+            
+            
+            if (nodeForDelete.getCount() <= (((nodeForDelete.getNumOfBlocksInExtFile() - 1) * this.BlockingFactorSecond) + this.BlockingFactorMain)) {
+                //treba robit striasanie
+                this.compact(nodeForDelete);
+                
             }
         }
        
@@ -413,9 +424,10 @@ public class DynamicHashing <T extends IRecord> {
                 if (secondBlockAddress == -1) { //este nie je blok v preplnujucom subore
                     secondBlock = new Block(this.getFreeSecondBlockAddress(), this.BlockingFactorSecond, this.classType);
                     mainBlock.setNextBlockAddress(secondBlock.getAddress());
+                    mainBlock.setNextBlockInSecondFile(true);
                     this.writeToFile(mainBlock, this.mainFile); //zapisem zmeneny blok spat do suboru
                     
-                    //TODO second block setPrevBlockAdd
+                    node.setNumOfBlocksInExtFile(node.getNumOfBlocksInExtFile() + 1); //prida pocet preplnujucich blokov
                 }
                 else { //uz je blok v preplnujucom subore
                     while (!secondBlockFound) {                        
@@ -441,6 +453,8 @@ public class DynamicHashing <T extends IRecord> {
                                 tmpSecondBlock.setPreviousBlockAddress(secondBlock.getAddress()); //nastavim adresu predchadzajuceho bloku
                                 secondBlock = tmpSecondBlock;
                                 secondBlockFound = true;
+                                
+                                node.setNumOfBlocksInExtFile(node.getNumOfBlocksInExtFile() + 1); //prida pocet preplnujucich blokov
                             }
                             else { //prejdem na nasledujuci blok v preplnujucom subore
                                 secondBlockAddress = secondBlock.getNextBlockAddress();
@@ -485,6 +499,101 @@ public class DynamicHashing <T extends IRecord> {
         }
         
         return result;
+    }
+    
+    /**
+     * Striasanie
+     * @param node node nad ktorym sa ma vykonat striasanie
+     */
+    private void compact(ExternalNode node) throws IOException {
+        ArrayList<Block> blocks = new ArrayList<>();
+        ArrayList<T> elements = new ArrayList<>();
+        Block blok;
+        Block hlpBlok;
+        long nextBlockAddress = -1;
+        
+        //nacitanie vsetkych elementov do ArrayListu
+        Block blokMain = this.readFromFile(node.getAddress(), this.mainFile, this.BlockingFactorMain);
+        elements.addAll(blokMain.getRecords());
+        nextBlockAddress = blokMain.getNextBlockAddress();
+        blokMain.clearRecords();
+        
+        //nacitanie elementov v preplnujucom subore
+        while (nextBlockAddress != -1) {            
+            blok = this.readFromFile(nextBlockAddress, this.secondFile, this.BlockingFactorSecond);
+        
+            blocks.add(blok);
+            elements.addAll(blok.getRecords());
+            
+            nextBlockAddress = blok.getNextBlockAddress();
+            blok.clearRecords();
+        }
+        
+        //priradenie elementov na bloky
+        for (int i = 0; i < this.BlockingFactorMain; i++) {
+            if (!elements.isEmpty()) {
+                blokMain.insert(elements.remove(0));
+            }
+        }
+        //zapisat blok po uprave
+        this.writeToFile(blokMain, this.mainFile);
+        
+        for (Block block : blocks) {
+            if (!elements.isEmpty()) {
+                for (int i = 0; i < this.BlockingFactorSecond; i++) {
+                    if (!elements.isEmpty()) {
+                        block.insert(elements.remove(0));
+                    }
+                }
+                this.writeToFile(block, this.secondFile); //zapisem upraveny blok
+            }
+            else {
+                //blok bude prazdny nie je nan dat aky zaznam
+
+                this.freeSecondBlockAddress = this.addFreeBlockAddress(block.getAddress(), this.secondFile, this.BlockingFactorSecond, this.freeSecondBlockAddress);
+
+                node.setNumOfBlocksInExtFile(node.getNumOfBlocksInExtFile() - 1); //uberie pocet preplnujucich blokov lebo tento blok sa odstranuje
+
+                //prepojenie ak boli zretazene
+                long prevAdr = block.getPreviousBlockAddress();
+                long nextAdr = block.getNextBlockAddress();
+
+                if (prevAdr != -1) {
+                    hlpBlok = this.readFromFile(prevAdr, this.secondFile, this.BlockingFactorSecond);
+                    hlpBlok.setNextBlockAddress(nextAdr);
+                    this.writeToFile(hlpBlok, this.secondFile);
+                }
+                else { //predchadzajuci blok je v hlavnom subore ten treba upravit v nom adresu do preplnujuceho suboru (nastavit na -1)
+                    if (nextAdr == -1) { //zaroven musi byt aj nasledujuca adresa -1 aby som si neodmazal prvy blok zretazenia
+                        blokMain.setNextBlockAddress(-1);
+                        blokMain.setNextBlockInSecondFile(false);
+                        this.writeToFile(blokMain, this.mainFile);
+                    }
+                    else {
+                        blokMain.setNextBlockAddress(nextAdr);
+                        blokMain.setNextBlockInSecondFile(true);
+                        this.writeToFile(blokMain, this.mainFile);
+                    }
+                }
+
+                if (nextAdr != -1) {
+                    hlpBlok = this.readFromFile(nextAdr, this.secondFile, this.BlockingFactorSecond);
+                    hlpBlok.setPreviousBlockAddress(prevAdr);
+                    this.writeToFile(hlpBlok, this.secondFile);
+                }
+            }
+        }    
+        
+        
+//        for (Block block : blocks) {
+//            //tu staci zapisat tie ktore maju nejake recordy lebo tie prazdne uz boli zapisane pri cisteni
+//            if (!block.isEmpty()) {
+//                this.writeToFile(block, this.secondFile);
+//            }
+//        }
+        
+        
+        
     }
     
     public void writeToFile(Block blok, RandomAccessFile file) throws IOException {
@@ -551,7 +660,7 @@ public class DynamicHashing <T extends IRecord> {
         nodeToClear.setAddress(-1);
         nodeToClear.setCount(0);
         
-        //preusporiadanie nodov //TODO pri zlucovani prvkov musia byt oba externe vrcholy
+        //preusporiadanie nodov //TODO spravit to v cykle
         if (rearrangeNodes) {
             InternalNode parent = nodeToClear.getParent();
             InternalNode superParent;

@@ -21,7 +21,7 @@ public class Main {
         DynamicHashing<TestElement> dh = null;
         try {
             dh = new DynamicHashing<>("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test.bin", 
-                    "C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test_second.bin", TestElement.class, 1, 1, 1);
+                    "C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\test_second.bin", TestElement.class, 1, 1, 3);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -31,7 +31,7 @@ public class Main {
         
         ArrayList<TestElement> insertedElements = new ArrayList<TestElement>();
         
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 8; i++) { //docastne 8 namiesto 10
             tst = new TestElement(i, i*100);
             try {
                 dh.insert(tst);
@@ -46,22 +46,40 @@ public class Main {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        for (int i = 0; i < 10; i++) {
-            tst2 = insertedElements.remove(0);
-            try {
-                dh.delete(tst2);
-                System.out.println("MainFile:");
-                System.out.println(dh.readWholeMainFile());
-                System.out.println("SecondFile:");
-                System.out.println(dh.readWholeSecondFile());
-            } catch (IOException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//        for (int i = 0; i < 10; i++) {
+//            tst2 = insertedElements.remove(0);
+//            try {
+//                dh.delete(tst2);
+//                System.out.println("MainFile:");
+//                System.out.println(dh.readWholeMainFile());
+//                System.out.println("SecondFile:");
+//                System.out.println(dh.readWholeSecondFile());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (Exception ex) {
+//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            
+//        }
+        try {
+            dh.delete(new TestElement(2, 200));
+            System.out.println("MainFile:");
+            System.out.println(dh.readWholeMainFile());
+            System.out.println("SecondFile:");
+            System.out.println(dh.readWholeSecondFile());
             
-        }
-//        
+            dh.delete(new TestElement(6, 600));
+            System.out.println("MainFile:");
+            System.out.println(dh.readWholeMainFile());
+            System.out.println("SecondFile:");
+            System.out.println(dh.readWholeSecondFile());
+            
+            dh.delete(new TestElement(4, 400));
+            System.out.println("MainFile:");
+            System.out.println(dh.readWholeMainFile());
+            System.out.println("SecondFile:");
+            System.out.println(dh.readWholeSecondFile());
+//
 //        for (int i = 0; i < 5; i++) {
 //            tst = new TestElement(i, i*100);
 //            try {
@@ -74,9 +92,9 @@ public class Main {
 //                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 //            }
 //        }
-        
-        
-        
+
+
+
 //        try {
 //            dh.insert(tst);
 //            System.out.println(dh.readWholeFile());
@@ -87,5 +105,8 @@ public class Main {
 //        } catch (IOException ex) {
 //            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

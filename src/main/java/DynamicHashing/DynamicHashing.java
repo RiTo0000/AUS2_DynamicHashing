@@ -300,7 +300,8 @@ public class DynamicHashing <T extends IRecord> {
             }
             
             
-            if (nodeForDelete.getCount() <= (((nodeForDelete.getNumOfBlocksInExtFile() - 1) * this.BlockingFactorSecond) + this.BlockingFactorMain)) {
+            if (nodeForDelete.getCount() != 0 && // ak je nula elementov na danom node tak nie je co striasat
+                    nodeForDelete.getCount() <= (((nodeForDelete.getNumOfBlocksInExtFile() - 1) * this.BlockingFactorSecond) + this.BlockingFactorMain)) {
                 //treba robit striasanie
                 this.compact(nodeForDelete);
                 
@@ -391,7 +392,6 @@ public class DynamicHashing <T extends IRecord> {
     }
     
     private void insertOnNode(ExternalNode node, T record) throws IOException, Exception {
-        //TODO treba si skontrolovat vsetky nody v zretazeni kvoli tomu klucu a ked sa nenajde az potom ist insert 
         boolean secondFile = false;
         ArrayList<T> oldRecords;
         Block mainBlock;
@@ -474,26 +474,6 @@ public class DynamicHashing <T extends IRecord> {
         }
 
         node.setCount(node.getCount()+1);
-    }
-    
-    private ArrayList<T> getAllRecords(long Address) throws IOException { //TODO
-        ArrayList<T> result;
-        
-        Block<T> mainBlok = this.readFromFile(Address, this.mainFile, this.BlockingFactorMain);
-        Block<T> secondBlok;
-        
-        result = mainBlok.getRecords();
-        
-        if (mainBlok.getNextBlockAddress() != -1) { //ma definovaneho nasledovnika v preplnujucom subore
-            secondBlok = this.readFromFile(mainBlok.getNextBlockAddress(), this.secondFile, this.BlockingFactorSecond);
-            while (secondBlok.getNextBlockAddress() != -1) {
-                result.addAll(secondBlok.getRecords());
-                
-                secondBlok = this.readFromFile(secondBlok.getNextBlockAddress(), this.secondFile, this.BlockingFactorSecond);
-            }
-        }
-        
-        return result;
     }
     
     /**
@@ -655,13 +635,13 @@ public class DynamicHashing <T extends IRecord> {
         nodeToClear.setAddress(-1);
         nodeToClear.setCount(0);
         
-        //preusporiadanie nodov //TODO spravit to v cykle
+        //preusporiadanie nodov 
         if (rearrangeNodes) {
             InternalNode parent = nodeToClear.getParent();
             InternalNode superParent;
             Node newSonOfSuperParent = null;
 
-            if (parent != null) { //ak je to Root node tak nemusi nic usporiadat
+            while (parent != null) { //ak je to Root node tak nemusi nic usporiadat
                 superParent = parent.getParent();
                 if (parent.getLeft() == nodeToClear) { //Node ktory cistim je vlavo
                     newSonOfSuperParent = parent.getRight();
@@ -686,13 +666,24 @@ public class DynamicHashing <T extends IRecord> {
                 if (superParent != null) {            
                     if (superParent.getLeft() == parent) { //Rodic je vlavo
                         superParent.setLeft(newSonOfSuperParent);
+                        if ( superParent.getRight().isExternal() && ((ExternalNode) superParent.getRight()).getAddress() == -1) { //je externy a nema priradenu adresu teda je prazdny
+                            parent = superParent;
+                        }
+                        else
+                            parent = null;
                     }
                     else { //Rodic je vpravo
                         superParent.setRight(newSonOfSuperParent);
+                        if ( superParent.getLeft().isExternal() && ((ExternalNode) superParent.getLeft()).getAddress() == -1) { //je externy a nema priradenu adresu teda je prazdny
+                            parent = superParent;
+                        }
+                        else
+                            parent = null;
                     }
                 }
                 else { //Treba upravit adresu Root nodu
                     this.Root = newSonOfSuperParent;
+                    return; //nemam ako zlepsit koncim 
                 }
             }
         }

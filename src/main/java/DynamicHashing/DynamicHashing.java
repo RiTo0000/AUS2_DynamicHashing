@@ -396,13 +396,12 @@ public class DynamicHashing <T extends IRecord> {
         ArrayList<T> oldRecords;
         Block mainBlock;
         Block secondBlock = null;
-        Block tmpSecondBlock = null;
+        Block blockForInsert = null;
         long secondBlockAddress;
-        boolean secondBlockFound = false;
         
         if (node.getAddress() == -1) { //nema adresu teda nemozu tam byt ziadne elementy
             node.setAddress(this.getFreeMainBlockAddress());
-            mainBlock = new Block(node.getAddress(), this.BlockingFactorMain, this.classType);
+            blockForInsert = new Block(node.getAddress(), this.BlockingFactorMain, this.classType);
         }
         else { // ma adrese mozu byt elementy treba najprv nacitat existujuce
             mainBlock = this.readFromFile(node.getAddress(), this.mainFile, this.BlockingFactorMain);
@@ -415,67 +414,63 @@ public class DynamicHashing <T extends IRecord> {
                 }
             }
             
-            if (!mainBlock.isFull()) { //vojde sa do hlavneho suboru
-                   
-            }
-            else { //ide do preplnujuceho suboru
+            secondBlockAddress = mainBlock.getNextBlockAddress();
+            
+            if (mainBlock.isFull()) { //nevojde sa do hlavneho suboru, ide do preplnujuceho
                 secondFile = true;
-                secondBlockAddress = mainBlock.getNextBlockAddress();
                 if (secondBlockAddress == -1) { //este nie je blok v preplnujucom subore
-                    secondBlock = new Block(this.getFreeSecondBlockAddress(), this.BlockingFactorSecond, this.classType);
-                    mainBlock.setNextBlockAddress(secondBlock.getAddress());
+                    blockForInsert = new Block(this.getFreeSecondBlockAddress(), this.BlockingFactorSecond, this.classType);
+                    mainBlock.setNextBlockAddress(blockForInsert.getAddress());
                     mainBlock.setNextBlockInSecondFile(true);
                     this.writeToFile(mainBlock, this.mainFile); //zapisem zmeneny blok spat do suboru
                     
                     node.setNumOfBlocksInExtFile(node.getNumOfBlocksInExtFile() + 1); //prida pocet preplnujucich blokov
                 }
-                else { //uz je blok v preplnujucom subore
-                    while (!secondBlockFound) {                        
-                        secondBlock = this.readFromFile(secondBlockAddress, this.secondFile, this.BlockingFactorSecond);
-                        
-                        oldRecords = secondBlock.getRecords();
-                        //kontrola na unikatnost kluca
-                        for (T oldRecord : oldRecords) {
-                            if (oldRecord.equals(record)) {
-                                throw new Exception("Non-unique key on insert");
-                            }
-                        }
-                        
-                        //najdenie vhodneho bloku v preplnujucom subore
-                        if (secondBlock.isFull()) { //preplnovaci blok je plny
-                            if (secondBlock.getNextBlockAddress() == -1) { //nema definovany nasledujuci blok
-                                secondBlockAddress = this.getFreeSecondBlockAddress(); //vygenerujeme novu adresu pre nasledujuci blok
-                                secondBlock.setNextBlockAddress(secondBlockAddress); //nastavime novu vygenerovanu adresu do plneho bloku ako nasledovnika
-                                this.writeToFile(secondBlock, this.secondFile); //zapisem upraveny blok do preplnujuceho suboru
-                                
-                                //vygenerujem novy blok v preplnujucom subore
-                                tmpSecondBlock = new Block(secondBlockAddress, this.BlockingFactorSecond, this.classType);
-                                tmpSecondBlock.setPreviousBlockAddress(secondBlock.getAddress()); //nastavim adresu predchadzajuceho bloku
-                                secondBlock = tmpSecondBlock;
-                                secondBlockFound = true;
-                                
-                                node.setNumOfBlocksInExtFile(node.getNumOfBlocksInExtFile() + 1); //prida pocet preplnujucich blokov
-                            }
-                            else { //prejdem na nasledujuci blok v preplnujucom subore
-                                secondBlockAddress = secondBlock.getNextBlockAddress();
-                            }
-                        }
-                        else { //nie je plny tak budem insertovat don
-                            secondBlockFound = true;
-                        }
+            }
+            else
+                blockForInsert = mainBlock; 
+            
+            while (secondBlockAddress != -1) {                        
+                secondBlock = this.readFromFile(secondBlockAddress, this.secondFile, this.BlockingFactorSecond);
+
+                oldRecords = secondBlock.getRecords();
+                //kontrola na unikatnost kluca
+                for (T oldRecord : oldRecords) {
+                    if (oldRecord.equals(record)) {
+                        throw new Exception("Non-unique key on insert");
                     }
-                  
                 }
+
+                //najdenie vhodneho bloku v preplnujucom subore
+                if (secondBlock.isFull()) { //preplnovaci blok je plny
+                    if (secondBlock.getNextBlockAddress() == -1 && blockForInsert == null) { //nema definovany nasledujuci blok a este sme nenasli blok na insert
+                        secondBlockAddress = this.getFreeSecondBlockAddress(); //vygenerujeme novu adresu pre nasledujuci blok
+                        secondBlock.setNextBlockAddress(secondBlockAddress); //nastavime novu vygenerovanu adresu do plneho bloku ako nasledovnika
+                        this.writeToFile(secondBlock, this.secondFile); //zapisem upraveny blok do preplnujuceho suboru
+
+                        //vygenerujem novy blok v preplnujucom subore
+                        blockForInsert = new Block(secondBlockAddress, this.BlockingFactorSecond, this.classType);
+                        blockForInsert.setPreviousBlockAddress(secondBlock.getAddress()); //nastavim adresu predchadzajuceho bloku
+                        secondBlock = blockForInsert;
+
+                        node.setNumOfBlocksInExtFile(node.getNumOfBlocksInExtFile() + 1); //prida pocet preplnujucich blokov
+                    }
+                }
+                else { //nie je plny tak budem insertovat don
+                    blockForInsert = secondBlock;
+                }
+                //nacitam si adresu dalsieho bloku pre kontrolu klucov
+                secondBlockAddress = secondBlock.getNextBlockAddress();
             }
         }
         
         if (secondFile) {//ide do preplnujuceho suboru
-            secondBlock.insert(record);
-            this.writeToFile(secondBlock, this.secondFile);
+            blockForInsert.insert(record);
+            this.writeToFile(blockForInsert, this.secondFile);
         }
         else {
-            mainBlock.insert(record);
-            this.writeToFile(mainBlock, this.mainFile);
+            blockForInsert.insert(record);
+            this.writeToFile(blockForInsert, this.mainFile);
         }
 
         node.setCount(node.getCount()+1);

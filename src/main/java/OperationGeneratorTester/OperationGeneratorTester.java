@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class OperationGeneratorTester {
     
-    public static int numOfOperations = 500000;
+    public static int numOfOperations = 50000;
     public static int numOfInitialInserts = 10;
     
     public static void main (String[] args) {
@@ -70,11 +70,11 @@ public class OperationGeneratorTester {
             }
 
             try {
-//                System.out.println("Po uvodnom inserte:");
-//                System.out.println("MainFile:");
-//                System.out.println(dh.readWholeMainFile());
-//                System.out.println("SecondFile:");
-//                System.out.println(dh.readWholeSecondFile());
+                System.out.println("Po uvodnom inserte:");
+                System.out.println("MainFile:");
+                System.out.println(dh.readWholeMainFile());
+                System.out.println("SecondFile:");
+                System.out.println(dh.readWholeSecondFile());
 
                 for (int i = 0; i < numOfOperations; i++) {
                     System.out.print("Operation num: " + i);

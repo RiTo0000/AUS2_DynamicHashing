@@ -29,4 +29,24 @@ public enum Direction {
                 return null;
         }
     }
+    
+    /**
+     * Overriden metoda toString aby vracala iba jedno pismeno
+     * @return pismeno smeru
+     */
+    @Override
+    public String toString() {
+        switch (this) {
+            case E:
+                return "E";
+            case W:
+                return "W";
+            case N:
+                return "N";
+            case S:
+                return "S";
+            default:
+                throw new AssertionError();
+        }
+    }
 }

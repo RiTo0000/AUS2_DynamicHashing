@@ -2045,7 +2045,7 @@ public class AppUI extends javax.swing.JFrame {
         }
         else {
             if (this.jTextFieldSearchPropXVal.getText().isEmpty() || this.jTextFieldSearchPropYVal.getText().isEmpty()) {
-                this.properties = this.application.getProperties().getAllElements();
+//                this.properties = this.application.getProperties().getAllElements();
             }
             else {
                 this.searchPropertiesOnSelectedGPS();
@@ -2098,7 +2098,7 @@ public class AppUI extends javax.swing.JFrame {
         }
         else {
             if (this.jTextFieldSearchLandXVal.getText().isEmpty() || this.jTextFieldSearchLandYVal.getText().isEmpty()) {
-                this.lands = this.application.getLands().getAllElements();
+//                this.lands = this.application.getLands().getAllElements();
             }
             else {
                 this.searchLandsOnSelectedGPS();
@@ -2153,8 +2153,8 @@ public class AppUI extends javax.swing.JFrame {
                     this.jTextFieldSearchObjStartYVal.getText().isEmpty() ||
                     this.jTextFieldSearchObjEndXVal.getText().isEmpty() ||
                     this.jTextFieldSearchObjEndYVal.getText().isEmpty()) {
-                objects = (ArrayList<Object>) (Object) this.application.getProperties().getAllElements();
-                objects.addAll((ArrayList<Object>) (Object) this.application.getLands().getAllElements());
+//                objects = (ArrayList<Object>) (Object) this.application.getProperties().getAllElements();
+//                objects.addAll((ArrayList<Object>) (Object) this.application.getLands().getAllElements());
             }
             else {
                 double startXVal = Double.parseDouble(this.jTextFieldSearchObjStartXVal.getText());
@@ -2175,18 +2175,18 @@ public class AppUI extends javax.swing.JFrame {
             String [] info;
             
             DefaultTableModel model = (DefaultTableModel) this.jTableObjects.getModel();
-            for (int i = 0; i < objects.size(); i++) {
-                object_out[0] = objects.get(i).getClass().getSimpleName();
-                if (object_out[0].equals("Property")) {
-                    info = ((Property) objects.get(i)).getInfo();
-                }
-                else {
-                    info = ((Land) objects.get(i)).getInfo();
-                }
-                
-                System.arraycopy(info, 0, object_out, 1, 4); //kopirovanie info do output stringu
-                model.addRow(object_out);
-            }
+//            for (int i = 0; i < objects.size(); i++) {
+//                object_out[0] = objects.get(i).getClass().getSimpleName();
+//                if (object_out[0].equals("Property")) {
+//                    info = ((Property) objects.get(i)).getInfo();
+//                }
+//                else {
+//                    info = ((Land) objects.get(i)).getInfo();
+//                }
+//                
+//                System.arraycopy(info, 0, object_out, 1, 4); //kopirovanie info do output stringu
+//                model.addRow(object_out);
+//            }
         }
         
     }//GEN-LAST:event_jButtonSearchObjectsActionPerformed
@@ -2465,8 +2465,8 @@ public class AppUI extends javax.swing.JFrame {
         Land selectedLand = this.lands.get(row);
         
         //naplnenie poli
-        this.jTextFieldLandDetailLandNumVal.setText(Integer.toString(selectedLand.getLandNumber()));
-        this.jTextFieldLandDetailDescVal.setText(selectedLand.getDescription());
+//        this.jTextFieldLandDetailLandNumVal.setText(Integer.toString(selectedLand.getLandNumber()));
+//        this.jTextFieldLandDetailDescVal.setText(selectedLand.getDescription());
         this.jComboBoxLandDetailStartXDirect.setSelectedItem(selectedLand.getSpace().getStart().getX().getDirection().toString());
         this.jTextFieldLandDetailStartXVal.setText(Double.toString(selectedLand.getSpace().getStart().getX().getValue()));
         this.jComboBoxLandDetailStartYDirect.setSelectedItem(selectedLand.getSpace().getStart().getY().getDirection().toString());
@@ -2641,7 +2641,7 @@ public class AppUI extends javax.swing.JFrame {
         if (!selectedLand.getSpace().equals(newLandSpace)) 
             areaEdited = true;
         
-        if (areaEdited) { //nastala zmena v polohe parcely musim ju odobrat a pridat nanovo
+//        if (areaEdited) { //nastala zmena v polohe parcely musim ju odobrat a pridat nanovo
 //            if (this.application.removeLand(selectedLand)) { //odstranenie sa podarilo
 //                //upravim parcelu
 //                selectedLand.setSpace(newLandSpace);
@@ -2656,15 +2656,15 @@ public class AppUI extends javax.swing.JFrame {
 //                }
 //                
 //            }
-        }
-        else if (selectedLand.getLandNumber() == landNum &&
-                selectedLand.getDescription().equals(description)) {
-            JOptionPane.showMessageDialog(this.jPanelLandDetail, "Nič sa nezmenilo, editácia nie je potrebná");
-            return; //nenastala ziadna zmena
-        }
-        else { // nastala zmena iba v jednom z 2 neklucovych poli menim iba tie
-            selectedLand.edit(landNum, description);
-        }
+//        }
+//        else if (selectedLand.getLandNumber() == landNum &&
+//                selectedLand.getDescription().equals(description)) {
+//            JOptionPane.showMessageDialog(this.jPanelLandDetail, "Nič sa nezmenilo, editácia nie je potrebná");
+//            return; //nenastala ziadna zmena
+//        }
+//        else { // nastala zmena iba v jednom z 2 neklucovych poli menim iba tie
+//            selectedLand.edit(landNum, description);
+//        }
         
         // obnova zobrazenia aktualnych parciel
         this.printLandsTable(); 
@@ -2713,8 +2713,8 @@ public class AppUI extends javax.swing.JFrame {
         Land selectedLand = this.lands.get(row);
         
         //naplnenie poli
-        this.jTextFieldLandDetailLandNumVal.setText(Integer.toString(selectedLand.getLandNumber()));
-        this.jTextFieldLandDetailDescVal.setText(selectedLand.getDescription());
+//        this.jTextFieldLandDetailLandNumVal.setText(Integer.toString(selectedLand.getLandNumber()));
+//        this.jTextFieldLandDetailDescVal.setText(selectedLand.getDescription());
         this.jComboBoxLandDetailStartXDirect.setSelectedItem(selectedLand.getSpace().getStart().getX().getDirection().toString());
         this.jTextFieldLandDetailStartXVal.setText(Double.toString(selectedLand.getSpace().getStart().getX().getValue()));
         this.jComboBoxLandDetailStartYDirect.setSelectedItem(selectedLand.getSpace().getStart().getY().getDirection().toString());
@@ -2725,14 +2725,14 @@ public class AppUI extends javax.swing.JFrame {
         this.jTextFieldLandDetailEndYVal.setText(Double.toString(selectedLand.getSpace().getEnd().getY().getValue()));
         
         String [] properties_out;
-        ArrayList<Property> properties = selectedLand.getProperties();
-            
-        DefaultTableModel model = (DefaultTableModel)this.jTablePropertiesLandDetail.getModel();
-        model.setRowCount(0); //odstranenie existujucich riadkov
-        for (Property property : properties) {
-            properties_out = property.getInfo();
-            model.addRow(properties_out);
-        }
+//        ArrayList<Property> properties = selectedLand.getProperties();
+//            
+//        DefaultTableModel model = (DefaultTableModel)this.jTablePropertiesLandDetail.getModel();
+//        model.setRowCount(0); //odstranenie existujucich riadkov
+//        for (Property property : properties) {
+//            properties_out = property.getInfo();
+//            model.addRow(properties_out);
+//        }
         
         this.jDialogLandDetail.setLocationRelativeTo(null);//nastavi lokaciu na stred obrazovky
         this.jDialogLandDetail.setVisible(true);
@@ -2743,8 +2743,8 @@ public class AppUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this.jPanelAddLand, "Aplikácia nie je inicializovaná", "Chyba", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            this.application.getProperties().setOptimal(this.jRadioButtonOptimalTree.isSelected());
-            this.application.getLands().setOptimal(this.jRadioButtonOptimalTree.isSelected());
+//            this.application.getProperties().setOptimal(this.jRadioButtonOptimalTree.isSelected());
+//            this.application.getLands().setOptimal(this.jRadioButtonOptimalTree.isSelected());
         }
     }//GEN-LAST:event_jRadioButtonOptimalTreeActionPerformed
     

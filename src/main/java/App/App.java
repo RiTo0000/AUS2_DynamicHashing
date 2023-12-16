@@ -36,6 +36,7 @@ public class App {
     private Area space;
     
     private int maxPropertyID;
+    private int maxLandID;
     
     public App(Area space) {
         this.space = space;
@@ -99,6 +100,8 @@ public class App {
             landsDH.edit(landDH);
         }
         
+        properties.insert(new Property(property.getSpace(), property.getIDRegNumber())); //zapisanie do QuadStromu
+        
         return true;
     }
     
@@ -109,67 +112,106 @@ public class App {
         return addProperty(property);
     }
     
-//    public boolean addLand(Land land) {        
-//        ArrayList<Property> propertiesOnLand = this.properties.findElementsInArea(land.getSpace());
-//        land.setProperties(propertiesOnLand);
-//        
-//        //do vsetkych najdenych nehnutelnosti musim pridat aj ze stoja na tejto (novej) parcele
-//        for (Property property : propertiesOnLand) {
-//            if (!property.addLand(land)) {
-//                return false; //nepodarilo sa pridat parcelu pod nehnutelnost
-//            }
-//        }
-//        
-//        return this.lands.insert(land);
-//    }
+    public boolean addLand(LandDH land) throws Exception {    
+        PropertyDH propertyOnLand;
+        ArrayList<PropertyDH> propertiesOnLandDH = new ArrayList<>();
+        
+        ArrayList<Property> propertiesOnLand = this.properties.findElementsInArea(land.getSpace());
+        
+        for (Property prop : propertiesOnLand) {
+            propertyOnLand = propertiesDH.find(new PropertyDH(prop.getKey(), prop.getSpace(), 0, ""));
+            
+            if (propertyOnLand.getLands().size() < PropertyDH.maxLands) { //kontrola ci sa vojde do zoznamu pozemkov pod najdenou nehnutelnostou
+                propertyOnLand.addLand(land.getIDLandNumber()); //pridanie pozemku pod nehnutelnost
+                land.addProperty(prop.getKey()); //pridanie nehnutelnosti na pozemok
+                propertiesOnLandDH.add(propertyOnLand);
+            }
+            
+            if (propertiesOnLandDH.size() == LandDH.maxProperties) { //ak uz mame dost nehnutelnosti tak ukoncime prehladavanie zoznamu
+                break;
+            }
+        }
+        
+        landsDH.insert(land);
+
+        for (PropertyDH propertyDH : propertiesOnLandDH) {
+            propertiesDH.edit(propertyDH);
+        }
+        
+        lands.insert(new Land(land.getSpace(), land.getIDLandNumber()));  //zapisanie do QuadStromu
+        
+        return true;
+    }
     
-//    public boolean createLand(Area space, int landNumber, String description) {
-//        Land land = new Land(space, landNumber, description);
-//        
-//        return this.addLand(land);
+    public boolean createLand(Area space, int landNumber, String description) throws Exception {
+        this.maxLandID++;
+        LandDH land = new LandDH(this.maxLandID, space, landNumber, description);
+        
+        return this.addLand(land);
+    }
+
+//    public QuadTree<Property> getProperties() {
+//        return this.properties;
 //    }
-
-    public QuadTree<Property> getProperties() {
-        return this.properties;
-    }
-
-    public QuadTree<Land> getLands() {
-        return this.lands;
-    }
+//
+//    public QuadTree<Land> getLands() {
+//        return this.lands;
+//    }
     
     /**
      * Bezpecne vyradi nehnutelnost, ktoru dostal v parametri
      * @param property nehnutelnost na vyradenie
      * @return true ak sa vyradenie nehnutelnosti podarilo, false inak
      */
-//    public boolean removeProperty(Property property) {
-//        ArrayList<Land> landsUnderProp = property.getLands();
-//        
-//        for (Land land : landsUnderProp) { //odstrani referencie na objekt predtym ako odstrani samotny objekt aby neboli nullptr
-//            if (!land.getProperties().remove(property)) {
-//                return false; //chyba pri vyradeni nehnutelnosti
-//            }
-//        }
-//        
-//        return this.properties.delete(property.getSpace(), property.getKey());
-//    }
+    public boolean removeProperty(PropertyDH property) throws Exception {
+        PropertyDH removedProperty = this.propertiesDH.delete(property);
+        
+        if (removedProperty == null) { //pri vymaze bola chyba
+            return false;
+        }
+        
+        ArrayList<Integer> landsUnderProp = removedProperty.getLands();
+        LandDH land;
+        
+        for (Integer landID : landsUnderProp) {
+            land = this.landsDH.find(new LandDH(landID, null, 0, "")); //do noveho potrebujeme naplnit iba kluc na to aby vedel vyhladavat a porovnavat
+            
+            if (land != null) {
+                land.removeProperty(property.getIDRegNumber());
+            }
+        }
+        
+        this.properties.delete(property.getSpace(), property.getIDRegNumber());
+        
+        return true;
+    }
     
     /**
      * Bezpecne vyradi parcelu, ktoru dostal v parametri
      * @param land parcela na vyradenie
      * @return true ak sa vyradenie parcely podarilo, false inak
      */
-//    public boolean removeLand(Land land) {
-//        ArrayList<Property> propertiesOnLand = land.getProperties();
-//        
-//        for (Property property : propertiesOnLand) { //odstrani referencie na objekt predtym ako odstrani samotny objekt aby neboli nullptr
-//            if (!property.getLands().remove(land)) {
-//                return false; //chyba pri vyradeni parcely
-//            }
-//        }
-//        
-//        return this.lands.delete(land.getSpace(), land.getKey());
-//    }
+    public boolean removeLand(LandDH land) throws Exception {
+        LandDH removedLand = this.landsDH.delete(land);
+        
+        if (removedLand == null) { //pri vymaze bola chyba
+            return false;
+        }
+        
+        ArrayList<Integer> propertiesOnLand = removedLand.getProperties();
+        PropertyDH property;
+        
+        for (Integer propertyID : propertiesOnLand) {
+            property = this.propertiesDH.find(new PropertyDH(propertyID, null, 0, "")); //do noveho potrebujeme naplnit iba kluc na to aby vedel vyhladavat a porovnavat            
+            if (property != null) {
+                property.removeLand(land.getIDLandNumber());
+            }
+        }
+        
+        this.lands.delete(land.getSpace(), land.getIDLandNumber());
+        
+        return true;
+    }
     
 //    public void generateObject(boolean generateProperties, int count) { //TODO
 //        Random rand = new Random();

@@ -44,6 +44,10 @@ public class LandDH implements IRecord {
     public void addProperty(int IDProperty) {
         this.properties.add(IDProperty);
     }
+    
+    public boolean removeProperty(Integer propertyID) {
+        return this.properties.remove(propertyID);
+    }
 
     public int getIDLandNumber() {
         return this.IDLandNumber;

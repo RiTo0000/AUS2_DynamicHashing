@@ -14,8 +14,9 @@ import QuadTree.QuadTreeElementKey;
  */
 public class Property extends QuadTreeElementKey {
     
-    public Property(Area space) {
+    public Property(Area space, int key) {
         super(space);
+        super.setKey(key);
     }
 
     @Override

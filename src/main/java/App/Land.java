@@ -14,57 +14,15 @@ import java.util.ArrayList;
  * @author namer
  */
 public class Land extends QuadTreeElementKey {
-    private int landNumber;
-    private String description;
-    private ArrayList<Property> properties;
     
-    public Land(Area space, int landNumber, String description) {
+    public Land(Area space, int key) {
         super(space);
-        this.landNumber = landNumber;
-        this.description = description;
+        super.setKey(key);
     }
 
-    public int getLandNumber() {
-        return this.landNumber;
-    }
-
-    public void setLandNumber(int landNumber) {
-        this.landNumber = landNumber;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public ArrayList<Property> getProperties() {
-        return this.properties;
-    }
-
-    public void setProperties(ArrayList<Property> properties) {
-        this.properties = properties;
-    }
-    
-    public boolean addProperty(Property property) {
-        return this.properties.add(property);
-    }
-    
-    /**
-     * Metoda edituje neklucove prvky parcely (cislo parcely, popis)
-     * @param landNumber nove cislo parcely
-     * @param description novy popis
-     */
-    public void edit(int landNumber, String description) {
-        this.setLandNumber(landNumber);
-        this.setDescription(description);
-    }
     
     @Override
     public void PrintInfo() {
-        System.out.println("Land number: " + this.landNumber + " description: " + this.description);
         System.out.println("X_Start: " + this.getSpace().getStart().getX().getDirection() +
                                         this.getSpace().getStart().getX().getValue() + "; " + 
                                         "Y_Start: " + this.getSpace().getStart().getY().getDirection() +
@@ -91,13 +49,11 @@ public class Land extends QuadTreeElementKey {
         hlpNum = (int) (this.getSpace().getEnd().getY().getValue() * 100.00);
         endY = ((double)hlpNum)/100.00;
         
-        String[] info = new String[4];
+        String[] info = new String[2];
         
-        info[0] = Integer.toString(this.landNumber);
-        info[1] = this.description;
-        info[2] = "X: " + this.getSpace().getStart().getX().getDirection() + " " + startX + 
+        info[1] = "X: " + this.getSpace().getStart().getX().getDirection() + " " + startX + 
                   " Y: " + this.getSpace().getStart().getY().getDirection() + " " + startY;
-        info[3] = "X: " + this.getSpace().getEnd().getX().getDirection() + " " + endX + 
+        info[2] = "X: " + this.getSpace().getEnd().getX().getDirection() + " " + endX + 
                   " Y: " + this.getSpace().getEnd().getY().getDirection() + " " + endY;
         
         return info;

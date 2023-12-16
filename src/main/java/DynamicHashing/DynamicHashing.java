@@ -209,11 +209,13 @@ public class DynamicHashing <T extends IRecord> {
         return null;
     }
     
-    public boolean delete(T element) throws IOException, Exception {
+    public T delete(T element) throws IOException, Exception {
         Block blok = null;
         Block hlpBlok = null;
         ArrayList<T> records;
         boolean result = false;
+        
+        T deletedRecord = null;
         
         Block<T> secondBlock;
         long nextSecondBlockAddress;
@@ -228,6 +230,7 @@ public class DynamicHashing <T extends IRecord> {
                 if (element.equals(record)) {
                     result = blok.removeRecord(record);
                     nodeForDelete.setCount(nodeForDelete.getCount() - 1);
+                    deletedRecord = record;
                     break;
                 }
             }
@@ -250,6 +253,7 @@ public class DynamicHashing <T extends IRecord> {
                         if (record.equals(element)) {
                             result = secondBlock.removeRecord(record);
                             nodeForDelete.setCount(nodeForDelete.getCount() - 1);
+                            deletedRecord = record;
                             break;
                         }
                     }
@@ -309,7 +313,7 @@ public class DynamicHashing <T extends IRecord> {
         }
        
         //ak sa do teraz nezmazal tak asi nie je 
-        return result;        
+        return deletedRecord;        
     }
     
     public void edit(T element) throws Exception{ 

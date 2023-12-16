@@ -102,7 +102,7 @@ public class OperationGeneratorTester {
                         if (!insertedElements.isEmpty()) {
                             tst = insertedElements.remove(rand.nextInt(insertedElements.size()));
                             System.out.println(tst.recordToString());
-                            if (!dh.delete(tst)) {
+                            if (dh.delete(tst) == null) {
                                 System.out.println("Operacia nejako zle prebehla");
                                 
                                 //najdenie najlepsieho seedu pre debug

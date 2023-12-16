@@ -186,6 +186,7 @@ public class App {
             
             if (land != null) {
                 land.removeProperty(property.getIDRegNumber());
+                this.landsDH.edit(land);
             }
         }
         
@@ -213,6 +214,7 @@ public class App {
             property = this.propertiesDH.find(new PropertyDH(propertyID, null, 0, "")); //do noveho potrebujeme naplnit iba kluc na to aby vedel vyhladavat a porovnavat            
             if (property != null) {
                 property.removeLand(land.getIDLandNumber());
+                this.propertiesDH.edit(property);
             }
         }
         
@@ -221,47 +223,47 @@ public class App {
         return true;
     }
     
-//    public void generateObject(boolean generateProperties, int count) { //TODO
-//        Random rand = new Random();
-//        double startXVal;
-//        double endXVal;
-//        double startYVal;
-//        double endYVal;
-//        double hlpVal;
-//        double xAxisRange = this.space.getEnd().getX().getRealValueOnAxis() - this.space.getStart().getX().getRealValueOnAxis();
-//        double yAxisRange = this.space.getEnd().getY().getRealValueOnAxis() - this.space.getStart().getY().getRealValueOnAxis();
-//        
-//        for (int i = 0; i < count; i++) {
-//            startXVal = (rand.nextDouble()*xAxisRange) + this.space.getStart().getX().getRealValueOnAxis();
-//            startYVal = (rand.nextDouble()*yAxisRange) + this.space.getStart().getY().getRealValueOnAxis();
-//            endXVal = (rand.nextDouble()*xAxisRange) + this.space.getStart().getX().getRealValueOnAxis();
-//            endYVal = (rand.nextDouble()*yAxisRange) + this.space.getStart().getY().getRealValueOnAxis();
-//
-//            if (endXVal < startXVal) {
-//                hlpVal = startXVal;
-//                startXVal = endXVal;
-//                endXVal = hlpVal;
-//            }
-//
-//            if (endYVal < startYVal) {
-//                hlpVal = startYVal;
-//                startYVal = endYVal;
-//                endYVal = hlpVal;
-//            }
-//            
-//            if (generateProperties) {
-//                //generovanie nehnutelnosti
-//                this.createProperty(new Area(new Point(Coordinate.getCoordinateFromRealValueOnAxis(true, startXVal), Coordinate.getCoordinateFromRealValueOnAxis(false, startYVal)),
-//                        new Point(Coordinate.getCoordinateFromRealValueOnAxis(true, endXVal), Coordinate.getCoordinateFromRealValueOnAxis(false, endYVal))), i, ("Property number: " + i));
-//            }
-//            else {
-//                //generovanie parciel
-//                this.createLand(new Area(new Point(Coordinate.getCoordinateFromRealValueOnAxis(true, startXVal), Coordinate.getCoordinateFromRealValueOnAxis(false, startYVal)),
-//                        new Point(Coordinate.getCoordinateFromRealValueOnAxis(true, endXVal), Coordinate.getCoordinateFromRealValueOnAxis(false, endYVal))), i, ("Land number: " + i));
-//            }
-//            
-//        }
-//    }
+    public void generateObject(boolean generateProperties, int count) throws Exception { 
+        Random rand = new Random();
+        double startXVal;
+        double endXVal;
+        double startYVal;
+        double endYVal;
+        double hlpVal;
+        double xAxisRange = this.space.getEnd().getX().getRealValueOnAxis() - this.space.getStart().getX().getRealValueOnAxis();
+        double yAxisRange = this.space.getEnd().getY().getRealValueOnAxis() - this.space.getStart().getY().getRealValueOnAxis();
+        
+        for (int i = 0; i < count; i++) {
+            startXVal = (rand.nextDouble()*xAxisRange) + this.space.getStart().getX().getRealValueOnAxis();
+            startYVal = (rand.nextDouble()*yAxisRange) + this.space.getStart().getY().getRealValueOnAxis();
+            endXVal = (rand.nextDouble()*xAxisRange) + this.space.getStart().getX().getRealValueOnAxis();
+            endYVal = (rand.nextDouble()*yAxisRange) + this.space.getStart().getY().getRealValueOnAxis();
+
+            if (endXVal < startXVal) {
+                hlpVal = startXVal;
+                startXVal = endXVal;
+                endXVal = hlpVal;
+            }
+
+            if (endYVal < startYVal) {
+                hlpVal = startYVal;
+                startYVal = endYVal;
+                endYVal = hlpVal;
+            }
+            
+            if (generateProperties) {
+                //generovanie nehnutelnosti
+                this.createProperty(new Area(new Point(Coordinate.getCoordinateFromRealValueOnAxis(true, startXVal), Coordinate.getCoordinateFromRealValueOnAxis(false, startYVal)),
+                        new Point(Coordinate.getCoordinateFromRealValueOnAxis(true, endXVal), Coordinate.getCoordinateFromRealValueOnAxis(false, endYVal))), i, ("Pr. num.: " + i));
+            }
+            else {
+                //generovanie parciel
+                this.createLand(new Area(new Point(Coordinate.getCoordinateFromRealValueOnAxis(true, startXVal), Coordinate.getCoordinateFromRealValueOnAxis(false, startYVal)),
+                        new Point(Coordinate.getCoordinateFromRealValueOnAxis(true, endXVal), Coordinate.getCoordinateFromRealValueOnAxis(false, endYVal))), i, ("L. num.: " + i));
+            }
+            
+        }
+    }
     
 //    public void saveToFile(String directory) throws IOException {
 //        String line;

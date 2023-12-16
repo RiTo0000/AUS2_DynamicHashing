@@ -132,25 +132,17 @@ public class AppUI extends javax.swing.JFrame {
         jScrollPaneSearchProperties = new javax.swing.JScrollPane();
         jTableProperties = new javax.swing.JTable();
         jButtonSearchProperties = new javax.swing.JButton();
-        jLabelSearchPropXCoordinate = new javax.swing.JLabel();
-        jComboBoxSearchPropXDirect = new javax.swing.JComboBox<>();
-        jTextFieldSearchPropXVal = new javax.swing.JTextField();
-        jComboBoxSearchPropYDirect = new javax.swing.JComboBox<>();
-        jTextFieldSearchPropYVal = new javax.swing.JTextField();
-        jLabelSearchPropYCoordinate = new javax.swing.JLabel();
+        jLabelSearchPropID = new javax.swing.JLabel();
+        jTextFieldSearchPropIDVal = new javax.swing.JTextField();
         jButtonDeleteProperty = new javax.swing.JButton();
         jButtonEditProperty = new javax.swing.JButton();
         jButtonShowPropertyDetail = new javax.swing.JButton();
         jPanelSearchLands = new javax.swing.JPanel();
         jButtonSearchLands = new javax.swing.JButton();
-        jComboBoxSearchLandXDirect = new javax.swing.JComboBox<>();
-        jTextFieldSearchLandXVal = new javax.swing.JTextField();
-        jComboBoxSearchLandYDirect = new javax.swing.JComboBox<>();
-        jTextFieldSearchLandYVal = new javax.swing.JTextField();
+        jTextFieldSearchLandIDVal = new javax.swing.JTextField();
         jScrollPaneSearchLands = new javax.swing.JScrollPane();
         jTableLands = new javax.swing.JTable();
-        jLabelSearchLandXCoordinate = new javax.swing.JLabel();
-        jLabelSearchLandYCoordinate = new javax.swing.JLabel();
+        jLabelSearchLandID = new javax.swing.JLabel();
         jButtonDeleteLand = new javax.swing.JButton();
         jButtonEditLand = new javax.swing.JButton();
         jButtonShowLandDetail = new javax.swing.JButton();
@@ -934,7 +926,7 @@ public class AppUI extends javax.swing.JFrame {
                                         .addGroup(jPanelInitAppLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jButtonGenerateProperties, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(jButtonGenerateLands, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                .addContainerGap(117, Short.MAX_VALUE))
+                                .addContainerGap(248, Short.MAX_VALUE))
                         );
                         jPanelInitAppLayout.setVerticalGroup(
                             jPanelInitAppLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1016,41 +1008,14 @@ public class AppUI extends javax.swing.JFrame {
                             }
                         });
 
-                        jLabelSearchPropXCoordinate.setText("X:");
+                        jLabelSearchPropID.setText("Identifikačné číslo nehnuteľnosti (ID):");
 
-                        jComboBoxSearchPropXDirect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "E", "W" }));
-                        jComboBoxSearchPropXDirect.setMinimumSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchPropXDirect.setPreferredSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchPropXDirect.addActionListener(new java.awt.event.ActionListener() {
+                        jTextFieldSearchPropIDVal.setToolTipText("Zadajte kladne číslo");
+                        jTextFieldSearchPropIDVal.addActionListener(new java.awt.event.ActionListener() {
                             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jComboBoxSearchPropXDirectActionPerformed(evt);
+                                jTextFieldSearchPropIDValActionPerformed(evt);
                             }
                         });
-
-                        jTextFieldSearchPropXVal.setToolTipText("Zadajte kladne číslo");
-                        jTextFieldSearchPropXVal.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextFieldSearchPropXValActionPerformed(evt);
-                            }
-                        });
-
-                        jComboBoxSearchPropYDirect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N", "S" }));
-                        jComboBoxSearchPropYDirect.setMinimumSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchPropYDirect.setPreferredSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchPropYDirect.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jComboBoxSearchPropYDirectActionPerformed(evt);
-                            }
-                        });
-
-                        jTextFieldSearchPropYVal.setToolTipText("Zadajte kladne číslo");
-                        jTextFieldSearchPropYVal.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextFieldSearchPropYValActionPerformed(evt);
-                            }
-                        });
-
-                        jLabelSearchPropYCoordinate.setText("Y:");
 
                         jButtonDeleteProperty.setText("Vyradenie nehnuteľnosti");
                         jButtonDeleteProperty.setEnabled(false);
@@ -1083,22 +1048,14 @@ public class AppUI extends javax.swing.JFrame {
                             .addGroup(jPanelSearchPropertiesLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanelSearchPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPaneSearchProperties, javax.swing.GroupLayout.DEFAULT_SIZE, 1102, Short.MAX_VALUE)
+                                    .addComponent(jScrollPaneSearchProperties)
                                     .addGroup(jPanelSearchPropertiesLayout.createSequentialGroup()
                                         .addComponent(jButtonSearchProperties)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelSearchPropXCoordinate)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBoxSearchPropXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldSearchPropXVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabelSearchPropID)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelSearchPropYCoordinate)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBoxSearchPropYDirect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldSearchPropYVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextFieldSearchPropIDVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(150, 150, 150)
                                         .addComponent(jButtonDeleteProperty)
                                         .addGap(18, 18, 18)
                                         .addComponent(jButtonEditProperty)
@@ -1113,20 +1070,15 @@ public class AppUI extends javax.swing.JFrame {
                                 .addGap(4, 4, 4)
                                 .addGroup(jPanelSearchPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanelSearchPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jComboBoxSearchPropYDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldSearchPropYVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButtonDeleteProperty)
                                         .addComponent(jButtonEditProperty)
                                         .addComponent(jButtonShowPropertyDetail))
                                     .addGroup(jPanelSearchPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jComboBoxSearchPropXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldSearchPropXVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelSearchPropYCoordinate))
-                                    .addGroup(jPanelSearchPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButtonSearchProperties)
-                                        .addComponent(jLabelSearchPropXCoordinate)))
+                                        .addComponent(jLabelSearchPropID)
+                                        .addComponent(jTextFieldSearchPropIDVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPaneSearchProperties, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+                                .addComponent(jScrollPaneSearchProperties, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
                                 .addContainerGap())
                         );
 
@@ -1139,35 +1091,10 @@ public class AppUI extends javax.swing.JFrame {
                             }
                         });
 
-                        jComboBoxSearchLandXDirect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "E", "W" }));
-                        jComboBoxSearchLandXDirect.setMinimumSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchLandXDirect.setPreferredSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchLandXDirect.addActionListener(new java.awt.event.ActionListener() {
+                        jTextFieldSearchLandIDVal.setToolTipText("Zadajte kladne číslo");
+                        jTextFieldSearchLandIDVal.addActionListener(new java.awt.event.ActionListener() {
                             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jComboBoxSearchLandXDirectActionPerformed(evt);
-                            }
-                        });
-
-                        jTextFieldSearchLandXVal.setToolTipText("Zadajte kladne číslo");
-                        jTextFieldSearchLandXVal.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextFieldSearchLandXValActionPerformed(evt);
-                            }
-                        });
-
-                        jComboBoxSearchLandYDirect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N", "S" }));
-                        jComboBoxSearchLandYDirect.setMinimumSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchLandYDirect.setPreferredSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchLandYDirect.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jComboBoxSearchLandYDirectActionPerformed(evt);
-                            }
-                        });
-
-                        jTextFieldSearchLandYVal.setToolTipText("Zadajte kladne číslo");
-                        jTextFieldSearchLandYVal.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextFieldSearchLandYValActionPerformed(evt);
+                                jTextFieldSearchLandIDValActionPerformed(evt);
                             }
                         });
 
@@ -1202,9 +1129,7 @@ public class AppUI extends javax.swing.JFrame {
                         });
                         jScrollPaneSearchLands.setViewportView(jTableLands);
 
-                        jLabelSearchLandXCoordinate.setText("X:");
-
-                        jLabelSearchLandYCoordinate.setText("Y:");
+                        jLabelSearchLandID.setText("Identifikačné číslo parcely (ID):");
 
                         jButtonDeleteLand.setText("Vyradenie parcely");
                         jButtonDeleteLand.setEnabled(false);
@@ -1237,22 +1162,14 @@ public class AppUI extends javax.swing.JFrame {
                             .addGroup(jPanelSearchLandsLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanelSearchLandsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPaneSearchLands, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1102, Short.MAX_VALUE)
+                                    .addComponent(jScrollPaneSearchLands, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1250, Short.MAX_VALUE)
                                     .addGroup(jPanelSearchLandsLayout.createSequentialGroup()
                                         .addComponent(jButtonSearchLands)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelSearchLandXCoordinate)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBoxSearchLandXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldSearchLandXVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelSearchLandYCoordinate)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBoxSearchLandYDirect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldSearchLandYVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabelSearchLandID)
                                         .addGap(18, 18, 18)
+                                        .addComponent(jTextFieldSearchLandIDVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(250, 250, 250)
                                         .addComponent(jButtonDeleteLand)
                                         .addGap(18, 18, 18)
                                         .addComponent(jButtonEditLand)
@@ -1272,14 +1189,10 @@ public class AppUI extends javax.swing.JFrame {
                                         .addComponent(jButtonShowLandDetail))
                                     .addGroup(jPanelSearchLandsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButtonSearchLands)
-                                        .addComponent(jComboBoxSearchLandXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldSearchLandYVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelSearchLandXCoordinate)
-                                        .addComponent(jTextFieldSearchLandXVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelSearchLandYCoordinate)
-                                        .addComponent(jComboBoxSearchLandYDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabelSearchLandID)
+                                        .addComponent(jTextFieldSearchLandIDVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPaneSearchLands, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+                                .addComponent(jScrollPaneSearchLands, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
                                 .addContainerGap())
                         );
 
@@ -1401,7 +1314,7 @@ public class AppUI extends javax.swing.JFrame {
                             .addGroup(jPanelSearchAllObjectsLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanelSearchAllObjectsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPaneSearchObjects, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1102, Short.MAX_VALUE)
+                                    .addComponent(jScrollPaneSearchObjects, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1250, Short.MAX_VALUE)
                                     .addGroup(jPanelSearchAllObjectsLayout.createSequentialGroup()
                                         .addComponent(jButtonSearchObjects)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1594,7 +1507,7 @@ public class AppUI extends javax.swing.JFrame {
                                         .addComponent(jTextFieldAddPropPropNumVal)
                                         .addComponent(jTextFieldAddPropDescVal))
                                     .addComponent(jButtonAddProperty))
-                                .addContainerGap(780, Short.MAX_VALUE))
+                                .addContainerGap(911, Short.MAX_VALUE))
                         );
                         jPanelAddPropertyLayout.setVerticalGroup(
                             jPanelAddPropertyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1770,7 +1683,7 @@ public class AppUI extends javax.swing.JFrame {
                                         .addComponent(jTextFieldAddLandLandNumVal)
                                         .addComponent(jTextFieldAddLandDescVal))
                                     .addComponent(jButtonAddLand))
-                                .addContainerGap(780, Short.MAX_VALUE))
+                                .addContainerGap(912, Short.MAX_VALUE))
                         );
                         jPanelAddLandLayout.setVerticalGroup(
                             jPanelAddLandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1895,30 +1808,6 @@ public class AppUI extends javax.swing.JFrame {
         this.jButtonShowLandDetail.setEnabled(false);
     }
     
-    /**
-     * metoda pre vyhladanie nehnutelnosti ktore sa nachadzaju na GPS pozicii zadanej na obrazovke
-     */
-    private void searchPropertiesOnSelectedGPS() {
-//        double XVal = Double.parseDouble(this.jTextFieldSearchPropXVal.getText());
-//        double YVal = Double.parseDouble(this.jTextFieldSearchPropYVal.getText());
-//
-//        this.properties = this.application.findProperties(
-//                new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchPropXDirect.getSelectedItem().toString()), XVal), 
-//                    new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchPropYDirect.getSelectedItem().toString()), YVal)));
-    }
-    
-    /**
-     * metoda pre vyhladanie nehnutelnosti ktore sa nachadzaju na GPS pozicii zadanej na obrazovke
-     */
-    private void searchLandsOnSelectedGPS() {
-//        double XVal = Double.parseDouble(this.jTextFieldSearchLandXVal.getText());
-//        double YVal = Double.parseDouble(this.jTextFieldSearchLandYVal.getText());
-//
-//        this.lands = this.application.findLands(
-//                new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchLandXDirect.getSelectedItem().toString()), XVal), 
-//                    new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchLandYDirect.getSelectedItem().toString()), YVal)));
-    }
-    
     private void setPropDetailsEditable(boolean editable) {
         
         this.jTextFieldPropDetailPropNumVal.setEnabled(editable);
@@ -2041,12 +1930,14 @@ public class AppUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonInitializeAppActionPerformed
 
     private void jButtonSearchPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchPropertiesActionPerformed
+        PropertyDH foundProperty = null;
+        
         
         if (this.application == null) {
             JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Aplikácia nie je inicializovaná", "Chyba", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            if (this.jTextFieldSearchPropXVal.getText().isEmpty() || this.jTextFieldSearchPropYVal.getText().isEmpty()) {
+            if (this.jTextFieldSearchPropIDVal.getText().isEmpty()) {
                 try {
                     this.properties = this.application.getProperties();
                 } catch (IOException ex) {
@@ -2054,7 +1945,21 @@ public class AppUI extends javax.swing.JFrame {
                 }
             }
             else {
-                this.searchPropertiesOnSelectedGPS();
+                int propId = Integer.parseInt(this.jTextFieldSearchPropIDVal.getText());
+                if (propId > 0) {
+                    try {
+                        foundProperty = this.application.getProperty(propId);
+                    } catch (Exception ex) {
+                        Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+                    } 
+                    this.properties.clear(); 
+                    if (foundProperty != null) {
+                        this.properties.add(foundProperty);
+                    }
+                }
+                else {
+                    //TODO zla konverzia
+                }
             }
             
             this.printPropertiesTable();            
@@ -2076,34 +1981,28 @@ public class AppUI extends javax.swing.JFrame {
         }
         else {
             count = Integer.parseInt(this.jTextFieldGenPropNumber.getText());
-//            this.application.generateObject(true, count);
+            try {
+                this.application.generateObject(true, count);
+            } catch (Exception ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             JOptionPane.showMessageDialog(this.jPanelInitApp, "Generovanie nehnuteľností bolo úspešné");
         }
     }//GEN-LAST:event_jButtonGeneratePropertiesActionPerformed
 
-    private void jComboBoxSearchPropXDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSearchPropXDirectActionPerformed
+    private void jTextFieldSearchPropIDValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchPropIDValActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxSearchPropXDirectActionPerformed
-
-    private void jTextFieldSearchPropXValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchPropXValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldSearchPropXValActionPerformed
-
-    private void jComboBoxSearchPropYDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSearchPropYDirectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxSearchPropYDirectActionPerformed
-
-    private void jTextFieldSearchPropYValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchPropYValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldSearchPropYValActionPerformed
+    }//GEN-LAST:event_jTextFieldSearchPropIDValActionPerformed
 
     private void jButtonSearchLandsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchLandsActionPerformed
+        LandDH foundLand = null;
+        
         
         if (this.application == null) {
             JOptionPane.showMessageDialog(this.jPanelSearchLands, "Aplikácia nie je inicializovaná", "Chyba", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            if (this.jTextFieldSearchLandXVal.getText().isEmpty() || this.jTextFieldSearchLandYVal.getText().isEmpty()) {
+            if (this.jTextFieldSearchLandIDVal.getText().isEmpty()) {
                 try {
                     this.lands = this.application.getLands();
                 } catch (IOException ex) {
@@ -2111,7 +2010,21 @@ public class AppUI extends javax.swing.JFrame {
                 }
             }
             else {
-                this.searchLandsOnSelectedGPS();
+                int landId = Integer.parseInt(this.jTextFieldSearchLandIDVal.getText());
+                if (landId > 0) {
+                    try {
+                        foundLand = this.application.getLand(landId);
+                    } catch (Exception ex) {
+                        Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+                    } 
+                    this.lands.clear(); 
+                    if (foundLand != null) {
+                        this.lands.add(foundLand);
+                    }
+                }
+                else {
+                    //TODO zla konverzia
+                }
             }
             
             this.printLandsTable();
@@ -2119,21 +2032,9 @@ public class AppUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButtonSearchLandsActionPerformed
 
-    private void jComboBoxSearchLandXDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSearchLandXDirectActionPerformed
+    private void jTextFieldSearchLandIDValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchLandIDValActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxSearchLandXDirectActionPerformed
-
-    private void jTextFieldSearchLandXValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchLandXValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldSearchLandXValActionPerformed
-
-    private void jComboBoxSearchLandYDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSearchLandYDirectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxSearchLandYDirectActionPerformed
-
-    private void jTextFieldSearchLandYValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchLandYValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldSearchLandYValActionPerformed
+    }//GEN-LAST:event_jTextFieldSearchLandIDValActionPerformed
 
     private void jTextFieldGenLandNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldGenLandNumberActionPerformed
         // TODO add your handling code here:
@@ -2147,7 +2048,11 @@ public class AppUI extends javax.swing.JFrame {
         }
         else {
             count = Integer.parseInt(this.jTextFieldGenLandNumber.getText());
-//            this.application.generateObject(false, count);
+            try {
+                this.application.generateObject(false, count);
+            } catch (Exception ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             JOptionPane.showMessageDialog(this.jPanelInitApp, "Generovanie parciel bolo úspešné");
         }
     }//GEN-LAST:event_jButtonGenerateLandsActionPerformed
@@ -2405,16 +2310,20 @@ public class AppUI extends javax.swing.JFrame {
         if (choice == 0) { // vyradit nehnutelnost
             int row = this.jTableProperties.getSelectedRow();
             
-//            if (this.application.removeProperty(this.properties.get(row))) {
-//                this.properties.remove(row);
-//                
-//                this.printPropertiesTable();
-//                
-//                JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Nehnuteľnosť bola úspešne vyradená");
-//            }
-//            else {
-//                JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Označenú nehnuteľnosť sa nepodarilo vyradiť", "Chyba", JOptionPane.ERROR_MESSAGE);
-//            }
+            try {
+                if (this.application.removeProperty(this.properties.get(row))) {
+                    this.properties.remove(row);
+                    
+                    this.printPropertiesTable();
+                    
+                    JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Nehnuteľnosť bola úspešne vyradená");
+                }
+                else {
+                    JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Označenú nehnuteľnosť sa nepodarilo vyradiť", "Chyba", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         
@@ -2460,16 +2369,20 @@ public class AppUI extends javax.swing.JFrame {
         if (choice == 0) { // vyradit parcelu
             int row = this.jTableLands.getSelectedRow();
             
-//            if (this.application.removeLand(this.lands.get(row))) {
-//                this.lands.remove(row);
-//                
-//                this.printLandsTable();
-//                
-//                JOptionPane.showMessageDialog(this.jPanelSearchLands, "Parcela bola úspešne vyradená");
-//            }
-//            else {
-//                JOptionPane.showMessageDialog(this.jPanelSearchLands, "Označenú parcelu sa nepodarilo vyradiť", "Chyba", JOptionPane.ERROR_MESSAGE);
-//            }
+            try {
+                if (this.application.removeLand(this.lands.get(row))) {
+                    this.lands.remove(row);
+                    
+                    this.printLandsTable();
+                    
+                    JOptionPane.showMessageDialog(this.jPanelSearchLands, "Parcela bola úspešne vyradená");
+                }
+                else {
+                    JOptionPane.showMessageDialog(this.jPanelSearchLands, "Označenú parcelu sa nepodarilo vyradiť", "Chyba", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         
@@ -2850,14 +2763,10 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxPropDetailEndYDirect;
     private javax.swing.JComboBox<String> jComboBoxPropDetailStartXDirect;
     private javax.swing.JComboBox<String> jComboBoxPropDetailStartYDirect;
-    private javax.swing.JComboBox<String> jComboBoxSearchLandXDirect;
-    private javax.swing.JComboBox<String> jComboBoxSearchLandYDirect;
     private javax.swing.JComboBox<String> jComboBoxSearchObjEndXDirect;
     private javax.swing.JComboBox<String> jComboBoxSearchObjEndYDirect;
     private javax.swing.JComboBox<String> jComboBoxSearchObjStartXDirect;
     private javax.swing.JComboBox<String> jComboBoxSearchObjStartYDirect;
-    private javax.swing.JComboBox<String> jComboBoxSearchPropXDirect;
-    private javax.swing.JComboBox<String> jComboBoxSearchPropYDirect;
     private javax.swing.JComboBox<String> jComboBoxStartXDirect;
     private javax.swing.JComboBox<String> jComboBoxStartYDirect;
     private javax.swing.JDialog jDialogLandDetail;
@@ -2902,16 +2811,14 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelPropDetailStart;
     private javax.swing.JLabel jLabelPropDetailStartX;
     private javax.swing.JLabel jLabelPropDetailStartY;
-    private javax.swing.JLabel jLabelSearchLandXCoordinate;
-    private javax.swing.JLabel jLabelSearchLandYCoordinate;
+    private javax.swing.JLabel jLabelSearchLandID;
     private javax.swing.JLabel jLabelSearchObjEnd;
     private javax.swing.JLabel jLabelSearchObjEndXCoordinate;
     private javax.swing.JLabel jLabelSearchObjEndYCoordinate;
     private javax.swing.JLabel jLabelSearchObjStart;
     private javax.swing.JLabel jLabelSearchObjStartXCoordinate;
     private javax.swing.JLabel jLabelSearchObjStartYCoordinate;
-    private javax.swing.JLabel jLabelSearchPropXCoordinate;
-    private javax.swing.JLabel jLabelSearchPropYCoordinate;
+    private javax.swing.JLabel jLabelSearchPropID;
     private javax.swing.JLabel jLabelStart;
     private javax.swing.JLabel jLabelStartX;
     private javax.swing.JLabel jLabelStartY;
@@ -2969,14 +2876,12 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldPropDetailPropNumVal;
     private javax.swing.JTextField jTextFieldPropDetailStartXVal;
     private javax.swing.JTextField jTextFieldPropDetailStartYVal;
-    private javax.swing.JTextField jTextFieldSearchLandXVal;
-    private javax.swing.JTextField jTextFieldSearchLandYVal;
+    private javax.swing.JTextField jTextFieldSearchLandIDVal;
     private javax.swing.JTextField jTextFieldSearchObjEndXVal;
     private javax.swing.JTextField jTextFieldSearchObjEndYVal;
     private javax.swing.JTextField jTextFieldSearchObjStartXVal;
     private javax.swing.JTextField jTextFieldSearchObjStartYVal;
-    private javax.swing.JTextField jTextFieldSearchPropXVal;
-    private javax.swing.JTextField jTextFieldSearchPropYVal;
+    private javax.swing.JTextField jTextFieldSearchPropIDVal;
     private javax.swing.JTextField jTextFieldStartXVal;
     private javax.swing.JTextField jTextFieldStartYVal;
     // End of variables declaration//GEN-END:variables

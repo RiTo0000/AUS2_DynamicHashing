@@ -1032,7 +1032,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="117" max="32767" attributes="0"/>
+                      <EmptySpace pref="248" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1308,22 +1308,14 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPaneSearchProperties" alignment="0" pref="1102" max="32767" attributes="0"/>
+                          <Component id="jScrollPaneSearchProperties" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jButtonSearchProperties" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabelSearchPropXCoordinate" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jComboBoxSearchPropXDirect" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTextFieldSearchPropXVal" min="-2" pref="134" max="-2" attributes="0"/>
+                              <Component id="jLabelSearchPropID" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabelSearchPropYCoordinate" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jComboBoxSearchPropYDirect" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTextFieldSearchPropYVal" min="-2" pref="134" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jTextFieldSearchPropIDVal" min="-2" pref="134" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
                               <Component id="jButtonDeleteProperty" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jButtonEditProperty" min="-2" max="-2" attributes="0"/>
@@ -1342,24 +1334,18 @@
                       <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="jComboBoxSearchPropYDirect" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextFieldSearchPropYVal" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jButtonDeleteProperty" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jButtonEditProperty" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jButtonShowPropertyDetail" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jComboBoxSearchPropXDirect" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextFieldSearchPropXVal" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelSearchPropYCoordinate" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jButtonSearchProperties" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelSearchPropXCoordinate" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelSearchPropID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextFieldSearchPropIDVal" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPaneSearchProperties" pref="604" max="32767" attributes="0"/>
+                      <Component id="jScrollPaneSearchProperties" pref="617" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -1402,78 +1388,21 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSearchPropertiesActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabelSearchPropXCoordinate">
+            <Component class="javax.swing.JLabel" name="jLabelSearchPropID">
               <Properties>
-                <Property name="text" type="java.lang.String" value="X:"/>
+                <Property name="text" type="java.lang.String" value="Identifika&#x10d;n&#xe9; &#x10d;&#xed;slo nehnute&#x13e;nosti (ID):"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="jComboBoxSearchPropXDirect">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="2">
-                    <StringItem index="0" value="E"/>
-                    <StringItem index="1" value="W"/>
-                  </StringArray>
-                </Property>
-                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[45, 22]"/>
-                </Property>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[45, 22]"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxSearchPropXDirectActionPerformed"/>
-              </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-              </AuxValues>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jTextFieldSearchPropXVal">
+            <Component class="javax.swing.JTextField" name="jTextFieldSearchPropIDVal">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value="Zadajte kladne &#x10d;&#xed;slo"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldSearchPropXValActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldSearchPropIDValActionPerformed"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
               </AuxValues>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="jComboBoxSearchPropYDirect">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="2">
-                    <StringItem index="0" value="N"/>
-                    <StringItem index="1" value="S"/>
-                  </StringArray>
-                </Property>
-                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[45, 22]"/>
-                </Property>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[45, 22]"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxSearchPropYDirectActionPerformed"/>
-              </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-              </AuxValues>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jTextFieldSearchPropYVal">
-              <Properties>
-                <Property name="toolTipText" type="java.lang.String" value="Zadajte kladne &#x10d;&#xed;slo"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldSearchPropYValActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabelSearchPropYCoordinate">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Y:"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="jButtonDeleteProperty">
               <Properties>
@@ -1519,22 +1448,14 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPaneSearchLands" alignment="1" pref="1102" max="32767" attributes="0"/>
+                          <Component id="jScrollPaneSearchLands" alignment="1" pref="1250" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jButtonSearchLands" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabelSearchLandXCoordinate" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jComboBoxSearchLandXDirect" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTextFieldSearchLandXVal" min="-2" pref="134" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabelSearchLandYCoordinate" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jComboBoxSearchLandYDirect" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTextFieldSearchLandYVal" min="-2" pref="134" max="-2" attributes="0"/>
+                              <Component id="jLabelSearchLandID" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jTextFieldSearchLandIDVal" min="-2" pref="134" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="250" max="-2" attributes="0"/>
                               <Component id="jButtonDeleteLand" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jButtonEditLand" min="-2" max="-2" attributes="0"/>
@@ -1559,16 +1480,12 @@
                           </Group>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jButtonSearchLands" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jComboBoxSearchLandXDirect" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextFieldSearchLandYVal" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelSearchLandXCoordinate" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextFieldSearchLandXVal" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelSearchLandYCoordinate" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jComboBoxSearchLandYDirect" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelSearchLandID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextFieldSearchLandIDVal" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPaneSearchLands" pref="604" max="32767" attributes="0"/>
+                      <Component id="jScrollPaneSearchLands" pref="617" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -1583,68 +1500,16 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSearchLandsActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JComboBox" name="jComboBoxSearchLandXDirect">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="2">
-                    <StringItem index="0" value="E"/>
-                    <StringItem index="1" value="W"/>
-                  </StringArray>
-                </Property>
-                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[45, 22]"/>
-                </Property>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[45, 22]"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxSearchLandXDirectActionPerformed"/>
-              </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-              </AuxValues>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jTextFieldSearchLandXVal">
+            <Component class="javax.swing.JTextField" name="jTextFieldSearchLandIDVal">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value="Zadajte kladne &#x10d;&#xed;slo"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldSearchLandXValActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldSearchLandIDValActionPerformed"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
               </AuxValues>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="jComboBoxSearchLandYDirect">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="2">
-                    <StringItem index="0" value="N"/>
-                    <StringItem index="1" value="S"/>
-                  </StringArray>
-                </Property>
-                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[45, 22]"/>
-                </Property>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[45, 22]"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxSearchLandYDirectActionPerformed"/>
-              </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-              </AuxValues>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jTextFieldSearchLandYVal">
-              <Properties>
-                <Property name="toolTipText" type="java.lang.String" value="Zadajte kladne &#x10d;&#xed;slo"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldSearchLandYValActionPerformed"/>
-              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPaneSearchLands">
               <AuxValues>
@@ -1674,14 +1539,9 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JLabel" name="jLabelSearchLandXCoordinate">
+            <Component class="javax.swing.JLabel" name="jLabelSearchLandID">
               <Properties>
-                <Property name="text" type="java.lang.String" value="X:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabelSearchLandYCoordinate">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Y:"/>
+                <Property name="text" type="java.lang.String" value="Identifika&#x10d;n&#xe9; &#x10d;&#xed;slo parcely (ID):"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="jButtonDeleteLand">
@@ -1728,7 +1588,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPaneSearchObjects" alignment="1" pref="1102" max="32767" attributes="0"/>
+                          <Component id="jScrollPaneSearchObjects" alignment="1" pref="1250" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jButtonSearchObjects" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -2052,7 +1912,7 @@
                           </Group>
                           <Component id="jButtonAddProperty" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="780" max="32767" attributes="0"/>
+                      <EmptySpace pref="911" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -2352,7 +2212,7 @@
                           </Group>
                           <Component id="jButtonAddLand" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="780" max="32767" attributes="0"/>
+                      <EmptySpace pref="912" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

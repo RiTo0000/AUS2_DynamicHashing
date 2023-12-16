@@ -101,13 +101,16 @@ public class QuadTree <T extends QuadTreeElementKey > {
     /**
      * Metoda pre vlozenie elementu do Quad stromu
      * @param element prvok vkladany do Quad stromu
+     * @param generateNewKey true ak sa ma generovat novy kluc, false inak
      * @return vysledok vkladania true ak sa vlozenie podarilo , false - ak sa vlozenie nepodarilo
      */
-    public boolean insert(T element) {  
+    public boolean insert(T element, boolean generateNewKey) {  
         boolean inserted = false;
         
-        this.maxKey++;
-        element.setKey(this.maxKey);
+        if (generateNewKey) {
+            this.maxKey++;
+            element.setKey(this.maxKey);
+        }
         
         if (this.optimalRoot.getSpace().check_if_object_fits(element.getSpace())) {
             if (this.optimalRoot.insert(element, (this.maxSize - this.optimalRootLevel), this.numOfTopLvlElements)) {
@@ -702,5 +705,17 @@ public class QuadTree <T extends QuadTreeElementKey > {
             unprocessedNodesLVL1.addAll(unprocessedNodesLVL2);
             unprocessedNodesLVL2.clear();
         }
+    }
+    
+    /**
+     * Metoda vycisti data QuadStromu
+     */
+    public void clearAllData() {
+        this.Root = new QuadTreeNode(this.space);
+        this.optimalRoot = this.Root;
+        this.optimalRootLevel = 0;
+        
+        this.numOfElements = 0;
+        this.numOfTopLvlElements.setValue(0);
     }
 }

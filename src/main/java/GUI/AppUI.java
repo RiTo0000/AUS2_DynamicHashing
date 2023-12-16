@@ -208,13 +208,14 @@ public class AppUI extends javax.swing.JFrame {
         jMenuActions = new javax.swing.JMenu();
         jMenuItemSaveApp = new javax.swing.JMenuItem();
         jMenuItemLoadApp = new javax.swing.JMenuItem();
+        jMenuItemClearApp = new javax.swing.JMenuItem();
 
-        jDialogPropertyDetail.setMinimumSize(new java.awt.Dimension(600, 500));
+        jDialogPropertyDetail.setMinimumSize(new java.awt.Dimension(700, 500));
         jDialogPropertyDetail.setModal(true);
 
-        jPanelPropertyDetail.setMaximumSize(new java.awt.Dimension(600, 500));
-        jPanelPropertyDetail.setMinimumSize(new java.awt.Dimension(600, 500));
-        jPanelPropertyDetail.setPreferredSize(new java.awt.Dimension(600, 500));
+        jPanelPropertyDetail.setMaximumSize(new java.awt.Dimension(700, 500));
+        jPanelPropertyDetail.setMinimumSize(new java.awt.Dimension(700, 500));
+        jPanelPropertyDetail.setPreferredSize(new java.awt.Dimension(700, 500));
 
         jLabelPropDetailPropNum.setText("Súpisné číslo:");
 
@@ -310,26 +311,26 @@ public class AppUI extends javax.swing.JFrame {
             }
         });
 
-        jPanelLandsOnProperty.setMaximumSize(new java.awt.Dimension(600, 200));
-        jPanelLandsOnProperty.setMinimumSize(new java.awt.Dimension(600, 200));
-        jPanelLandsOnProperty.setPreferredSize(new java.awt.Dimension(600, 200));
+        jPanelLandsOnProperty.setMaximumSize(new java.awt.Dimension(700, 200));
+        jPanelLandsOnProperty.setMinimumSize(new java.awt.Dimension(700, 200));
+        jPanelLandsOnProperty.setPreferredSize(new java.awt.Dimension(700, 200));
 
-        jScrollPaneSearchLands1.setMinimumSize(new java.awt.Dimension(600, 200));
-        jScrollPaneSearchLands1.setPreferredSize(new java.awt.Dimension(600, 200));
+        jScrollPaneSearchLands1.setMinimumSize(new java.awt.Dimension(700, 200));
+        jScrollPaneSearchLands1.setPreferredSize(new java.awt.Dimension(700, 200));
 
         jTableLandsPropDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Číslo parcely", "Popis", "Začiatok", "Koniec"
+                "ID", "Číslo parcely", "Popis", "Začiatok", "Koniec"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -340,9 +341,9 @@ public class AppUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTableLandsPropDetail.setMaximumSize(new java.awt.Dimension(600, 32767));
-        jTableLandsPropDetail.setMinimumSize(new java.awt.Dimension(580, 0));
-        jTableLandsPropDetail.setPreferredSize(new java.awt.Dimension(600, 150));
+        jTableLandsPropDetail.setMaximumSize(new java.awt.Dimension(700, 32767));
+        jTableLandsPropDetail.setMinimumSize(new java.awt.Dimension(700, 0));
+        jTableLandsPropDetail.setPreferredSize(new java.awt.Dimension(700, 150));
         jTableLandsPropDetail.setRowSelectionAllowed(false);
         jScrollPaneSearchLands1.setViewportView(jTableLandsPropDetail);
 
@@ -350,7 +351,7 @@ public class AppUI extends javax.swing.JFrame {
         jPanelLandsOnProperty.setLayout(jPanelLandsOnPropertyLayout);
         jPanelLandsOnPropertyLayout.setHorizontalGroup(
             jPanelLandsOnPropertyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLandsOnPropertyLayout.createSequentialGroup()
+            .addGroup(jPanelLandsOnPropertyLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jScrollPaneSearchLands1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -365,47 +366,46 @@ public class AppUI extends javax.swing.JFrame {
         jPanelPropertyDetailLayout.setHorizontalGroup(
             jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelPropertyDetailLayout.createSequentialGroup()
-                .addGap(55, 55, 55)
                 .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelPropDetailPropNum)
-                    .addComponent(jLabelPropDetailStart)
-                    .addComponent(jLabelPropDetailEnd)
-                    .addComponent(jLabelPropDetailDescription))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanelPropertyDetailLayout.createSequentialGroup()
+                        .addGap(55, 55, 55)
                         .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelPropDetailStartY)
+                            .addComponent(jLabelPropDetailPropNum)
+                            .addComponent(jLabelPropDetailStart)
+                            .addComponent(jLabelPropDetailEnd)
+                            .addComponent(jLabelPropDetailDescription))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanelPropertyDetailLayout.createSequentialGroup()
-                                .addComponent(jLabelPropDetailStartX)
+                                .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelPropDetailStartY)
+                                    .addGroup(jPanelPropertyDetailLayout.createSequentialGroup()
+                                        .addComponent(jLabelPropDetailStartX)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jComboBoxPropDetailStartYDirect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jComboBoxPropDetailStartXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldPropDetailStartXVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextFieldPropDetailStartYVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabelPropDetailEndY)
+                            .addGroup(jPanelPropertyDetailLayout.createSequentialGroup()
+                                .addComponent(jLabePropDetailEndX)
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBoxPropDetailStartYDirect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBoxPropDetailStartXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldPropDetailStartXVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldPropDetailStartYVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabelPropDetailEndY)
-                    .addGroup(jPanelPropertyDetailLayout.createSequentialGroup()
-                        .addComponent(jLabePropDetailEndX)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelPropertyDetailLayout.createSequentialGroup()
-                                .addComponent(jComboBoxPropDetailEndYDirect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldPropDetailEndYVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButtonPropDetailEditProperty)
-                            .addGroup(jPanelPropertyDetailLayout.createSequentialGroup()
-                                .addComponent(jComboBoxPropDetailEndXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldPropDetailEndXVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jTextFieldPropDetailDescVal)
-                    .addComponent(jTextFieldPropDetailPropNumVal))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPropertyDetailLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanelLandsOnProperty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanelPropertyDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelPropertyDetailLayout.createSequentialGroup()
+                                        .addComponent(jComboBoxPropDetailEndYDirect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextFieldPropDetailEndYVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jButtonPropDetailEditProperty)
+                                    .addGroup(jPanelPropertyDetailLayout.createSequentialGroup()
+                                        .addComponent(jComboBoxPropDetailEndXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextFieldPropDetailEndXVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextFieldPropDetailDescVal)
+                            .addComponent(jTextFieldPropDetailPropNumVal)))
+                    .addComponent(jPanelLandsOnProperty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelPropertyDetailLayout.setVerticalGroup(
@@ -463,12 +463,13 @@ public class AppUI extends javax.swing.JFrame {
             .addComponent(jPanelPropertyDetail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jDialogLandDetail.setMinimumSize(new java.awt.Dimension(600, 500));
+        jDialogLandDetail.setMinimumSize(new java.awt.Dimension(700, 500));
         jDialogLandDetail.setModal(true);
+        jDialogLandDetail.setPreferredSize(new java.awt.Dimension(700, 500));
 
-        jPanelLandDetail.setMaximumSize(new java.awt.Dimension(600, 500));
-        jPanelLandDetail.setMinimumSize(new java.awt.Dimension(600, 500));
-        jPanelLandDetail.setPreferredSize(new java.awt.Dimension(600, 500));
+        jPanelLandDetail.setMaximumSize(new java.awt.Dimension(700, 500));
+        jPanelLandDetail.setMinimumSize(new java.awt.Dimension(700, 500));
+        jPanelLandDetail.setPreferredSize(new java.awt.Dimension(700, 500));
 
         jLabeLandDetailLandNum.setText("Číslo parcely:");
 
@@ -564,26 +565,26 @@ public class AppUI extends javax.swing.JFrame {
             }
         });
 
-        jPanelPropertiesOnLand.setMaximumSize(new java.awt.Dimension(600, 200));
-        jPanelPropertiesOnLand.setMinimumSize(new java.awt.Dimension(600, 200));
-        jPanelPropertiesOnLand.setPreferredSize(new java.awt.Dimension(600, 200));
+        jPanelPropertiesOnLand.setMaximumSize(new java.awt.Dimension(700, 200));
+        jPanelPropertiesOnLand.setMinimumSize(new java.awt.Dimension(700, 200));
+        jPanelPropertiesOnLand.setPreferredSize(new java.awt.Dimension(700, 200));
 
-        jScrollPaneSearchLands2.setMinimumSize(new java.awt.Dimension(600, 200));
-        jScrollPaneSearchLands2.setPreferredSize(new java.awt.Dimension(600, 200));
+        jScrollPaneSearchLands2.setMinimumSize(new java.awt.Dimension(700, 200));
+        jScrollPaneSearchLands2.setPreferredSize(new java.awt.Dimension(700, 200));
 
         jTablePropertiesLandDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Súpisné číslo", "Popis", "Začiatok", "Koniec"
+                "ID", "Súpisné číslo", "Popis", "Začiatok", "Koniec"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -594,9 +595,9 @@ public class AppUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTablePropertiesLandDetail.setMaximumSize(new java.awt.Dimension(600, 32767));
-        jTablePropertiesLandDetail.setMinimumSize(new java.awt.Dimension(580, 0));
-        jTablePropertiesLandDetail.setPreferredSize(new java.awt.Dimension(600, 150));
+        jTablePropertiesLandDetail.setMaximumSize(new java.awt.Dimension(700, 32767));
+        jTablePropertiesLandDetail.setMinimumSize(new java.awt.Dimension(700, 0));
+        jTablePropertiesLandDetail.setPreferredSize(new java.awt.Dimension(700, 150));
         jTablePropertiesLandDetail.setRowSelectionAllowed(false);
         jScrollPaneSearchLands2.setViewportView(jTablePropertiesLandDetail);
 
@@ -1747,6 +1748,15 @@ public class AppUI extends javax.swing.JFrame {
                         });
                         jMenuActions.add(jMenuItemLoadApp);
 
+                        jMenuItemClearApp.setText("Vyčistiť všetky dáta aplikácie");
+                        jMenuItemClearApp.addActionListener(new java.awt.event.ActionListener() {
+                            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                jMenuItemClearAppActionPerformed(evt);
+                            }
+                        });
+                        jMenuActions.add(jMenuItemClearApp);
+                        jMenuItemClearApp.getAccessibleContext().setAccessibleName("Vyčistiť všetky dáta aplikácie");
+
                         jMenuBar.add(jMenuActions);
 
                         setJMenuBar(jMenuBar);
@@ -2344,8 +2354,8 @@ public class AppUI extends javax.swing.JFrame {
         PropertyDH selectedProperty = this.properties.get(row);
         
         //naplnenie poli
-//        this.jTextFieldPropDetailPropNumVal.setText(Integer.toString(selectedProperty.getRegNumber()));
-//        this.jTextFieldPropDetailDescVal.setText(selectedProperty.getDescription());
+        this.jTextFieldPropDetailPropNumVal.setText(Integer.toString(selectedProperty.getRegNumber()));
+        this.jTextFieldPropDetailDescVal.setText(selectedProperty.getDescription());
         this.jComboBoxPropDetailStartXDirect.setSelectedItem(selectedProperty.getSpace().getStart().getX().getDirection().toString());
         this.jTextFieldPropDetailStartXVal.setText(Double.toString(selectedProperty.getSpace().getStart().getX().getValue()));
         this.jComboBoxPropDetailStartYDirect.setSelectedItem(selectedProperty.getSpace().getStart().getY().getDirection().toString());
@@ -2396,8 +2406,8 @@ public class AppUI extends javax.swing.JFrame {
         LandDH selectedLand = this.lands.get(row);
         
         //naplnenie poli
-//        this.jTextFieldLandDetailLandNumVal.setText(Integer.toString(selectedLand.getLandNumber()));
-//        this.jTextFieldLandDetailDescVal.setText(selectedLand.getDescription());
+        this.jTextFieldLandDetailLandNumVal.setText(Integer.toString(selectedLand.getLandNumber()));
+        this.jTextFieldLandDetailDescVal.setText(selectedLand.getDescription());
         this.jComboBoxLandDetailStartXDirect.setSelectedItem(selectedLand.getSpace().getStart().getX().getDirection().toString());
         this.jTextFieldLandDetailStartXVal.setText(Double.toString(selectedLand.getSpace().getStart().getX().getValue()));
         this.jComboBoxLandDetailStartYDirect.setSelectedItem(selectedLand.getSpace().getStart().getY().getDirection().toString());
@@ -2418,98 +2428,6 @@ public class AppUI extends javax.swing.JFrame {
         this.jButtonEditLand.setEnabled(true);
         this.jButtonShowLandDetail.setEnabled(true);
     }//GEN-LAST:event_jTableLandsMouseClicked
-
-    private void jComboBoxPropDetailStartXDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPropDetailStartXDirectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxPropDetailStartXDirectActionPerformed
-
-    private void jTextFieldPropDetailStartXValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailStartXValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldPropDetailStartXValActionPerformed
-
-    private void jComboBoxPropDetailStartYDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPropDetailStartYDirectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxPropDetailStartYDirectActionPerformed
-
-    private void jTextFieldPropDetailStartYValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailStartYValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldPropDetailStartYValActionPerformed
-
-    private void jComboBoxPropDetailEndXDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPropDetailEndXDirectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxPropDetailEndXDirectActionPerformed
-
-    private void jTextFieldPropDetailEndXValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailEndXValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldPropDetailEndXValActionPerformed
-
-    private void jComboBoxPropDetailEndYDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPropDetailEndYDirectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxPropDetailEndYDirectActionPerformed
-
-    private void jTextFieldPropDetailEndYValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailEndYValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldPropDetailEndYValActionPerformed
-
-    private void jButtonPropDetailEditPropertyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPropDetailEditPropertyActionPerformed
-        int row = this.jTableProperties.getSelectedRow();
-        
-        PropertyDH selectedProperty = this.properties.get(row);
-        
-        boolean areaEdited = false;
-        //nacitam si vsetky polia a skontrolujem aky typ editacie mi treba robit
-        int regNum = Integer.parseInt(this.jTextFieldPropDetailPropNumVal.getText());
-        String description = this.jTextFieldPropDetailDescVal.getText();
-        //suradnice polohy
-        Direction startXDir = Direction.getDirectFromString(this.jComboBoxPropDetailStartXDirect.getSelectedItem().toString());
-        double startXVal = Double.parseDouble(this.jTextFieldPropDetailStartXVal.getText());
-        Direction startYDir = Direction.getDirectFromString(this.jComboBoxPropDetailStartYDirect.getSelectedItem().toString());
-        double startYVal = Double.parseDouble(this.jTextFieldPropDetailStartYVal.getText());
-        Direction endXDir = Direction.getDirectFromString(this.jComboBoxPropDetailEndXDirect.getSelectedItem().toString());
-        double endXVal = Double.parseDouble(this.jTextFieldPropDetailEndXVal.getText());
-        Direction endYDir = Direction.getDirectFromString(this.jComboBoxPropDetailEndYDirect.getSelectedItem().toString());
-        double endYVal = Double.parseDouble(this.jTextFieldPropDetailEndYVal.getText());
-        
-        
-        Area newPropertySpace = new Area(new Point(new Coordinate(startXDir, startXVal), new Coordinate(startYDir, startYVal)), 
-                                        new Point(new Coordinate(endXDir, endXVal), new Coordinate(endYDir, endYVal)));
-        if (!selectedProperty.getSpace().equals(newPropertySpace)) 
-            areaEdited = true;
-        
-//        if (areaEdited) { //nastala zmena v polohe nehnutelnosti musim ju odobrat a pridat nanovo
-//            if (this.application.removeProperty(selectedProperty)) { //odstranenie sa podarilo
-//                //upravim nehnutelnost
-//                selectedProperty.setSpace(newPropertySpace);
-//                selectedProperty.edit(regNum, description); //upravim aj neklucove atributy ak by nahodou boli zmenene
-//                //pridam nanovo
-//                this.application.addProperty(selectedProperty);
-//                
-//                //ak su zadane oba suradnice pre vyhladavanie tak vyhladavanie obnovim a ak nie tak sa len zobrazi list nehnutelnosti s akt. udajmi
-//                if ( !this.jTextFieldSearchPropXVal.getText().isEmpty() && !this.jTextFieldSearchPropYVal.getText().isEmpty() ) {
-//                    //obnovenie vyhladania nehnutelnosti
-//                    this.searchPropertiesOnSelectedGPS();
-//                }
-//                
-//            }
-//        }
-//        else if (selectedProperty.getRegNumber() == regNum &&
-//                selectedProperty.getDescription().equals(description)) {
-//            JOptionPane.showMessageDialog(this.jPanelPropertyDetail, "Nič sa nezmenilo, editácia nie je potrebná");
-//            return; //nenastala ziadna zmena
-//        }
-//        else { // nastala zmena iba v jednom z 2 neklucovych poli menim iba tie
-//            selectedProperty.edit(regNum, description);
-//        }
-        
-        // obnova zobrazenia aktualnych nehnutelnosti
-        this.printPropertiesTable(); 
-        this.jDialogPropertyDetail.setVisible(false);
-        JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Editácia nehnuteľnosti prebehla úspešne");
-    }//GEN-LAST:event_jButtonPropDetailEditPropertyActionPerformed
-
-    private void jTextFieldPropDetailPropNumValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailPropNumValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldPropDetailPropNumValActionPerformed
 
     private void jTextFieldLandDetailLandNumValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldLandDetailLandNumValActionPerformed
         // TODO add your handling code here:
@@ -2572,30 +2490,22 @@ public class AppUI extends javax.swing.JFrame {
         if (!selectedLand.getSpace().equals(newLandSpace)) 
             areaEdited = true;
         
-//        if (areaEdited) { //nastala zmena v polohe parcely musim ju odobrat a pridat nanovo
-//            if (this.application.removeLand(selectedLand)) { //odstranenie sa podarilo
-//                //upravim parcelu
-//                selectedLand.setSpace(newLandSpace);
-//                selectedLand.edit(landNum, description); //upravim aj neklucove atributy ak by nahodou boli zmenene
-//                //pridam nanovo
-//                this.application.addLand(selectedLand);
-//                
-//                //ak su zadane oba suradnice pre vyhladavanie tak vyhladavanie obnovim a ak nie tak sa len zobrazi list parciel s akt. udajmi
-//                if ( !this.jTextFieldSearchLandXVal.getText().isEmpty() && !this.jTextFieldSearchLandYVal.getText().isEmpty() ) {
-//                    //obnovenie vyhladania parciel
-//                    this.searchLandsOnSelectedGPS();
-//                }
-//                
-//            }
-//        }
-//        else if (selectedLand.getLandNumber() == landNum &&
-//                selectedLand.getDescription().equals(description)) {
-//            JOptionPane.showMessageDialog(this.jPanelLandDetail, "Nič sa nezmenilo, editácia nie je potrebná");
-//            return; //nenastala ziadna zmena
-//        }
-//        else { // nastala zmena iba v jednom z 2 neklucovych poli menim iba tie
-//            selectedLand.edit(landNum, description);
-//        }
+        if (areaEdited) { //nastala zmena v polohe parcely musim spravit hlbsi edit (uprava v QuadStrome)
+            try {
+                this.application.editLand(selectedLand, newLandSpace, landNum, description);
+            } catch (Exception ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else if (selectedLand.getLandNumber() == landNum &&
+                selectedLand.getDescription().equals(description)) {
+            JOptionPane.showMessageDialog(this.jPanelLandDetail, "Nič sa nezmenilo, editácia nie je potrebná");
+            return; //nenastala ziadna zmena
+        }
+        else { // nastala zmena iba v jednom z 2 neklucovych poli menim iba tie
+            selectedLand.setLandNumber(landNum);
+            selectedLand.setDescription(description);
+        }
         
         // obnova zobrazenia aktualnych parciel
         this.printLandsTable(); 
@@ -2690,6 +2600,111 @@ public class AppUI extends javax.swing.JFrame {
 //            this.application.getLands().setOptimal(this.jRadioButtonOptimalTree.isSelected());
         }
     }//GEN-LAST:event_jRadioButtonOptimalTreeActionPerformed
+
+    private void jMenuItemClearAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemClearAppActionPerformed
+        if (this.application == null) {
+            JOptionPane.showMessageDialog(this.jPanelInitApp, "Aplikácia nie je inicializovaná", "Chyba", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            try {
+                this.application.clearAllData();
+            } catch (IOException ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (this.properties != null) {
+                this.properties.clear();
+                this.printPropertiesTable(); 
+            }
+            
+            if (this.lands != null) {
+                this.lands.clear();
+                this.printLandsTable();
+            }
+        }
+    }//GEN-LAST:event_jMenuItemClearAppActionPerformed
+
+    private void jButtonPropDetailEditPropertyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPropDetailEditPropertyActionPerformed
+        int row = this.jTableProperties.getSelectedRow();
+
+        PropertyDH selectedProperty = this.properties.get(row);
+
+        boolean areaEdited = false;
+        //nacitam si vsetky polia a skontrolujem aky typ editacie mi treba robit
+        int regNum = Integer.parseInt(this.jTextFieldPropDetailPropNumVal.getText());
+        String description = this.jTextFieldPropDetailDescVal.getText();
+        //suradnice polohy
+        Direction startXDir = Direction.getDirectFromString(this.jComboBoxPropDetailStartXDirect.getSelectedItem().toString());
+        double startXVal = Double.parseDouble(this.jTextFieldPropDetailStartXVal.getText());
+        Direction startYDir = Direction.getDirectFromString(this.jComboBoxPropDetailStartYDirect.getSelectedItem().toString());
+        double startYVal = Double.parseDouble(this.jTextFieldPropDetailStartYVal.getText());
+        Direction endXDir = Direction.getDirectFromString(this.jComboBoxPropDetailEndXDirect.getSelectedItem().toString());
+        double endXVal = Double.parseDouble(this.jTextFieldPropDetailEndXVal.getText());
+        Direction endYDir = Direction.getDirectFromString(this.jComboBoxPropDetailEndYDirect.getSelectedItem().toString());
+        double endYVal = Double.parseDouble(this.jTextFieldPropDetailEndYVal.getText());
+
+        Area newPropertySpace = new Area(new Point(new Coordinate(startXDir, startXVal), new Coordinate(startYDir, startYVal)),
+            new Point(new Coordinate(endXDir, endXVal), new Coordinate(endYDir, endYVal)));
+        if (!selectedProperty.getSpace().equals(newPropertySpace))
+        areaEdited = true;
+
+        if (areaEdited) { //nastala zmena v polohe nehnutelnosti musim spravit hlbsi edit (uprava v QuadStrome)
+            try {
+                this.application.editProperty(selectedProperty, newPropertySpace, regNum, description);
+            } catch (Exception ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else if (selectedProperty.getRegNumber() == regNum &&
+            selectedProperty.getDescription().equals(description)) {
+            JOptionPane.showMessageDialog(this.jPanelPropertyDetail, "Nič sa nezmenilo, editácia nie je potrebná");
+            return; //nenastala ziadna zmena
+        }
+        else { // nastala zmena iba v jednom z 2 neklucovych poli menim iba tie
+            selectedProperty.setRegNumber(regNum);
+            selectedProperty.setDescription(description);
+        }
+
+        // obnova zobrazenia aktualnych nehnutelnosti
+        this.printPropertiesTable();
+        this.jDialogPropertyDetail.setVisible(false);
+        JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Editácia nehnuteľnosti prebehla úspešne");
+    }//GEN-LAST:event_jButtonPropDetailEditPropertyActionPerformed
+
+    private void jTextFieldPropDetailEndYValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailEndYValActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldPropDetailEndYValActionPerformed
+
+    private void jComboBoxPropDetailEndYDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPropDetailEndYDirectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxPropDetailEndYDirectActionPerformed
+
+    private void jTextFieldPropDetailEndXValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailEndXValActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldPropDetailEndXValActionPerformed
+
+    private void jComboBoxPropDetailEndXDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPropDetailEndXDirectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxPropDetailEndXDirectActionPerformed
+
+    private void jTextFieldPropDetailStartYValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailStartYValActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldPropDetailStartYValActionPerformed
+
+    private void jComboBoxPropDetailStartYDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPropDetailStartYDirectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxPropDetailStartYDirectActionPerformed
+
+    private void jTextFieldPropDetailStartXValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailStartXValActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldPropDetailStartXValActionPerformed
+
+    private void jComboBoxPropDetailStartXDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPropDetailStartXDirectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxPropDetailStartXDirectActionPerformed
+
+    private void jTextFieldPropDetailPropNumValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailPropNumValActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldPropDetailPropNumValActionPerformed
     
     
     
@@ -2824,6 +2839,7 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelStartY;
     private javax.swing.JMenu jMenuActions;
     private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JMenuItem jMenuItemClearApp;
     private javax.swing.JMenuItem jMenuItemLoadApp;
     private javax.swing.JMenuItem jMenuItemSaveApp;
     private javax.swing.JPanel jPanelAddLand;

@@ -5,7 +5,7 @@
     <Container class="javax.swing.JDialog" name="jDialogPropertyDetail">
       <Properties>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[600, 500]"/>
+          <Dimension value="[700, 500]"/>
         </Property>
         <Property name="modal" type="boolean" value="true"/>
       </Properties>
@@ -26,13 +26,13 @@
         <Container class="javax.swing.JPanel" name="jPanelPropertyDetail">
           <Properties>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[600, 500]"/>
+              <Dimension value="[700, 500]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[600, 500]"/>
+              <Dimension value="[700, 500]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[600, 500]"/>
+              <Dimension value="[700, 500]"/>
             </Property>
           </Properties>
 
@@ -40,59 +40,59 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelPropDetailPropNum" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelPropDetailStart" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelPropDetailEnd" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelPropDetailDescription" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabelPropDetailStartY" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelPropDetailPropNum" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelPropDetailStart" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelPropDetailEnd" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelPropDetailDescription" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabelPropDetailStartX" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="jComboBoxPropDetailStartYDirect" alignment="0" max="-2" attributes="0"/>
-                                          <Component id="jComboBoxPropDetailStartXDirect" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabelPropDetailStartY" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jLabelPropDetailStartX" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Component id="jComboBoxPropDetailStartYDirect" alignment="0" max="-2" attributes="0"/>
+                                                  <Component id="jComboBoxPropDetailStartXDirect" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jTextFieldPropDetailStartXVal" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
+                                          <Component id="jTextFieldPropDetailStartYVal" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jTextFieldPropDetailStartXVal" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
-                                  <Component id="jTextFieldPropDetailStartYVal" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
+                                  <Component id="jLabelPropDetailEndY" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabePropDetailEndX" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jComboBoxPropDetailEndYDirect" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jTextFieldPropDetailEndYVal" min="-2" pref="134" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="jButtonPropDetailEditProperty" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jComboBoxPropDetailEndXDirect" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jTextFieldPropDetailEndXVal" min="-2" pref="134" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <Component id="jTextFieldPropDetailDescVal" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jTextFieldPropDetailPropNumVal" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="jLabelPropDetailEndY" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabePropDetailEndX" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jComboBoxPropDetailEndYDirect" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jTextFieldPropDetailEndYVal" min="-2" pref="134" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="jButtonPropDetailEditProperty" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jComboBoxPropDetailEndXDirect" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jTextFieldPropDetailEndXVal" min="-2" pref="134" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                          </Group>
-                          <Component id="jTextFieldPropDetailDescVal" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jTextFieldPropDetailPropNumVal" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jPanelLandsOnProperty" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="jPanelLandsOnProperty" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -336,20 +336,20 @@
             <Container class="javax.swing.JPanel" name="jPanelLandsOnProperty">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[600, 200]"/>
+                  <Dimension value="[700, 200]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[600, 200]"/>
+                  <Dimension value="[700, 200]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[600, 200]"/>
+                  <Dimension value="[700, 200]"/>
                 </Property>
               </Properties>
 
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                           <Component id="jScrollPaneSearchLands1" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -366,10 +366,10 @@
                 <Container class="javax.swing.JScrollPane" name="jScrollPaneSearchLands1">
                   <Properties>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[600, 200]"/>
+                      <Dimension value="[700, 200]"/>
                     </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[600, 200]"/>
+                      <Dimension value="[700, 200]"/>
                     </Property>
                   </Properties>
                   <AuxValues>
@@ -381,7 +381,8 @@
                     <Component class="javax.swing.JTable" name="jTableLandsPropDetail">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="0">
+                          <Table columnCount="5" rowCount="0">
+                            <Column editable="false" title="ID" type="java.lang.Integer"/>
                             <Column editable="false" title="&#x10c;&#xed;slo parcely" type="java.lang.Integer"/>
                             <Column editable="false" title="Popis" type="java.lang.String"/>
                             <Column editable="false" title="Za&#x10d;iatok" type="java.lang.String"/>
@@ -389,13 +390,13 @@
                           </Table>
                         </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[600, 32767]"/>
+                          <Dimension value="[700, 32767]"/>
                         </Property>
                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[580, 0]"/>
+                          <Dimension value="[700, 0]"/>
                         </Property>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[600, 150]"/>
+                          <Dimension value="[700, 150]"/>
                         </Property>
                         <Property name="rowSelectionAllowed" type="boolean" value="false"/>
                       </Properties>
@@ -411,9 +412,12 @@
     <Container class="javax.swing.JDialog" name="jDialogLandDetail">
       <Properties>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[600, 500]"/>
+          <Dimension value="[700, 500]"/>
         </Property>
         <Property name="modal" type="boolean" value="true"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[700, 500]"/>
+        </Property>
       </Properties>
 
       <Layout>
@@ -432,13 +436,13 @@
         <Container class="javax.swing.JPanel" name="jPanelLandDetail">
           <Properties>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[600, 500]"/>
+              <Dimension value="[700, 500]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[600, 500]"/>
+              <Dimension value="[700, 500]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[600, 500]"/>
+              <Dimension value="[700, 500]"/>
             </Property>
           </Properties>
 
@@ -742,13 +746,13 @@
             <Container class="javax.swing.JPanel" name="jPanelPropertiesOnLand">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[600, 200]"/>
+                  <Dimension value="[700, 200]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[600, 200]"/>
+                  <Dimension value="[700, 200]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[600, 200]"/>
+                  <Dimension value="[700, 200]"/>
                 </Property>
               </Properties>
 
@@ -776,10 +780,10 @@
                 <Container class="javax.swing.JScrollPane" name="jScrollPaneSearchLands2">
                   <Properties>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[600, 200]"/>
+                      <Dimension value="[700, 200]"/>
                     </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[600, 200]"/>
+                      <Dimension value="[700, 200]"/>
                     </Property>
                   </Properties>
                   <AuxValues>
@@ -791,7 +795,8 @@
                     <Component class="javax.swing.JTable" name="jTablePropertiesLandDetail">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="0">
+                          <Table columnCount="5" rowCount="0">
+                            <Column editable="false" title="ID" type="java.lang.Integer"/>
                             <Column editable="false" title="S&#xfa;pisn&#xe9; &#x10d;&#xed;slo" type="java.lang.Integer"/>
                             <Column editable="false" title="Popis" type="java.lang.String"/>
                             <Column editable="false" title="Za&#x10d;iatok" type="java.lang.String"/>
@@ -799,13 +804,13 @@
                           </Table>
                         </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[600, 32767]"/>
+                          <Dimension value="[700, 32767]"/>
                         </Property>
                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[580, 0]"/>
+                          <Dimension value="[700, 0]"/>
                         </Property>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[600, 150]"/>
+                          <Dimension value="[700, 150]"/>
                         </Property>
                         <Property name="rowSelectionAllowed" type="boolean" value="false"/>
                       </Properties>
@@ -901,6 +906,17 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemLoadAppActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemClearApp">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Vy&#x10d;isti&#x165; v&#x161;etky d&#xe1;ta aplik&#xe1;cie"/>
+              </Properties>
+              <AccessibilityProperties>
+                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Vy&#x10d;isti&#x165; v&#x161;etky d&#xe1;ta aplik&#xe1;cie"/>
+              </AccessibilityProperties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemClearAppActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

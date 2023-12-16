@@ -747,4 +747,13 @@ public class DynamicHashing <T extends IRecord> {
       
     }
     
+    public void clearAllData() throws IOException {
+        this.mainFile.setLength(0);
+        this.secondFile.setLength(0);
+        
+        this.freeMainBlockAddress = -1;
+        this.freeSecondBlockAddress = -1;
+        this.Root = new ExternalNode(null);
+    }
+    
 }

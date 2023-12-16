@@ -100,7 +100,7 @@ public class App {
             landsDH.edit(landDH);
         }
         
-        properties.insert(new Property(property.getSpace(), property.getIDRegNumber())); //zapisanie do QuadStromu
+        properties.insert(new Property(property.getSpace(), property.getIDRegNumber()), false); //zapisanie do QuadStromu
         
         return true;
     }
@@ -138,7 +138,7 @@ public class App {
             propertiesDH.edit(propertyDH);
         }
         
-        lands.insert(new Land(land.getSpace(), land.getIDLandNumber()));  //zapisanie do QuadStromu
+        lands.insert(new Land(land.getSpace(), land.getIDLandNumber()), false);  //zapisanie do QuadStromu
         
         return true;
     }
@@ -221,6 +221,137 @@ public class App {
         this.lands.delete(land.getSpace(), land.getIDLandNumber());
         
         return true;
+    }
+    
+    /**
+     * Metoda pre editaciu nehnutelnosti (vratane oblasti na ktorej lezi)
+     * @param property nehnutelnost na editaciu
+     * @param newSpace nova oblast na ktorej lezi
+     * @param newRegNum nove registracne cislo nehnutelnosti
+     * @param newDescription novy popis nehnutelnosti
+     * @return true ak sa editacia podarila, false inak
+     */
+    public boolean editProperty(PropertyDH property, Area newSpace, int newRegNum, String newDescription) throws Exception {
+        LandDH landUnderProp;
+        ArrayList<LandDH> landsUnderPropDH = new ArrayList<>();
+            
+        if (this.properties.delete(property.getSpace(), property.getIDRegNumber())) {
+            property.setSpace(newSpace);
+            property.setRegNumber(newRegNum);
+            property.setDescription(newDescription);
+            
+            //uprava udajov v DH
+            //odmazanie stareho prepojenia medzi nehnutelnostou a pozemkom
+            for (Integer landID : property.getLands()) {
+                landUnderProp = landsDH.find(new LandDH(landID, null, 0, ""));
+                landUnderProp.removeProperty(property.getIDRegNumber());
+                this.landsDH.edit(landUnderProp);
+            }
+            property.setLands(new ArrayList<>()); //vyprazdni
+            
+            //pridanie nehnutelnosti na pozemky tam kde ma byt a naopak
+            ArrayList<Land> landsUnderProp = this.lands.findElementsInArea(property.getSpace());
+
+            for (Land land : landsUnderProp) {
+                landUnderProp = landsDH.find(new LandDH(land.getKey(), land.getSpace(), 0, ""));
+
+                if (landUnderProp.getProperties().size() < LandDH.maxProperties) { //kontrola ci sa vojde do zoznamu nehnutelnosti na najdenom pozemku
+                    landUnderProp.addProperty(property.getIDRegNumber()); //pridanie nehnutelnosti na pozemok
+                    property.addLand(land.getKey()); //pridanie pozemku na nehnutelnost
+                    landsUnderPropDH.add(landUnderProp);
+                }
+
+                if (landsUnderPropDH.size() == PropertyDH.maxLands) { //ak uz mame dost pozemkov tak ukoncime prehladavanie zoznamu
+                    break;
+                }
+            }
+
+            propertiesDH.edit(property);
+
+            for (LandDH landDH : landsUnderPropDH) {
+                landsDH.edit(landDH);
+            }
+
+            properties.insert(new Property(property.getSpace(), property.getIDRegNumber()), false); //zapisanie upravej nehnutelnosti do QuadStromu
+            
+            return true;
+            
+        }
+        else
+            return false;
+    }
+    
+    /**
+     * Metoda pre editaciu pozemku (vratane oblasti na ktorej lezi)
+     * @param land pozemok na editaciu
+     * @param newSpace nova oblast na ktorej lezi
+     * @param newLandNum  nove registracne cislo pozemku
+     * @param newDescription novy popis pozemku
+     * @return true ak sa editacia podarila, false inak
+     */
+    public boolean editLand(LandDH land, Area newSpace, int newLandNum, String newDescription) throws Exception {
+        PropertyDH propertyOnLand;
+        ArrayList<PropertyDH> propertiesOnLandDH = new ArrayList<>();
+            
+        if (this.lands.delete(land.getSpace(), land.getIDLandNumber())) {
+            land.setSpace(newSpace);
+            land.setIDLandNumber(newLandNum);
+            land.setDescription(newDescription);
+            
+            //uprava udajov v DH
+            //odmazanie stareho prepojenia medzi nehnutelnostou a pozemkom
+            for (Integer propID : land.getProperties()) {
+                propertyOnLand = propertiesDH.find(new PropertyDH(propID, null, 0, ""));
+                propertyOnLand.removeLand(land.getIDLandNumber());
+                this.propertiesDH.edit(propertyOnLand);
+            }
+            land.setProperties(new ArrayList<>()); //vyprazdni
+            
+            //pridanie nehnutelnosti na pozemky tam kde ma byt a naopak
+            ArrayList<Property> propertiesOnLand = this.properties.findElementsInArea(land.getSpace());
+
+            for (Property property : propertiesOnLand) {
+                propertyOnLand = propertiesDH.find(new PropertyDH(property.getKey(), property.getSpace(), 0, ""));
+
+                if (propertyOnLand.getLands().size() < PropertyDH.maxLands) { //kontrola ci sa vojde do zoznamu pozemkov na najdenej nehnutelnosti
+                    propertyOnLand.addLand(land.getIDLandNumber()); //pridanie pozemku na nehnutelnost
+                    land.addProperty(property.getKey()); //pridanie nehnutelnosti na pozemok
+                    propertiesOnLandDH.add(propertyOnLand);
+                }
+
+                if (propertiesOnLandDH.size() == LandDH.maxProperties) { //ak uz mame dost nehnutelnosti tak ukoncime prehladavanie zoznamu
+                    break;
+                }
+            }
+
+            landsDH.edit(land);
+
+            for (PropertyDH propDH : propertiesOnLandDH) {
+                propertiesDH.edit(propDH);
+            }
+
+            lands.insert(new Land(land.getSpace(), land.getIDLandNumber()), false); //zapisanie upraveneho pozemku do QuadStromu
+            
+            return true;
+            
+        }
+        else
+            return false;
+    }
+    
+    /**
+     * Metoda vycisti vsetky data aplikacie (aplikacia bude v inicialnom stave)
+     * @throws IOException 
+     */
+    public void clearAllData() throws IOException {
+        this.propertiesDH.clearAllData();
+        this.landsDH.clearAllData();
+        
+        this.lands.clearAllData();
+        this.properties.clearAllData();
+        
+        this.maxPropertyID = 0;
+        this.maxLandID = 0;
     }
     
     public void generateObject(boolean generateProperties, int count) throws Exception { 

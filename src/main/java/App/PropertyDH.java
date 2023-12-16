@@ -30,7 +30,12 @@ public class PropertyDH implements IRecord{
     private ArrayList<Integer> lands; //max 6 zaznamov
     
     public PropertyDH() {
+        this.IDRegNumber = 0;
+        this.space = null;
+        this.regNumber = 0;
+        this.description = "";
         
+        this.lands = new ArrayList<>();
     }
     
     public PropertyDH(int IDRegNumber, Area space, int regNumber, String description) {
@@ -284,6 +289,35 @@ public class PropertyDH implements IRecord{
     @Override
     public String recordToString() { //TODO mozno ani nebude treba
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public String[] getInfo() {
+        int hlpNum;
+        double startX;
+        double endX;
+        double startY;
+        double endY;
+        
+        hlpNum = (int) (this.getSpace().getStart().getX().getValue() * 100.00);
+        startX = ((double)hlpNum)/100.00;
+        hlpNum = (int) (this.getSpace().getStart().getY().getValue() * 100.00);
+        startY = ((double)hlpNum)/100.00;
+        hlpNum = (int) (this.getSpace().getEnd().getX().getValue() * 100.00);
+        endX = ((double)hlpNum)/100.00;
+        hlpNum = (int) (this.getSpace().getEnd().getY().getValue() * 100.00);
+        endY = ((double)hlpNum)/100.00;
+        
+        String[] info = new String[5];
+        
+        info[0] = Integer.toString(this.IDRegNumber);
+        info[1] = Integer.toString(this.regNumber);
+        info[2] = this.description;
+        info[3] = "X: " + this.getSpace().getStart().getX().getDirection() + " " + startX + 
+                  " Y: " + this.getSpace().getStart().getY().getDirection() + " " + startY;
+        info[4] = "X: " + this.getSpace().getEnd().getX().getDirection() + " " + endX + 
+                  " Y: " + this.getSpace().getEnd().getY().getDirection() + " " + endY;
+        
+        return info;
     }
     
 }

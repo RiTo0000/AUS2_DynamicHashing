@@ -150,13 +150,21 @@ public class App {
         return this.addLand(land);
     }
 
-//    public QuadTree<Property> getProperties() {
-//        return this.properties;
-//    }
-//
-//    public QuadTree<Land> getLands() {
-//        return this.lands;
-//    }
+    public ArrayList<PropertyDH> getProperties() throws IOException {
+        return this.propertiesDH.readAllRecords();
+    }
+
+    public ArrayList<LandDH> getLands() throws IOException {
+        return this.landsDH.readAllRecords();
+    }
+    
+    public PropertyDH getProperty(int propertyID) throws Exception {
+        return this.propertiesDH.find(new PropertyDH(propertyID, null, 0, ""));
+    }
+    
+    public LandDH getLand(int landID) throws Exception {
+        return this.landsDH.find(new LandDH(landID, null, 0, ""));
+    }
     
     /**
      * Bezpecne vyradi nehnutelnost, ktoru dostal v parametri

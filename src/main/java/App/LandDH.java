@@ -30,7 +30,12 @@ public class LandDH implements IRecord {
     private ArrayList<Integer> properties; //max 5 zaznamov
     
     public LandDH() {
+        this.IDLandNumber = 0;
+        this.space = null;
+        this.landNumber = 0;
+        this.description = "";
         
+        this.properties = new ArrayList<>();
     }
     
     public LandDH(int IDLandNumber, Area space, int landNumber, String description) {
@@ -38,6 +43,7 @@ public class LandDH implements IRecord {
         this.space = space;
         this.landNumber = landNumber;
         this.description = setDescWithProperLength(description);
+        
         this.properties = new ArrayList<>();
     }
     
@@ -285,6 +291,35 @@ public class LandDH implements IRecord {
     @Override
     public String recordToString() { //TODO mozno ani nebude treba
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public String[] getInfo() {
+        int hlpNum;
+        double startX;
+        double endX;
+        double startY;
+        double endY;
+        
+        hlpNum = (int) (this.getSpace().getStart().getX().getValue() * 100.00);
+        startX = ((double)hlpNum)/100.00;
+        hlpNum = (int) (this.getSpace().getStart().getY().getValue() * 100.00);
+        startY = ((double)hlpNum)/100.00;
+        hlpNum = (int) (this.getSpace().getEnd().getX().getValue() * 100.00);
+        endX = ((double)hlpNum)/100.00;
+        hlpNum = (int) (this.getSpace().getEnd().getY().getValue() * 100.00);
+        endY = ((double)hlpNum)/100.00;
+        
+        String[] info = new String[5];
+        
+        info[0] = Integer.toString(this.IDLandNumber);
+        info[1] = Integer.toString(this.landNumber);
+        info[2] = this.description;
+        info[3] = "X: " + this.getSpace().getStart().getX().getDirection() + " " + startX + 
+                  " Y: " + this.getSpace().getStart().getY().getDirection() + " " + startY;
+        info[4] = "X: " + this.getSpace().getEnd().getX().getDirection() + " " + endX + 
+                  " Y: " + this.getSpace().getEnd().getY().getDirection() + " " + endY;
+        
+        return info;
     }
     
 }

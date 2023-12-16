@@ -601,17 +601,7 @@ public class DynamicHashing <T extends IRecord> {
                     this.writeToFile(hlpBlok, this.secondFile);
                 }
             }
-        }    
-        
-        
-//        for (Block block : blocks) {
-//            //tu staci zapisat tie ktore maju nejake recordy lebo tie prazdne uz boli zapisane pri cisteni
-//            if (!block.isEmpty()) {
-//                this.writeToFile(block, this.secondFile);
-//            }
-//        }
-        
-        
+        }        
         
     }
     
@@ -657,6 +647,29 @@ public class DynamicHashing <T extends IRecord> {
             blok = this.readFromFile(index, file, blockingFactor);
             result += blok.getAddress() + ": ";
             result += blok.blockToString();
+            
+            index += blok.getSize();
+        }
+        
+        return result;
+    }
+    
+    public ArrayList<T> readAllRecords() throws IOException{
+        ArrayList<T> result = new ArrayList<>();
+        int index = 0;
+        Block<T> blok;
+        
+        while (index < this.mainFile.length()) { //hlavny subor
+            blok = this.readFromFile(index, this.mainFile, this.BlockingFactorMain);
+            result.addAll(blok.getRecords());
+            
+            index += blok.getSize();
+        }
+        
+        index = 0;
+        while (index < this.secondFile.length()) { //preplnovaci subor
+            blok = this.readFromFile(index, this.secondFile, this.BlockingFactorSecond);
+            result.addAll(blok.getRecords());
             
             index += blok.getSize();
         }

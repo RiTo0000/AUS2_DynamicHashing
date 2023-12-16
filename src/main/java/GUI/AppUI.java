@@ -7,7 +7,9 @@ package GUI;
 
 import App.App;
 import App.Land;
+import App.LandDH;
 import App.Property;
+import App.PropertyDH;
 import QuadTree.Area;
 import QuadTree.Coordinate;
 import QuadTree.Direction;
@@ -29,8 +31,8 @@ import javax.swing.table.TableModel;
 public class AppUI extends javax.swing.JFrame {
     
     private App application;
-    private ArrayList<Property> properties;
-    private ArrayList<Land> lands;
+    private ArrayList<PropertyDH> properties;
+    private ArrayList<LandDH> lands;
 
     /**
      * Creates new form AppUI
@@ -981,14 +983,14 @@ public class AppUI extends javax.swing.JFrame {
 
                             },
                             new String [] {
-                                "Súpisné číslo", "Popis", "Začiatok", "Koniec"
+                                "ID", "Súpisné číslo", "Popis", "Začiatok", "Koniec"
                             }
                         ) {
                             Class[] types = new Class [] {
-                                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
                             };
                             boolean[] canEdit = new boolean [] {
-                                false, false, false, false
+                                false, false, false, false, false
                             };
 
                             public Class getColumnClass(int columnIndex) {
@@ -1174,14 +1176,14 @@ public class AppUI extends javax.swing.JFrame {
 
                             },
                             new String [] {
-                                "Číslo parcely", "Popis", "Začiatok", "Koniec"
+                                "ID", "Číslo parcely", "Popis", "Začiatok", "Koniec"
                             }
                         ) {
                             Class[] types = new Class [] {
-                                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
                             };
                             boolean[] canEdit = new boolean [] {
-                                false, false, false, false
+                                false, false, false, false, false
                             };
 
                             public Class getColumnClass(int columnIndex) {
@@ -1897,24 +1899,24 @@ public class AppUI extends javax.swing.JFrame {
      * metoda pre vyhladanie nehnutelnosti ktore sa nachadzaju na GPS pozicii zadanej na obrazovke
      */
     private void searchPropertiesOnSelectedGPS() {
-        double XVal = Double.parseDouble(this.jTextFieldSearchPropXVal.getText());
-        double YVal = Double.parseDouble(this.jTextFieldSearchPropYVal.getText());
-
-        this.properties = this.application.findProperties(
-                new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchPropXDirect.getSelectedItem().toString()), XVal), 
-                    new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchPropYDirect.getSelectedItem().toString()), YVal)));
+//        double XVal = Double.parseDouble(this.jTextFieldSearchPropXVal.getText());
+//        double YVal = Double.parseDouble(this.jTextFieldSearchPropYVal.getText());
+//
+//        this.properties = this.application.findProperties(
+//                new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchPropXDirect.getSelectedItem().toString()), XVal), 
+//                    new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchPropYDirect.getSelectedItem().toString()), YVal)));
     }
     
     /**
      * metoda pre vyhladanie nehnutelnosti ktore sa nachadzaju na GPS pozicii zadanej na obrazovke
      */
     private void searchLandsOnSelectedGPS() {
-        double XVal = Double.parseDouble(this.jTextFieldSearchLandXVal.getText());
-        double YVal = Double.parseDouble(this.jTextFieldSearchLandYVal.getText());
-
-        this.lands = this.application.findLands(
-                new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchLandXDirect.getSelectedItem().toString()), XVal), 
-                    new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchLandYDirect.getSelectedItem().toString()), YVal)));
+//        double XVal = Double.parseDouble(this.jTextFieldSearchLandXVal.getText());
+//        double YVal = Double.parseDouble(this.jTextFieldSearchLandYVal.getText());
+//
+//        this.lands = this.application.findLands(
+//                new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchLandXDirect.getSelectedItem().toString()), XVal), 
+//                    new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchLandYDirect.getSelectedItem().toString()), YVal)));
     }
     
     private void setPropDetailsEditable(boolean editable) {
@@ -2045,7 +2047,11 @@ public class AppUI extends javax.swing.JFrame {
         }
         else {
             if (this.jTextFieldSearchPropXVal.getText().isEmpty() || this.jTextFieldSearchPropYVal.getText().isEmpty()) {
-//                this.properties = this.application.getProperties().getAllElements();
+                try {
+                    this.properties = this.application.getProperties();
+                } catch (IOException ex) {
+                    Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             else {
                 this.searchPropertiesOnSelectedGPS();
@@ -2098,7 +2104,11 @@ public class AppUI extends javax.swing.JFrame {
         }
         else {
             if (this.jTextFieldSearchLandXVal.getText().isEmpty() || this.jTextFieldSearchLandYVal.getText().isEmpty()) {
-//                this.lands = this.application.getLands().getAllElements();
+                try {
+                    this.lands = this.application.getLands();
+                } catch (IOException ex) {
+                    Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             else {
                 this.searchLandsOnSelectedGPS();
@@ -2279,23 +2289,27 @@ public class AppUI extends javax.swing.JFrame {
                 Point end = new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxAddPropEndXDirect.getSelectedItem().toString()), endXVal), 
                             new Coordinate(Direction.getDirectFromString(this.jComboBoxAddPropEndYDirect.getSelectedItem().toString()), endYVal));
                 
-//                if (this.application.createProperty(new Area(start, end), Integer.parseInt(this.jTextFieldAddPropPropNumVal.getText()), this.jTextFieldAddPropDescVal.getText())) {
-//                    JOptionPane.showMessageDialog(this.jPanelAddProperty, "Nehnuteľnosť bola pridaná");
-//                    
-//                    //vycistenie vstupnych poli
-//                    this.jTextFieldAddPropPropNumVal.setText("");
-//                    this.jTextFieldAddPropDescVal.setText("");
-//                    this.jTextFieldAddPropStartXVal.setText("");
-//                    this.jTextFieldAddPropStartYVal.setText("");
-//                    this.jTextFieldAddPropEndXVal.setText("");
-//                    this.jTextFieldAddPropEndYVal.setText("");
-//                    this.jComboBoxAddPropStartXDirect.setSelectedIndex(0);
-//                    this.jComboBoxAddPropStartYDirect.setSelectedIndex(0);
-//                    this.jComboBoxAddPropEndXDirect.setSelectedIndex(0);
-//                    this.jComboBoxAddPropEndYDirect.setSelectedIndex(0);
-//                }
-//                else
-//                    JOptionPane.showMessageDialog(this.jPanelAddProperty, "Pri pridávaní nehnuteľnosti nastala chyba", "Chyba", JOptionPane.ERROR_MESSAGE);
+                try {
+                    if (this.application.createProperty(new Area(start, end), Integer.parseInt(this.jTextFieldAddPropPropNumVal.getText()), this.jTextFieldAddPropDescVal.getText())) {
+                        JOptionPane.showMessageDialog(this.jPanelAddProperty, "Nehnuteľnosť bola pridaná");
+                        
+                        //vycistenie vstupnych poli
+                        this.jTextFieldAddPropPropNumVal.setText("");
+                        this.jTextFieldAddPropDescVal.setText("");
+                        this.jTextFieldAddPropStartXVal.setText("");
+                        this.jTextFieldAddPropStartYVal.setText("");
+                        this.jTextFieldAddPropEndXVal.setText("");
+                        this.jTextFieldAddPropEndYVal.setText("");
+                        this.jComboBoxAddPropStartXDirect.setSelectedIndex(0);
+                        this.jComboBoxAddPropStartYDirect.setSelectedIndex(0);
+                        this.jComboBoxAddPropEndXDirect.setSelectedIndex(0);
+                        this.jComboBoxAddPropEndYDirect.setSelectedIndex(0);
+                    }
+                    else
+                        JOptionPane.showMessageDialog(this.jPanelAddProperty, "Pri pridávaní nehnuteľnosti nastala chyba", "Chyba", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }    
     }//GEN-LAST:event_jButtonAddPropertyActionPerformed
@@ -2356,23 +2370,27 @@ public class AppUI extends javax.swing.JFrame {
                 Point end = new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxAddLandEndXDirect.getSelectedItem().toString()), endXVal), 
                             new Coordinate(Direction.getDirectFromString(this.jComboBoxAddLandEndYDirect.getSelectedItem().toString()), endYVal));
                 
-//                if (this.application.createLand(new Area(start, end), Integer.parseInt(this.jTextFieldAddLandLandNumVal.getText()), this.jTextFieldAddLandDescVal.getText())) {
-//                    JOptionPane.showMessageDialog(this.jPanelAddLand, "Parcela bola pridaná");
-//                    
-//                    //vycistenie vstupnych poli
-//                    this.jTextFieldAddLandLandNumVal.setText("");
-//                    this.jTextFieldAddLandDescVal.setText("");
-//                    this.jTextFieldAddLandStartXVal.setText("");
-//                    this.jTextFieldAddLandStartYVal.setText("");
-//                    this.jTextFieldAddLandEndXVal.setText("");
-//                    this.jTextFieldAddLandEndYVal.setText("");
-//                    this.jComboBoxAddLandStartXDirect.setSelectedIndex(0);
-//                    this.jComboBoxAddLandStartYDirect.setSelectedIndex(0);
-//                    this.jComboBoxAddLandEndXDirect.setSelectedIndex(0);
-//                    this.jComboBoxAddLandEndYDirect.setSelectedIndex(0);
-//                }
-//                else
-//                    JOptionPane.showMessageDialog(this.jPanelAddLand, "Pri pridávaní parcely nastala chyba", "Chyba", JOptionPane.ERROR_MESSAGE);
+                try {
+                    if (this.application.createLand(new Area(start, end), Integer.parseInt(this.jTextFieldAddLandLandNumVal.getText()), this.jTextFieldAddLandDescVal.getText())) {
+                        JOptionPane.showMessageDialog(this.jPanelAddLand, "Parcela bola pridaná");
+                        
+                        //vycistenie vstupnych poli
+                        this.jTextFieldAddLandLandNumVal.setText("");
+                        this.jTextFieldAddLandDescVal.setText("");
+                        this.jTextFieldAddLandStartXVal.setText("");
+                        this.jTextFieldAddLandStartYVal.setText("");
+                        this.jTextFieldAddLandEndXVal.setText("");
+                        this.jTextFieldAddLandEndYVal.setText("");
+                        this.jComboBoxAddLandStartXDirect.setSelectedIndex(0);
+                        this.jComboBoxAddLandStartYDirect.setSelectedIndex(0);
+                        this.jComboBoxAddLandEndXDirect.setSelectedIndex(0);
+                        this.jComboBoxAddLandEndYDirect.setSelectedIndex(0);
+                    }
+                    else
+                        JOptionPane.showMessageDialog(this.jPanelAddLand, "Pri pridávaní parcely nastala chyba", "Chyba", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } 
         
@@ -2414,7 +2432,7 @@ public class AppUI extends javax.swing.JFrame {
         
         this.setPropDetailsEditable(true);
         
-        Property selectedProperty = this.properties.get(row);
+        PropertyDH selectedProperty = this.properties.get(row);
         
         //naplnenie poli
 //        this.jTextFieldPropDetailPropNumVal.setText(Integer.toString(selectedProperty.getRegNumber()));
@@ -2462,7 +2480,7 @@ public class AppUI extends javax.swing.JFrame {
         
         this.setLandDetailsEditable(true);
         
-        Land selectedLand = this.lands.get(row);
+        LandDH selectedLand = this.lands.get(row);
         
         //naplnenie poli
 //        this.jTextFieldLandDetailLandNumVal.setText(Integer.toString(selectedLand.getLandNumber()));
@@ -2523,7 +2541,7 @@ public class AppUI extends javax.swing.JFrame {
     private void jButtonPropDetailEditPropertyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPropDetailEditPropertyActionPerformed
         int row = this.jTableProperties.getSelectedRow();
         
-        Property selectedProperty = this.properties.get(row);
+        PropertyDH selectedProperty = this.properties.get(row);
         
         boolean areaEdited = false;
         //nacitam si vsetky polia a skontrolujem aky typ editacie mi treba robit
@@ -2619,7 +2637,7 @@ public class AppUI extends javax.swing.JFrame {
     private void jButtonLandDetailEditLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLandDetailEditLandActionPerformed
         int row = this.jTableLands.getSelectedRow();
         
-        Land selectedLand = this.lands.get(row);
+        LandDH selectedLand = this.lands.get(row);
         
         boolean areaEdited = false;
         //nacitam si vsetky polia a skontrolujem aky typ editacie mi treba robit
@@ -2677,11 +2695,11 @@ public class AppUI extends javax.swing.JFrame {
         
         this.setPropDetailsEditable(false);
         
-        Property selectedProperty = this.properties.get(row);
+        PropertyDH selectedProperty = this.properties.get(row);
         
         //naplnenie poli
-//        this.jTextFieldPropDetailPropNumVal.setText(Integer.toString(selectedProperty.getRegNumber()));
-//        this.jTextFieldPropDetailDescVal.setText(selectedProperty.getDescription());
+        this.jTextFieldPropDetailPropNumVal.setText(Integer.toString(selectedProperty.getRegNumber()));
+        this.jTextFieldPropDetailDescVal.setText(selectedProperty.getDescription());
         this.jComboBoxPropDetailStartXDirect.setSelectedItem(selectedProperty.getSpace().getStart().getX().getDirection().toString());
         this.jTextFieldPropDetailStartXVal.setText(Double.toString(selectedProperty.getSpace().getStart().getX().getValue()));
         this.jComboBoxPropDetailStartYDirect.setSelectedItem(selectedProperty.getSpace().getStart().getY().getDirection().toString());
@@ -2691,15 +2709,21 @@ public class AppUI extends javax.swing.JFrame {
         this.jComboBoxPropDetailEndYDirect.setSelectedItem(selectedProperty.getSpace().getEnd().getY().getDirection().toString());
         this.jTextFieldPropDetailEndYVal.setText(Double.toString(selectedProperty.getSpace().getEnd().getY().getValue()));
         
-//        String [] lands_out;
-//        ArrayList<Land> lands = selectedProperty.getLands();
-//            
-//        DefaultTableModel model = (DefaultTableModel)this.jTableLandsPropDetail.getModel();
-//        model.setRowCount(0); //odstranenie existujucich riadkov
-//        for (Land land : lands) {
-//            lands_out = land.getInfo();
-//            model.addRow(lands_out);
-//        }
+        String [] lands_out;
+        LandDH land;
+        ArrayList<Integer> lands = selectedProperty.getLands();
+            
+        DefaultTableModel model = (DefaultTableModel)this.jTableLandsPropDetail.getModel();
+        model.setRowCount(0); //odstranenie existujucich riadkov
+        for (Integer landID : lands) {
+            try {
+                land = this.application.getLand(landID);
+                lands_out = land.getInfo();
+                model.addRow(lands_out);
+            } catch (Exception ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
         this.jDialogPropertyDetail.setLocationRelativeTo(null);//nastavi lokaciu na stred obrazovky
         this.jDialogPropertyDetail.setVisible(true);
@@ -2710,11 +2734,11 @@ public class AppUI extends javax.swing.JFrame {
         
         this.setLandDetailsEditable(false);
         
-        Land selectedLand = this.lands.get(row);
+        LandDH selectedLand = this.lands.get(row);
         
         //naplnenie poli
-//        this.jTextFieldLandDetailLandNumVal.setText(Integer.toString(selectedLand.getLandNumber()));
-//        this.jTextFieldLandDetailDescVal.setText(selectedLand.getDescription());
+        this.jTextFieldLandDetailLandNumVal.setText(Integer.toString(selectedLand.getLandNumber()));
+        this.jTextFieldLandDetailDescVal.setText(selectedLand.getDescription());
         this.jComboBoxLandDetailStartXDirect.setSelectedItem(selectedLand.getSpace().getStart().getX().getDirection().toString());
         this.jTextFieldLandDetailStartXVal.setText(Double.toString(selectedLand.getSpace().getStart().getX().getValue()));
         this.jComboBoxLandDetailStartYDirect.setSelectedItem(selectedLand.getSpace().getStart().getY().getDirection().toString());
@@ -2725,14 +2749,20 @@ public class AppUI extends javax.swing.JFrame {
         this.jTextFieldLandDetailEndYVal.setText(Double.toString(selectedLand.getSpace().getEnd().getY().getValue()));
         
         String [] properties_out;
-//        ArrayList<Property> properties = selectedLand.getProperties();
-//            
-//        DefaultTableModel model = (DefaultTableModel)this.jTablePropertiesLandDetail.getModel();
-//        model.setRowCount(0); //odstranenie existujucich riadkov
-//        for (Property property : properties) {
-//            properties_out = property.getInfo();
-//            model.addRow(properties_out);
-//        }
+        PropertyDH property;
+        ArrayList<Integer> propertiesID = selectedLand.getProperties();
+            
+        DefaultTableModel model = (DefaultTableModel)this.jTablePropertiesLandDetail.getModel();
+        model.setRowCount(0); //odstranenie existujucich riadkov
+        for (Integer propertyID : propertiesID) {
+            try {
+                property = this.application.getProperty(propertyID);
+                properties_out = property.getInfo();
+                model.addRow(properties_out);
+            } catch (Exception ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
         this.jDialogLandDetail.setLocationRelativeTo(null);//nastavi lokaciu na stred obrazovky
         this.jDialogLandDetail.setVisible(true);

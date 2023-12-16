@@ -31,32 +31,45 @@ public class Main {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        LandDH land = new LandDH(11, new Area(new Point(new Coordinate(Direction.E, 10), new Coordinate(Direction.E, 11)), 
-                                                        new Point(new Coordinate(Direction.E, 13), new Coordinate(Direction.E, 14))), 12, "tst krtky");
-        land.getProperties().add(13);
-        byte[] tst = land.toByteArray();
-        land.fromByteArray(tst);
+//        LandDH land = new LandDH(11, new Area(new Point(new Coordinate(Direction.E, 10), new Coordinate(Direction.E, 11)), 
+//                                                        new Point(new Coordinate(Direction.E, 13), new Coordinate(Direction.E, 14))), 12, "tst krtky");
+//        land.getProperties().add(13);
+//        byte[] tst = land.toByteArray();
+//        land.fromByteArray(tst);
         
-//        TestElement tst = new TestElement(1, 9674);
-//        TestElement tst2 = new TestElement(2, 7456);
-//        
-//        ArrayList<TestElement> insertedElements = new ArrayList<TestElement>();
-//        
-//        for (int i = 0; i < 8; i++) { //docastne 8 namiesto 10
-//            tst = new TestElement(i, i*100);
-//            try {
-//                dh.insert(tst);
-//                System.out.println("MainFile:");
-//                System.out.println(dh.readWholeMainFile());
-//                System.out.println("SecondFile:");
-//                System.out.println(dh.readWholeSecondFile());
-//                insertedElements.add(tst);
-//            } catch (IOException ex) {
-//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (Exception ex) {
-//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        TestElement tst = new TestElement(1, 9674);
+        TestElement tst2 = new TestElement(2, 7456);
+        
+        ArrayList<TestElement> insertedElements = new ArrayList<TestElement>();
+        
+        for (int i = 0; i < 10; i++) { 
+            tst = new TestElement(i, i*100);
+            try {
+                dh.insert(tst);
+                System.out.println("MainFile:");
+                System.out.println(dh.readWholeMainFile());
+                System.out.println("SecondFile:");
+                System.out.println(dh.readWholeSecondFile());
+                insertedElements.add(tst);
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        try {
+            tst = insertedElements.get(8);
+            tst.setNumber(1234);
+            System.out.println("MainFile:");
+            System.out.println(dh.readWholeMainFile());
+            System.out.println("SecondFile:");
+            System.out.println(dh.readWholeSecondFile());
+            dh.edit(tst);
+            System.out.println("MainFile:");
+            System.out.println(dh.readWholeMainFile());
+            System.out.println("SecondFile:");
+            System.out.println(dh.readWholeSecondFile());
 ////        for (int i = 0; i < 10; i++) {
 ////            tst2 = insertedElements.remove(0);
 ////            try {
@@ -119,5 +132,8 @@ public class Main {
 //        } catch (Exception ex) {
 //            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

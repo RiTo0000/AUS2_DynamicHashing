@@ -21,6 +21,7 @@ import java.util.BitSet;
 public class PropertyDH implements IRecord{
     
     private static final int descLength = 15;
+    public static final int maxLands = 6;
     
     private int IDRegNumber; //kluc
     private int regNumber;
@@ -36,11 +37,69 @@ public class PropertyDH implements IRecord{
         this.IDRegNumber = IDRegNumber;
         this.space = space;
         this.regNumber = regNumber;
-        this.description = description;
+        this.description = setDescWithProperLength(description);
         
         this.lands = new ArrayList<>();
     }
+    
+    public void addLand(int IDLand) {
+        this.lands.add(IDLand);
+    }
 
+    public int getIDRegNumber() {
+        return this.IDRegNumber;
+    }
+
+    public void setIDRegNumber(int IDRegNumber) {
+        this.IDRegNumber = IDRegNumber;
+    }
+
+    public int getRegNumber() {
+        return this.regNumber;
+    }
+
+    public void setRegNumber(int regNumber) {
+        this.regNumber = regNumber;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = setDescWithProperLength(description);
+    }
+
+    public Area getSpace() {
+        return this.space;
+    }
+
+    public void setSpace(Area space) {
+        this.space = space;
+    }
+
+    public ArrayList<Integer> getLands() {
+        return this.lands;
+    }
+
+    public void setLands(ArrayList<Integer> lands) {
+        this.lands = lands;
+    }
+
+    /**
+     * nastavi poznamku s maximalnou velkostou ak by nahodou presiahla
+     * @param description poznamka
+     * @return 
+     */
+    private static String setDescWithProperLength( String description) {
+        if (description.length() > descLength) {
+            return description.substring(0, descLength);
+        }
+        else {
+            return description;
+        }
+    }
+    
     @Override
     public boolean equals(IRecord object) {
         PropertyDH element = (PropertyDH) object;
@@ -59,7 +118,7 @@ public class PropertyDH implements IRecord{
                 1 + Double.BYTES + 1 + Double.BYTES + //Start
                 1 + Double.BYTES + 1 + Double.BYTES + //End
                 Integer.BYTES + //Pocet pozemkov
-                ( 6 * Integer.BYTES ) ; //Lands (pozemky)
+                ( maxLands * Integer.BYTES ) ; //Lands (pozemky)
     }
 
     @Override

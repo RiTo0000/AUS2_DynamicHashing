@@ -1955,20 +1955,20 @@ public class AppUI extends javax.swing.JFrame {
         this.jFileChooserLoadAppFile.showOpenDialog(this);
         this.jFileChooserLoadPropertiesFile.showOpenDialog(this);
         this.jFileChooserLoadLandsFile.showOpenDialog(this);
-        try {
-            if (this.jFileChooserLoadAppFile.getSelectedFile().isFile() &&
-                    this.jFileChooserLoadPropertiesFile.getSelectedFile().isFile() &&
-                    this.jFileChooserLoadLandsFile.getSelectedFile().isFile()){
-                this.application = App.loadFromFile(this.jFileChooserLoadAppFile.getSelectedFile().getPath(),
-                                                    this.jFileChooserLoadPropertiesFile.getSelectedFile().getPath(),
-                                                    this.jFileChooserLoadLandsFile.getSelectedFile().getPath());
-                this.jRadioButtonOptimalTree.setSelected(this.application.getProperties().isOptimal());
-                JOptionPane.showMessageDialog(this.jPanelInitApp, "Načítanie aplikácie sa podarilo");
-            }
-            
-        } catch (IOException ex) {
-            Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            if (this.jFileChooserLoadAppFile.getSelectedFile().isFile() &&
+//                    this.jFileChooserLoadPropertiesFile.getSelectedFile().isFile() &&
+//                    this.jFileChooserLoadLandsFile.getSelectedFile().isFile()){
+////                this.application = App.loadFromFile(this.jFileChooserLoadAppFile.getSelectedFile().getPath(),
+////                                                    this.jFileChooserLoadPropertiesFile.getSelectedFile().getPath(),
+////                                                    this.jFileChooserLoadLandsFile.getSelectedFile().getPath());
+//                this.jRadioButtonOptimalTree.setSelected(this.application.getProperties().isOptimal());
+//                JOptionPane.showMessageDialog(this.jPanelInitApp, "Načítanie aplikácie sa podarilo");
+//            }
+//            
+//        } catch (IOException ex) {
+//            Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_jMenuItemLoadAppActionPerformed
 
     private void jMenuItemSaveAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAppActionPerformed
@@ -1977,14 +1977,14 @@ public class AppUI extends javax.swing.JFrame {
         }
         else {
             this.jFileChooserSaveLocation.showSaveDialog(this);
-            try {
-                if (this.jFileChooserSaveLocation.getSelectedFile().isDirectory()) {
-                    this.application.saveToFile(this.jFileChooserSaveLocation.getSelectedFile().getPath());
-                    JOptionPane.showMessageDialog(this.jPanelInitApp, "Uloženie aplikácie sa podarilo");
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            try {
+//                if (this.jFileChooserSaveLocation.getSelectedFile().isDirectory()) {
+//                    this.application.saveToFile(this.jFileChooserSaveLocation.getSelectedFile().getPath());
+//                    JOptionPane.showMessageDialog(this.jPanelInitApp, "Uloženie aplikácie sa podarilo");
+//                }
+//            } catch (IOException ex) {
+//                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
     }//GEN-LAST:event_jMenuItemSaveAppActionPerformed
 
@@ -2070,7 +2070,7 @@ public class AppUI extends javax.swing.JFrame {
         }
         else {
             count = Integer.parseInt(this.jTextFieldGenPropNumber.getText());
-            this.application.generateObject(true, count);
+//            this.application.generateObject(true, count);
             JOptionPane.showMessageDialog(this.jPanelInitApp, "Generovanie nehnuteľností bolo úspešné");
         }
     }//GEN-LAST:event_jButtonGeneratePropertiesActionPerformed
@@ -2137,7 +2137,7 @@ public class AppUI extends javax.swing.JFrame {
         }
         else {
             count = Integer.parseInt(this.jTextFieldGenLandNumber.getText());
-            this.application.generateObject(false, count);
+//            this.application.generateObject(false, count);
             JOptionPane.showMessageDialog(this.jPanelInitApp, "Generovanie parciel bolo úspešné");
         }
     }//GEN-LAST:event_jButtonGenerateLandsActionPerformed
@@ -2279,23 +2279,23 @@ public class AppUI extends javax.swing.JFrame {
                 Point end = new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxAddPropEndXDirect.getSelectedItem().toString()), endXVal), 
                             new Coordinate(Direction.getDirectFromString(this.jComboBoxAddPropEndYDirect.getSelectedItem().toString()), endYVal));
                 
-                if (this.application.createProperty(new Area(start, end), Integer.parseInt(this.jTextFieldAddPropPropNumVal.getText()), this.jTextFieldAddPropDescVal.getText())) {
-                    JOptionPane.showMessageDialog(this.jPanelAddProperty, "Nehnuteľnosť bola pridaná");
-                    
-                    //vycistenie vstupnych poli
-                    this.jTextFieldAddPropPropNumVal.setText("");
-                    this.jTextFieldAddPropDescVal.setText("");
-                    this.jTextFieldAddPropStartXVal.setText("");
-                    this.jTextFieldAddPropStartYVal.setText("");
-                    this.jTextFieldAddPropEndXVal.setText("");
-                    this.jTextFieldAddPropEndYVal.setText("");
-                    this.jComboBoxAddPropStartXDirect.setSelectedIndex(0);
-                    this.jComboBoxAddPropStartYDirect.setSelectedIndex(0);
-                    this.jComboBoxAddPropEndXDirect.setSelectedIndex(0);
-                    this.jComboBoxAddPropEndYDirect.setSelectedIndex(0);
-                }
-                else
-                    JOptionPane.showMessageDialog(this.jPanelAddProperty, "Pri pridávaní nehnuteľnosti nastala chyba", "Chyba", JOptionPane.ERROR_MESSAGE);
+//                if (this.application.createProperty(new Area(start, end), Integer.parseInt(this.jTextFieldAddPropPropNumVal.getText()), this.jTextFieldAddPropDescVal.getText())) {
+//                    JOptionPane.showMessageDialog(this.jPanelAddProperty, "Nehnuteľnosť bola pridaná");
+//                    
+//                    //vycistenie vstupnych poli
+//                    this.jTextFieldAddPropPropNumVal.setText("");
+//                    this.jTextFieldAddPropDescVal.setText("");
+//                    this.jTextFieldAddPropStartXVal.setText("");
+//                    this.jTextFieldAddPropStartYVal.setText("");
+//                    this.jTextFieldAddPropEndXVal.setText("");
+//                    this.jTextFieldAddPropEndYVal.setText("");
+//                    this.jComboBoxAddPropStartXDirect.setSelectedIndex(0);
+//                    this.jComboBoxAddPropStartYDirect.setSelectedIndex(0);
+//                    this.jComboBoxAddPropEndXDirect.setSelectedIndex(0);
+//                    this.jComboBoxAddPropEndYDirect.setSelectedIndex(0);
+//                }
+//                else
+//                    JOptionPane.showMessageDialog(this.jPanelAddProperty, "Pri pridávaní nehnuteľnosti nastala chyba", "Chyba", JOptionPane.ERROR_MESSAGE);
             }
         }    
     }//GEN-LAST:event_jButtonAddPropertyActionPerformed
@@ -2356,23 +2356,23 @@ public class AppUI extends javax.swing.JFrame {
                 Point end = new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxAddLandEndXDirect.getSelectedItem().toString()), endXVal), 
                             new Coordinate(Direction.getDirectFromString(this.jComboBoxAddLandEndYDirect.getSelectedItem().toString()), endYVal));
                 
-                if (this.application.createLand(new Area(start, end), Integer.parseInt(this.jTextFieldAddLandLandNumVal.getText()), this.jTextFieldAddLandDescVal.getText())) {
-                    JOptionPane.showMessageDialog(this.jPanelAddLand, "Parcela bola pridaná");
-                    
-                    //vycistenie vstupnych poli
-                    this.jTextFieldAddLandLandNumVal.setText("");
-                    this.jTextFieldAddLandDescVal.setText("");
-                    this.jTextFieldAddLandStartXVal.setText("");
-                    this.jTextFieldAddLandStartYVal.setText("");
-                    this.jTextFieldAddLandEndXVal.setText("");
-                    this.jTextFieldAddLandEndYVal.setText("");
-                    this.jComboBoxAddLandStartXDirect.setSelectedIndex(0);
-                    this.jComboBoxAddLandStartYDirect.setSelectedIndex(0);
-                    this.jComboBoxAddLandEndXDirect.setSelectedIndex(0);
-                    this.jComboBoxAddLandEndYDirect.setSelectedIndex(0);
-                }
-                else
-                    JOptionPane.showMessageDialog(this.jPanelAddLand, "Pri pridávaní parcely nastala chyba", "Chyba", JOptionPane.ERROR_MESSAGE);
+//                if (this.application.createLand(new Area(start, end), Integer.parseInt(this.jTextFieldAddLandLandNumVal.getText()), this.jTextFieldAddLandDescVal.getText())) {
+//                    JOptionPane.showMessageDialog(this.jPanelAddLand, "Parcela bola pridaná");
+//                    
+//                    //vycistenie vstupnych poli
+//                    this.jTextFieldAddLandLandNumVal.setText("");
+//                    this.jTextFieldAddLandDescVal.setText("");
+//                    this.jTextFieldAddLandStartXVal.setText("");
+//                    this.jTextFieldAddLandStartYVal.setText("");
+//                    this.jTextFieldAddLandEndXVal.setText("");
+//                    this.jTextFieldAddLandEndYVal.setText("");
+//                    this.jComboBoxAddLandStartXDirect.setSelectedIndex(0);
+//                    this.jComboBoxAddLandStartYDirect.setSelectedIndex(0);
+//                    this.jComboBoxAddLandEndXDirect.setSelectedIndex(0);
+//                    this.jComboBoxAddLandEndYDirect.setSelectedIndex(0);
+//                }
+//                else
+//                    JOptionPane.showMessageDialog(this.jPanelAddLand, "Pri pridávaní parcely nastala chyba", "Chyba", JOptionPane.ERROR_MESSAGE);
             }
         } 
         
@@ -2387,16 +2387,16 @@ public class AppUI extends javax.swing.JFrame {
         if (choice == 0) { // vyradit nehnutelnost
             int row = this.jTableProperties.getSelectedRow();
             
-            if (this.application.removeProperty(this.properties.get(row))) {
-                this.properties.remove(row);
-                
-                this.printPropertiesTable();
-                
-                JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Nehnuteľnosť bola úspešne vyradená");
-            }
-            else {
-                JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Označenú nehnuteľnosť sa nepodarilo vyradiť", "Chyba", JOptionPane.ERROR_MESSAGE);
-            }
+//            if (this.application.removeProperty(this.properties.get(row))) {
+//                this.properties.remove(row);
+//                
+//                this.printPropertiesTable();
+//                
+//                JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Nehnuteľnosť bola úspešne vyradená");
+//            }
+//            else {
+//                JOptionPane.showMessageDialog(this.jPanelSearchProperties, "Označenú nehnuteľnosť sa nepodarilo vyradiť", "Chyba", JOptionPane.ERROR_MESSAGE);
+//            }
         }
         
         
@@ -2417,8 +2417,8 @@ public class AppUI extends javax.swing.JFrame {
         Property selectedProperty = this.properties.get(row);
         
         //naplnenie poli
-        this.jTextFieldPropDetailPropNumVal.setText(Integer.toString(selectedProperty.getRegNumber()));
-        this.jTextFieldPropDetailDescVal.setText(selectedProperty.getDescription());
+//        this.jTextFieldPropDetailPropNumVal.setText(Integer.toString(selectedProperty.getRegNumber()));
+//        this.jTextFieldPropDetailDescVal.setText(selectedProperty.getDescription());
         this.jComboBoxPropDetailStartXDirect.setSelectedItem(selectedProperty.getSpace().getStart().getX().getDirection().toString());
         this.jTextFieldPropDetailStartXVal.setText(Double.toString(selectedProperty.getSpace().getStart().getX().getValue()));
         this.jComboBoxPropDetailStartYDirect.setSelectedItem(selectedProperty.getSpace().getStart().getY().getDirection().toString());
@@ -2442,16 +2442,16 @@ public class AppUI extends javax.swing.JFrame {
         if (choice == 0) { // vyradit parcelu
             int row = this.jTableLands.getSelectedRow();
             
-            if (this.application.removeLand(this.lands.get(row))) {
-                this.lands.remove(row);
-                
-                this.printLandsTable();
-                
-                JOptionPane.showMessageDialog(this.jPanelSearchLands, "Parcela bola úspešne vyradená");
-            }
-            else {
-                JOptionPane.showMessageDialog(this.jPanelSearchLands, "Označenú parcelu sa nepodarilo vyradiť", "Chyba", JOptionPane.ERROR_MESSAGE);
-            }
+//            if (this.application.removeLand(this.lands.get(row))) {
+//                this.lands.remove(row);
+//                
+//                this.printLandsTable();
+//                
+//                JOptionPane.showMessageDialog(this.jPanelSearchLands, "Parcela bola úspešne vyradená");
+//            }
+//            else {
+//                JOptionPane.showMessageDialog(this.jPanelSearchLands, "Označenú parcelu sa nepodarilo vyradiť", "Chyba", JOptionPane.ERROR_MESSAGE);
+//            }
         }
         
         
@@ -2545,30 +2545,30 @@ public class AppUI extends javax.swing.JFrame {
         if (!selectedProperty.getSpace().equals(newPropertySpace)) 
             areaEdited = true;
         
-        if (areaEdited) { //nastala zmena v polohe nehnutelnosti musim ju odobrat a pridat nanovo
-            if (this.application.removeProperty(selectedProperty)) { //odstranenie sa podarilo
-                //upravim nehnutelnost
-                selectedProperty.setSpace(newPropertySpace);
-                selectedProperty.edit(regNum, description); //upravim aj neklucove atributy ak by nahodou boli zmenene
-                //pridam nanovo
-                this.application.addProperty(selectedProperty);
-                
-                //ak su zadane oba suradnice pre vyhladavanie tak vyhladavanie obnovim a ak nie tak sa len zobrazi list nehnutelnosti s akt. udajmi
-                if ( !this.jTextFieldSearchPropXVal.getText().isEmpty() && !this.jTextFieldSearchPropYVal.getText().isEmpty() ) {
-                    //obnovenie vyhladania nehnutelnosti
-                    this.searchPropertiesOnSelectedGPS();
-                }
-                
-            }
-        }
-        else if (selectedProperty.getRegNumber() == regNum &&
-                selectedProperty.getDescription().equals(description)) {
-            JOptionPane.showMessageDialog(this.jPanelPropertyDetail, "Nič sa nezmenilo, editácia nie je potrebná");
-            return; //nenastala ziadna zmena
-        }
-        else { // nastala zmena iba v jednom z 2 neklucovych poli menim iba tie
-            selectedProperty.edit(regNum, description);
-        }
+//        if (areaEdited) { //nastala zmena v polohe nehnutelnosti musim ju odobrat a pridat nanovo
+//            if (this.application.removeProperty(selectedProperty)) { //odstranenie sa podarilo
+//                //upravim nehnutelnost
+//                selectedProperty.setSpace(newPropertySpace);
+//                selectedProperty.edit(regNum, description); //upravim aj neklucove atributy ak by nahodou boli zmenene
+//                //pridam nanovo
+//                this.application.addProperty(selectedProperty);
+//                
+//                //ak su zadane oba suradnice pre vyhladavanie tak vyhladavanie obnovim a ak nie tak sa len zobrazi list nehnutelnosti s akt. udajmi
+//                if ( !this.jTextFieldSearchPropXVal.getText().isEmpty() && !this.jTextFieldSearchPropYVal.getText().isEmpty() ) {
+//                    //obnovenie vyhladania nehnutelnosti
+//                    this.searchPropertiesOnSelectedGPS();
+//                }
+//                
+//            }
+//        }
+//        else if (selectedProperty.getRegNumber() == regNum &&
+//                selectedProperty.getDescription().equals(description)) {
+//            JOptionPane.showMessageDialog(this.jPanelPropertyDetail, "Nič sa nezmenilo, editácia nie je potrebná");
+//            return; //nenastala ziadna zmena
+//        }
+//        else { // nastala zmena iba v jednom z 2 neklucovych poli menim iba tie
+//            selectedProperty.edit(regNum, description);
+//        }
         
         // obnova zobrazenia aktualnych nehnutelnosti
         this.printPropertiesTable(); 
@@ -2642,20 +2642,20 @@ public class AppUI extends javax.swing.JFrame {
             areaEdited = true;
         
         if (areaEdited) { //nastala zmena v polohe parcely musim ju odobrat a pridat nanovo
-            if (this.application.removeLand(selectedLand)) { //odstranenie sa podarilo
-                //upravim parcelu
-                selectedLand.setSpace(newLandSpace);
-                selectedLand.edit(landNum, description); //upravim aj neklucove atributy ak by nahodou boli zmenene
-                //pridam nanovo
-                this.application.addLand(selectedLand);
-                
-                //ak su zadane oba suradnice pre vyhladavanie tak vyhladavanie obnovim a ak nie tak sa len zobrazi list parciel s akt. udajmi
-                if ( !this.jTextFieldSearchLandXVal.getText().isEmpty() && !this.jTextFieldSearchLandYVal.getText().isEmpty() ) {
-                    //obnovenie vyhladania parciel
-                    this.searchLandsOnSelectedGPS();
-                }
-                
-            }
+//            if (this.application.removeLand(selectedLand)) { //odstranenie sa podarilo
+//                //upravim parcelu
+//                selectedLand.setSpace(newLandSpace);
+//                selectedLand.edit(landNum, description); //upravim aj neklucove atributy ak by nahodou boli zmenene
+//                //pridam nanovo
+//                this.application.addLand(selectedLand);
+//                
+//                //ak su zadane oba suradnice pre vyhladavanie tak vyhladavanie obnovim a ak nie tak sa len zobrazi list parciel s akt. udajmi
+//                if ( !this.jTextFieldSearchLandXVal.getText().isEmpty() && !this.jTextFieldSearchLandYVal.getText().isEmpty() ) {
+//                    //obnovenie vyhladania parciel
+//                    this.searchLandsOnSelectedGPS();
+//                }
+//                
+//            }
         }
         else if (selectedLand.getLandNumber() == landNum &&
                 selectedLand.getDescription().equals(description)) {
@@ -2680,8 +2680,8 @@ public class AppUI extends javax.swing.JFrame {
         Property selectedProperty = this.properties.get(row);
         
         //naplnenie poli
-        this.jTextFieldPropDetailPropNumVal.setText(Integer.toString(selectedProperty.getRegNumber()));
-        this.jTextFieldPropDetailDescVal.setText(selectedProperty.getDescription());
+//        this.jTextFieldPropDetailPropNumVal.setText(Integer.toString(selectedProperty.getRegNumber()));
+//        this.jTextFieldPropDetailDescVal.setText(selectedProperty.getDescription());
         this.jComboBoxPropDetailStartXDirect.setSelectedItem(selectedProperty.getSpace().getStart().getX().getDirection().toString());
         this.jTextFieldPropDetailStartXVal.setText(Double.toString(selectedProperty.getSpace().getStart().getX().getValue()));
         this.jComboBoxPropDetailStartYDirect.setSelectedItem(selectedProperty.getSpace().getStart().getY().getDirection().toString());
@@ -2691,15 +2691,15 @@ public class AppUI extends javax.swing.JFrame {
         this.jComboBoxPropDetailEndYDirect.setSelectedItem(selectedProperty.getSpace().getEnd().getY().getDirection().toString());
         this.jTextFieldPropDetailEndYVal.setText(Double.toString(selectedProperty.getSpace().getEnd().getY().getValue()));
         
-        String [] lands_out;
-        ArrayList<Land> lands = selectedProperty.getLands();
-            
-        DefaultTableModel model = (DefaultTableModel)this.jTableLandsPropDetail.getModel();
-        model.setRowCount(0); //odstranenie existujucich riadkov
-        for (Land land : lands) {
-            lands_out = land.getInfo();
-            model.addRow(lands_out);
-        }
+//        String [] lands_out;
+//        ArrayList<Land> lands = selectedProperty.getLands();
+//            
+//        DefaultTableModel model = (DefaultTableModel)this.jTableLandsPropDetail.getModel();
+//        model.setRowCount(0); //odstranenie existujucich riadkov
+//        for (Land land : lands) {
+//            lands_out = land.getInfo();
+//            model.addRow(lands_out);
+//        }
         
         this.jDialogPropertyDetail.setLocationRelativeTo(null);//nastavi lokaciu na stred obrazovky
         this.jDialogPropertyDetail.setVisible(true);

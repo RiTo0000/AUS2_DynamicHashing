@@ -21,6 +21,7 @@ import java.util.BitSet;
 public class LandDH implements IRecord {
     
     private static final int descLength = 11;
+    public static final int maxProperties = 5;
     
     private int IDLandNumber; //kluc
     private int landNumber;
@@ -38,6 +39,10 @@ public class LandDH implements IRecord {
         this.landNumber = landNumber;
         this.description = setDescWithProperLength(description);
         this.properties = new ArrayList<>();
+    }
+    
+    public void addProperty(int IDProperty) {
+        this.properties.add(IDProperty);
     }
 
     public int getIDLandNumber() {
@@ -113,7 +118,7 @@ public class LandDH implements IRecord {
                 1 + Double.BYTES + 1 + Double.BYTES + //Start
                 1 + Double.BYTES + 1 + Double.BYTES + //End
                 Integer.BYTES + //Pocet nehnutelnosti
-                ( 5 * Integer.BYTES ) ; //Properties (nehnutelnosti)
+                ( maxProperties * Integer.BYTES ) ; //Properties (nehnutelnosti)
     }
 
     @Override

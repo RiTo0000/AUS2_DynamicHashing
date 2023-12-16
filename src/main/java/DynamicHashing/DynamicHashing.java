@@ -312,6 +312,46 @@ public class DynamicHashing <T extends IRecord> {
         return result;        
     }
     
+    public void edit(T element) throws Exception{ 
+        ExternalNode node = this.findNode(element.getHash(), false);
+        
+        Block<T> blok;
+        ArrayList<T> records;
+        long secondBlockAddress;
+        
+        if (node.getAddress() != -1) {
+            blok = this.readFromFile(node.getAddress(), this.mainFile, this.BlockingFactorMain);
+            
+            records = blok.getRecords();
+            for (int i = 0; i < records.size(); i++) {
+                T record = records.get(i);
+                if (record.equals(element)) { //nasli sme ten co sa ma upravit tak ho upravim a koncim
+                    blok.editRecord(i, element);
+                    this.writeToFile(blok, this.mainFile);
+                    return;
+                }
+            }
+            
+            //ak som sa dostal tu tak som ho nenasiel doteraz - idem do preplnujuceho suboru
+            secondBlockAddress = blok.getNextBlockAddress();
+            while (secondBlockAddress != -1) {                
+                blok = this.readFromFile(secondBlockAddress, this.secondFile, this.BlockingFactorSecond);
+                
+                records = blok.getRecords();
+                for (int i = 0; i < records.size(); i++) {
+                    T record = records.get(i);
+                    if (record.equals(element)) { //nasli sme ten co sa ma upravit tak ho upravim a koncim
+                        blok.editRecord(i, element);
+                        this.writeToFile(blok, this.secondFile);
+                        return;
+                    }
+                }
+                
+                secondBlockAddress = blok.getNextBlockAddress(); //nacitanie adresy na zretazeny blok
+            }
+        }
+    }
+    
     private ExternalNode findNode(BitSet hash, boolean insertNode) throws IOException, Exception {
         InternalNode parent;
         Node actualNode = this.Root;

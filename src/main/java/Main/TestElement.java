@@ -28,6 +28,24 @@ public class TestElement implements IRecord{
         this.number = number;
     }
 
+    public int getKey() {
+        return this.key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public int getNumber() {
+        return this.number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+    
+    
+
     @Override
     public boolean equals(IRecord object) {
         TestElement element = (TestElement) object;

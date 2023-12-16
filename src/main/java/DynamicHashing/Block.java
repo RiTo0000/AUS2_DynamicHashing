@@ -64,6 +64,10 @@ public class Block <T extends IRecord> {
         this.validCount += insertedRecord.getSize();
     }
     
+    public void editRecord(int index, T record) {
+        this.records.set(index, record);
+    }
+    
     public byte [] toByteArray() {
         
         byte[] result = new byte[this.getSize()];

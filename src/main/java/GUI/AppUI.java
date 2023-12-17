@@ -1591,6 +1591,19 @@ public class AppUI extends javax.swing.JFrame {
     
     private void initApp() {
         setLocationRelativeTo(null); //nastavi zobrazovanie na stred obrazovky
+        
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                try {
+                    if (application != null) {
+                        application.closeApp(); 
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
     
     /**

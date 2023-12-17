@@ -903,4 +903,9 @@ public class DynamicHashing <T extends IRecord> {
         }
     }
     
+    public void closeFiles() throws IOException {
+        this.mainFile.close();
+        this.secondFile.close();
+    }
+    
 }

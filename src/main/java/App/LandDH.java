@@ -289,8 +289,17 @@ public class LandDH implements IRecord {
     }
 
     @Override
-    public String recordToString() { //TODO mozno ani nebude treba
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String recordToString() { 
+        String result = Integer.toString(this.IDLandNumber) + " " + 
+                        Integer.toString(this.landNumber) + " " + 
+                        this.description + " " +
+                        "Start: X: " + this.getSpace().getStart().getX().getDirection().toString() + " " + Double.toString(this.getSpace().getStart().getX().getValue()) + 
+                                " Y: " + this.getSpace().getStart().getY().getDirection().toString() + " " + Double.toString(this.getSpace().getStart().getY().getValue()) + " " + 
+                        "End: X: " + this.getSpace().getEnd().getX().getDirection().toString() + " " + Double.toString(this.getSpace().getEnd().getX().getValue()) + 
+                                " Y: " + this.getSpace().getEnd().getY().getDirection().toString() + " " + Double.toString(this.getSpace().getEnd().getY().getValue()) + " " +
+                        this.properties.toString() + "; ";
+        
+        return result;
     }
     
     public String[] getInfo() {

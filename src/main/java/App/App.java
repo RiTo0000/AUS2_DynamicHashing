@@ -497,5 +497,20 @@ public class App {
         return application;
     }
     
+    public void printWholeFilesToConsole() throws IOException {
+//        System.out.println("MainFile (properties):");
+//        System.out.println(this.propertiesDH.readWholeMainFile());
+//        System.out.println("SecondFile (properties):");
+//        System.out.println(this.propertiesDH.readWholeSecondFile());
+        
+        System.out.println("MainFile (lands):");
+        System.out.println(this.landsDH.readWholeMainFile());
+        System.out.println("SecondFile (lands):");
+        System.out.println(this.landsDH.readWholeSecondFile());
+    }
     
+    public void closeApp() throws IOException {
+        this.propertiesDH.closeFiles();
+        this.landsDH.closeFiles();
+    }
 }

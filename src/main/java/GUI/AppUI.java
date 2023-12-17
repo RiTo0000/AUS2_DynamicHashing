@@ -191,6 +191,7 @@ public class AppUI extends javax.swing.JFrame {
         jMenuItemSaveApp = new javax.swing.JMenuItem();
         jMenuItemLoadApp = new javax.swing.JMenuItem();
         jMenuItemClearApp = new javax.swing.JMenuItem();
+        jMenuItemPrintBothFilesToConsole = new javax.swing.JMenuItem();
 
         jDialogPropertyDetail.setMinimumSize(new java.awt.Dimension(700, 500));
         jDialogPropertyDetail.setModal(true);
@@ -1558,6 +1559,15 @@ public class AppUI extends javax.swing.JFrame {
                         });
                         jMenuActions.add(jMenuItemClearApp);
 
+                        jMenuItemPrintBothFilesToConsole.setLabel("Vypísať oba súbory do konzoly");
+                        jMenuItemPrintBothFilesToConsole.addActionListener(new java.awt.event.ActionListener() {
+                            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                jMenuItemPrintBothFilesToConsoleActionPerformed(evt);
+                            }
+                        });
+                        jMenuActions.add(jMenuItemPrintBothFilesToConsole);
+                        jMenuItemPrintBothFilesToConsole.getAccessibleContext().setAccessibleName("Vypísať oba súbory do konzoly");
+
                         jMenuBar.add(jMenuActions);
 
                         setJMenuBar(jMenuBar);
@@ -2419,6 +2429,19 @@ public class AppUI extends javax.swing.JFrame {
     private void jTextFieldPropDetailPropNumValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPropDetailPropNumValActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldPropDetailPropNumValActionPerformed
+
+    private void jMenuItemPrintBothFilesToConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPrintBothFilesToConsoleActionPerformed
+        if (this.application == null) {
+            JOptionPane.showMessageDialog(this.jPanelInitApp, "Aplikácia nie je inicializovaná", "Chyba", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            try {
+                this.application.printWholeFilesToConsole();
+            } catch (IOException ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenuItemPrintBothFilesToConsoleActionPerformed
     
     
     
@@ -2544,6 +2567,7 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenuItem jMenuItemClearApp;
     private javax.swing.JMenuItem jMenuItemLoadApp;
+    private javax.swing.JMenuItem jMenuItemPrintBothFilesToConsole;
     private javax.swing.JMenuItem jMenuItemSaveApp;
     private javax.swing.JPanel jPanelAddLand;
     private javax.swing.JPanel jPanelAddProperty;

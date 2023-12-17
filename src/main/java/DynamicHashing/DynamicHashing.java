@@ -773,7 +773,7 @@ public class DynamicHashing <T extends IRecord> {
         
         while (actualNode != null) {            
             if (actualNode.isExternal()) {
-                //TODO zapiseme do suboru ako riadok
+                //zapisem do suboru ako riadok
                 line = bitsOfHash.toString() + ";" +
                         ((ExternalNode) actualNode).getAddress() + ";" +
                         ((ExternalNode) actualNode).getCount() + ";" +

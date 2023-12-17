@@ -146,24 +146,6 @@ public class AppUI extends javax.swing.JFrame {
         jButtonDeleteLand = new javax.swing.JButton();
         jButtonEditLand = new javax.swing.JButton();
         jButtonShowLandDetail = new javax.swing.JButton();
-        jPanelSearchAllObjects = new javax.swing.JPanel();
-        jButtonSearchObjects = new javax.swing.JButton();
-        jLabelSearchObjStartXCoordinate = new javax.swing.JLabel();
-        jComboBoxSearchObjStartXDirect = new javax.swing.JComboBox<>();
-        jTextFieldSearchObjStartXVal = new javax.swing.JTextField();
-        jLabelSearchObjStartYCoordinate = new javax.swing.JLabel();
-        jComboBoxSearchObjStartYDirect = new javax.swing.JComboBox<>();
-        jTextFieldSearchObjStartYVal = new javax.swing.JTextField();
-        jScrollPaneSearchObjects = new javax.swing.JScrollPane();
-        jTableObjects = new javax.swing.JTable();
-        jLabelSearchObjStart = new javax.swing.JLabel();
-        jLabelSearchObjEnd = new javax.swing.JLabel();
-        jLabelSearchObjEndXCoordinate = new javax.swing.JLabel();
-        jComboBoxSearchObjEndXDirect = new javax.swing.JComboBox<>();
-        jTextFieldSearchObjEndXVal = new javax.swing.JTextField();
-        jLabelSearchObjEndYCoordinate = new javax.swing.JLabel();
-        jComboBoxSearchObjEndYDirect = new javax.swing.JComboBox<>();
-        jTextFieldSearchObjEndYVal = new javax.swing.JTextField();
         jPanelAddProperty = new javax.swing.JPanel();
         jLabelAddPropStart = new javax.swing.JLabel();
         jLabelAddPropStartX = new javax.swing.JLabel();
@@ -465,7 +447,6 @@ public class AppUI extends javax.swing.JFrame {
 
         jDialogLandDetail.setMinimumSize(new java.awt.Dimension(700, 500));
         jDialogLandDetail.setModal(true);
-        jDialogLandDetail.setPreferredSize(new java.awt.Dimension(700, 500));
 
         jPanelLandDetail.setMaximumSize(new java.awt.Dimension(700, 500));
         jPanelLandDetail.setMinimumSize(new java.awt.Dimension(700, 500));
@@ -1199,185 +1180,6 @@ public class AppUI extends javax.swing.JFrame {
 
                         jTabbedPane1.addTab("Vyhľadanie parciel", jPanelSearchLands);
 
-                        jButtonSearchObjects.setText("Vyhladaj");
-                        jButtonSearchObjects.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jButtonSearchObjectsActionPerformed(evt);
-                            }
-                        });
-
-                        jLabelSearchObjStartXCoordinate.setText("X:");
-
-                        jComboBoxSearchObjStartXDirect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "E", "W" }));
-                        jComboBoxSearchObjStartXDirect.setMinimumSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchObjStartXDirect.setPreferredSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchObjStartXDirect.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jComboBoxSearchObjStartXDirectActionPerformed(evt);
-                            }
-                        });
-
-                        jTextFieldSearchObjStartXVal.setToolTipText("Zadajte kladne číslo");
-                        jTextFieldSearchObjStartXVal.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextFieldSearchObjStartXValActionPerformed(evt);
-                            }
-                        });
-
-                        jLabelSearchObjStartYCoordinate.setText("Y:");
-
-                        jComboBoxSearchObjStartYDirect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N", "S" }));
-                        jComboBoxSearchObjStartYDirect.setMinimumSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchObjStartYDirect.setPreferredSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchObjStartYDirect.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jComboBoxSearchObjStartYDirectActionPerformed(evt);
-                            }
-                        });
-
-                        jTextFieldSearchObjStartYVal.setToolTipText("Zadajte kladne číslo");
-                        jTextFieldSearchObjStartYVal.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextFieldSearchObjStartYValActionPerformed(evt);
-                            }
-                        });
-
-                        jTableObjects.setAutoCreateRowSorter(true);
-                        jTableObjects.setModel(new javax.swing.table.DefaultTableModel(
-                            new Object [][] {
-
-                            },
-                            new String [] {
-                                "Typ objektu", "Číslo objektu", "Popis", "Začiatok", "Koniec"
-                            }
-                        ) {
-                            Class[] types = new Class [] {
-                                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-                            };
-                            boolean[] canEdit = new boolean [] {
-                                false, false, false, false, false
-                            };
-
-                            public Class getColumnClass(int columnIndex) {
-                                return types [columnIndex];
-                            }
-
-                            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                return canEdit [columnIndex];
-                            }
-                        });
-                        jScrollPaneSearchObjects.setViewportView(jTableObjects);
-
-                        jLabelSearchObjStart.setText("Začiatok:");
-
-                        jLabelSearchObjEnd.setText("Koniec:");
-
-                        jLabelSearchObjEndXCoordinate.setText("X:");
-
-                        jComboBoxSearchObjEndXDirect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "E", "W" }));
-                        jComboBoxSearchObjEndXDirect.setMinimumSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchObjEndXDirect.setPreferredSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchObjEndXDirect.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jComboBoxSearchObjEndXDirectActionPerformed(evt);
-                            }
-                        });
-
-                        jTextFieldSearchObjEndXVal.setToolTipText("Zadajte kladne číslo");
-                        jTextFieldSearchObjEndXVal.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextFieldSearchObjEndXValActionPerformed(evt);
-                            }
-                        });
-
-                        jLabelSearchObjEndYCoordinate.setText("Y:");
-
-                        jComboBoxSearchObjEndYDirect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N", "S" }));
-                        jComboBoxSearchObjEndYDirect.setMinimumSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchObjEndYDirect.setPreferredSize(new java.awt.Dimension(45, 22));
-                        jComboBoxSearchObjEndYDirect.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jComboBoxSearchObjEndYDirectActionPerformed(evt);
-                            }
-                        });
-
-                        jTextFieldSearchObjEndYVal.setToolTipText("Zadajte kladne číslo");
-                        jTextFieldSearchObjEndYVal.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextFieldSearchObjEndYValActionPerformed(evt);
-                            }
-                        });
-
-                        javax.swing.GroupLayout jPanelSearchAllObjectsLayout = new javax.swing.GroupLayout(jPanelSearchAllObjects);
-                        jPanelSearchAllObjects.setLayout(jPanelSearchAllObjectsLayout);
-                        jPanelSearchAllObjectsLayout.setHorizontalGroup(
-                            jPanelSearchAllObjectsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelSearchAllObjectsLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelSearchAllObjectsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPaneSearchObjects, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1250, Short.MAX_VALUE)
-                                    .addGroup(jPanelSearchAllObjectsLayout.createSequentialGroup()
-                                        .addComponent(jButtonSearchObjects)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabelSearchObjStart)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelSearchObjStartXCoordinate)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBoxSearchObjStartXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldSearchObjStartXVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelSearchObjStartYCoordinate)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBoxSearchObjStartYDirect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldSearchObjStartYVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(28, 28, 28)
-                                        .addComponent(jLabelSearchObjEnd)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelSearchObjEndXCoordinate)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBoxSearchObjEndXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldSearchObjEndXVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelSearchObjEndYCoordinate)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBoxSearchObjEndYDirect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldSearchObjEndYVal, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                                .addContainerGap())
-                        );
-                        jPanelSearchAllObjectsLayout.setVerticalGroup(
-                            jPanelSearchAllObjectsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelSearchAllObjectsLayout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addGroup(jPanelSearchAllObjectsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanelSearchAllObjectsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jComboBoxSearchObjEndXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldSearchObjEndYVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelSearchObjEndXCoordinate)
-                                        .addComponent(jTextFieldSearchObjEndXVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelSearchObjEndYCoordinate)
-                                        .addComponent(jComboBoxSearchObjEndYDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelSearchObjEnd))
-                                    .addGroup(jPanelSearchAllObjectsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButtonSearchObjects)
-                                        .addComponent(jComboBoxSearchObjStartXDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldSearchObjStartYVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelSearchObjStartXCoordinate)
-                                        .addComponent(jTextFieldSearchObjStartXVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelSearchObjStartYCoordinate)
-                                        .addComponent(jComboBoxSearchObjStartYDirect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelSearchObjStart)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPaneSearchObjects, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
-                                .addContainerGap())
-                        );
-
-                        jTabbedPane1.addTab("Vyhľadanie všetkých objektov", jPanelSearchAllObjects);
-
                         jLabelAddPropStart.setText("Začiatok:");
 
                         jLabelAddPropStartX.setText("X: ");
@@ -1755,7 +1557,6 @@ public class AppUI extends javax.swing.JFrame {
                             }
                         });
                         jMenuActions.add(jMenuItemClearApp);
-                        jMenuItemClearApp.getAccessibleContext().setAccessibleName("Vyčistiť všetky dáta aplikácie");
 
                         jMenuBar.add(jMenuActions);
 
@@ -2060,87 +1861,6 @@ public class AppUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this.jPanelInitApp, "Generovanie parciel bolo úspešné");
         }
     }//GEN-LAST:event_jButtonGenerateLandsActionPerformed
-
-    private void jButtonSearchObjectsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchObjectsActionPerformed
-        ArrayList<Object> objects;
-        
-        if (this.application == null) {
-            JOptionPane.showMessageDialog(this.jPanelSearchAllObjects, "Aplikácia nie je inicializovaná", "Chyba", JOptionPane.ERROR_MESSAGE);
-        }
-        else {
-            if (this.jTextFieldSearchObjStartXVal.getText().isEmpty() || 
-                    this.jTextFieldSearchObjStartYVal.getText().isEmpty() ||
-                    this.jTextFieldSearchObjEndXVal.getText().isEmpty() ||
-                    this.jTextFieldSearchObjEndYVal.getText().isEmpty()) {
-//                objects = (ArrayList<Object>) (Object) this.application.getProperties().getAllElements();
-//                objects.addAll((ArrayList<Object>) (Object) this.application.getLands().getAllElements());
-            }
-            else {
-                double startXVal = Double.parseDouble(this.jTextFieldSearchObjStartXVal.getText());
-                double startYVal = Double.parseDouble(this.jTextFieldSearchObjStartYVal.getText());
-                double endXVal = Double.parseDouble(this.jTextFieldSearchObjEndXVal.getText());
-                double endYVal = Double.parseDouble(this.jTextFieldSearchObjEndYVal.getText());
-                
-                Point gpsStart = new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchObjStartXDirect.getSelectedItem().toString()), startXVal), 
-                            new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchObjStartYDirect.getSelectedItem().toString()), startYVal));
-                Point gpsEnd = new Point(new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchObjEndXDirect.getSelectedItem().toString()), endXVal), 
-                            new Coordinate(Direction.getDirectFromString(this.jComboBoxSearchObjEndYDirect.getSelectedItem().toString()), endYVal));
-                
-                objects = this.application.findObjects(new Area(gpsStart, gpsEnd));
-            }
-        
-            
-            String [] object_out = new String[5];
-            String [] info;
-            
-            DefaultTableModel model = (DefaultTableModel) this.jTableObjects.getModel();
-//            for (int i = 0; i < objects.size(); i++) {
-//                object_out[0] = objects.get(i).getClass().getSimpleName();
-//                if (object_out[0].equals("Property")) {
-//                    info = ((Property) objects.get(i)).getInfo();
-//                }
-//                else {
-//                    info = ((Land) objects.get(i)).getInfo();
-//                }
-//                
-//                System.arraycopy(info, 0, object_out, 1, 4); //kopirovanie info do output stringu
-//                model.addRow(object_out);
-//            }
-        }
-        
-    }//GEN-LAST:event_jButtonSearchObjectsActionPerformed
-
-    private void jComboBoxSearchObjStartXDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSearchObjStartXDirectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxSearchObjStartXDirectActionPerformed
-
-    private void jTextFieldSearchObjStartXValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchObjStartXValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldSearchObjStartXValActionPerformed
-
-    private void jComboBoxSearchObjStartYDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSearchObjStartYDirectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxSearchObjStartYDirectActionPerformed
-
-    private void jTextFieldSearchObjStartYValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchObjStartYValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldSearchObjStartYValActionPerformed
-
-    private void jComboBoxSearchObjEndXDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSearchObjEndXDirectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxSearchObjEndXDirectActionPerformed
-
-    private void jTextFieldSearchObjEndXValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchObjEndXValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldSearchObjEndXValActionPerformed
-
-    private void jComboBoxSearchObjEndYDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSearchObjEndYDirectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxSearchObjEndYDirectActionPerformed
-
-    private void jTextFieldSearchObjEndYValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchObjEndYValActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldSearchObjEndYValActionPerformed
 
     private void jComboBoxAddPropStartXDirectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAddPropStartXDirectActionPerformed
         // TODO add your handling code here:
@@ -2750,7 +2470,6 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonLandDetailEditLand;
     private javax.swing.JButton jButtonPropDetailEditProperty;
     private javax.swing.JButton jButtonSearchLands;
-    private javax.swing.JButton jButtonSearchObjects;
     private javax.swing.JButton jButtonSearchProperties;
     private javax.swing.JButton jButtonShowLandDetail;
     private javax.swing.JButton jButtonShowPropertyDetail;
@@ -2772,10 +2491,6 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxPropDetailEndYDirect;
     private javax.swing.JComboBox<String> jComboBoxPropDetailStartXDirect;
     private javax.swing.JComboBox<String> jComboBoxPropDetailStartYDirect;
-    private javax.swing.JComboBox<String> jComboBoxSearchObjEndXDirect;
-    private javax.swing.JComboBox<String> jComboBoxSearchObjEndYDirect;
-    private javax.swing.JComboBox<String> jComboBoxSearchObjStartXDirect;
-    private javax.swing.JComboBox<String> jComboBoxSearchObjStartYDirect;
     private javax.swing.JComboBox<String> jComboBoxStartXDirect;
     private javax.swing.JComboBox<String> jComboBoxStartYDirect;
     private javax.swing.JDialog jDialogLandDetail;
@@ -2821,12 +2536,6 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelPropDetailStartX;
     private javax.swing.JLabel jLabelPropDetailStartY;
     private javax.swing.JLabel jLabelSearchLandID;
-    private javax.swing.JLabel jLabelSearchObjEnd;
-    private javax.swing.JLabel jLabelSearchObjEndXCoordinate;
-    private javax.swing.JLabel jLabelSearchObjEndYCoordinate;
-    private javax.swing.JLabel jLabelSearchObjStart;
-    private javax.swing.JLabel jLabelSearchObjStartXCoordinate;
-    private javax.swing.JLabel jLabelSearchObjStartYCoordinate;
     private javax.swing.JLabel jLabelSearchPropID;
     private javax.swing.JLabel jLabelStart;
     private javax.swing.JLabel jLabelStartX;
@@ -2843,19 +2552,16 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelLandsOnProperty;
     private javax.swing.JPanel jPanelPropertiesOnLand;
     private javax.swing.JPanel jPanelPropertyDetail;
-    private javax.swing.JPanel jPanelSearchAllObjects;
     private javax.swing.JPanel jPanelSearchLands;
     private javax.swing.JPanel jPanelSearchProperties;
     private javax.swing.JRadioButton jRadioButtonOptimalTree;
     private javax.swing.JScrollPane jScrollPaneSearchLands;
     private javax.swing.JScrollPane jScrollPaneSearchLands1;
     private javax.swing.JScrollPane jScrollPaneSearchLands2;
-    private javax.swing.JScrollPane jScrollPaneSearchObjects;
     private javax.swing.JScrollPane jScrollPaneSearchProperties;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableLands;
     private javax.swing.JTable jTableLandsPropDetail;
-    private javax.swing.JTable jTableObjects;
     private javax.swing.JTable jTableProperties;
     private javax.swing.JTable jTablePropertiesLandDetail;
     private javax.swing.JTextField jTextFieldAddLandDescVal;
@@ -2887,10 +2593,6 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldPropDetailStartXVal;
     private javax.swing.JTextField jTextFieldPropDetailStartYVal;
     private javax.swing.JTextField jTextFieldSearchLandIDVal;
-    private javax.swing.JTextField jTextFieldSearchObjEndXVal;
-    private javax.swing.JTextField jTextFieldSearchObjEndYVal;
-    private javax.swing.JTextField jTextFieldSearchObjStartXVal;
-    private javax.swing.JTextField jTextFieldSearchObjStartYVal;
     private javax.swing.JTextField jTextFieldSearchPropIDVal;
     private javax.swing.JTextField jTextFieldStartXVal;
     private javax.swing.JTextField jTextFieldStartYVal;

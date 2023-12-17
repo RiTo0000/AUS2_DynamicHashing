@@ -55,6 +55,24 @@ public class App {
         this.maxPropertyID = 0;
     }
 
+    public int getMaxPropertyID() {
+        return this.maxPropertyID;
+    }
+
+    public void setMaxPropertyID(int maxPropertyID) {
+        this.maxPropertyID = maxPropertyID;
+    }
+
+    public int getMaxLandID() {
+        return this.maxLandID;
+    }
+
+    public void setMaxLandID(int maxLandID) {
+        this.maxLandID = maxLandID;
+    }
+    
+    
+
     public ArrayList<Property> findProperties(Point gps) {
         Area point = new Area(gps, gps);
         return properties.findElementsInArea(point);
@@ -419,7 +437,9 @@ public class App {
                 this.space.getEnd().getX().getDirection().toString() + ";" +
                 this.space.getEnd().getX().getRoundedValue(4) + ";" +
                 this.space.getEnd().getY().getDirection().toString() + ";" +
-                this.space.getEnd().getY().getRoundedValue(4);
+                this.space.getEnd().getY().getRoundedValue(4) + ";" +
+                this.maxPropertyID + ";" +
+                this.maxLandID;
         
         line += "\n";
         
@@ -439,8 +459,6 @@ public class App {
         
         App application;
         
-//        ArrayList<Land> landsUnderProperty;
-//        ArrayList<Property> propertiesOnLand;
 
         BufferedReader fileApp = new BufferedReader(new FileReader(appFile));
 
@@ -456,6 +474,9 @@ public class App {
                                                 new Coordinate(Direction.getDirectFromString(app[2]), Double.valueOf(app[3]))), 
                                         new Point(new Coordinate(Direction.getDirectFromString(app[4]), Double.valueOf(app[5])), 
                                                 new Coordinate(Direction.getDirectFromString(app[6]), Double.valueOf(app[7])))));
+        
+        application.setMaxPropertyID(Integer.parseInt(app[8]));
+        application.setMaxLandID(Integer.parseInt(app[9]));
         
         application.propertiesDH.loadNodesFromFile("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\nodes_propertiesDH.txt");
         application.landsDH.loadNodesFromFile("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\nodes_landsDH.txt");

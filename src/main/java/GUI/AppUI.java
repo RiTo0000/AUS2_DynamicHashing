@@ -1854,22 +1854,16 @@ public class AppUI extends javax.swing.JFrame {
     
     private void jMenuItemLoadAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoadAppActionPerformed
         this.jFileChooserLoadAppFile.showOpenDialog(this);
-        this.jFileChooserLoadPropertiesFile.showOpenDialog(this);
-        this.jFileChooserLoadLandsFile.showOpenDialog(this);
-//        try {
-//            if (this.jFileChooserLoadAppFile.getSelectedFile().isFile() &&
-//                    this.jFileChooserLoadPropertiesFile.getSelectedFile().isFile() &&
-//                    this.jFileChooserLoadLandsFile.getSelectedFile().isFile()){
-////                this.application = App.loadFromFile(this.jFileChooserLoadAppFile.getSelectedFile().getPath(),
-////                                                    this.jFileChooserLoadPropertiesFile.getSelectedFile().getPath(),
-////                                                    this.jFileChooserLoadLandsFile.getSelectedFile().getPath());
+        try {
+            if (this.jFileChooserLoadAppFile.getSelectedFile().isFile()){
+                this.application = App.loadFromFile(this.jFileChooserLoadAppFile.getSelectedFile().getPath());
 //                this.jRadioButtonOptimalTree.setSelected(this.application.getProperties().isOptimal());
-//                JOptionPane.showMessageDialog(this.jPanelInitApp, "Načítanie aplikácie sa podarilo");
-//            }
-//            
-//        } catch (IOException ex) {
-//            Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+                JOptionPane.showMessageDialog(this.jPanelInitApp, "Načítanie aplikácie sa podarilo");
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItemLoadAppActionPerformed
 
     private void jMenuItemSaveAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAppActionPerformed
@@ -1878,14 +1872,14 @@ public class AppUI extends javax.swing.JFrame {
         }
         else {
             this.jFileChooserSaveLocation.showSaveDialog(this);
-//            try {
-//                if (this.jFileChooserSaveLocation.getSelectedFile().isDirectory()) {
-//                    this.application.saveToFile(this.jFileChooserSaveLocation.getSelectedFile().getPath());
-//                    JOptionPane.showMessageDialog(this.jPanelInitApp, "Uloženie aplikácie sa podarilo");
-//                }
-//            } catch (IOException ex) {
-//                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            try {
+                if (this.jFileChooserSaveLocation.getSelectedFile().isDirectory()) {
+                    this.application.saveToFile(this.jFileChooserSaveLocation.getSelectedFile().getPath());
+                    JOptionPane.showMessageDialog(this.jPanelInitApp, "Uloženie aplikácie sa podarilo");
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(AppUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jMenuItemSaveAppActionPerformed
 

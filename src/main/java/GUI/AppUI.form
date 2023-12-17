@@ -415,9 +415,6 @@
           <Dimension value="[700, 500]"/>
         </Property>
         <Property name="modal" type="boolean" value="true"/>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[700, 500]"/>
-        </Property>
       </Properties>
 
       <Layout>
@@ -912,9 +909,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Vy&#x10d;isti&#x165; v&#x161;etky d&#xe1;ta aplik&#xe1;cie"/>
               </Properties>
-              <AccessibilityProperties>
-                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Vy&#x10d;isti&#x165; v&#x161;etky d&#xe1;ta aplik&#xe1;cie"/>
-              </AccessibilityProperties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemClearAppActionPerformed"/>
               </Events>

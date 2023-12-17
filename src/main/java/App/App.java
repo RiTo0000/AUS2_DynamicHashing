@@ -272,7 +272,7 @@ public class App {
                 landsDH.edit(landDH);
             }
 
-            properties.insert(new Property(property.getSpace(), property.getIDRegNumber()), false); //zapisanie upravej nehnutelnosti do QuadStromu
+            this.properties.insert(new Property(property.getSpace(), property.getIDRegNumber()), false); //zapisanie upravej nehnutelnosti do QuadStromu
             
             return true;
             
@@ -396,209 +396,85 @@ public class App {
         }
     }
     
-//    public void saveToFile(String directory) throws IOException {
-//        String line;
-//        
-//        ArrayList<Property> properties = this.properties.getAllElements();
-//        ArrayList<Land> lands = this.lands.getAllElements();
-//        
+    public void saveToFile(String directory) throws IOException {
+        this.propertiesDH.saveNodesToFile("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\nodes_propertiesDH.txt");
+        this.landsDH.saveNodesToFile("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\nodes_landsDH.txt");
+        
+        String line;
+        
+        ArrayList<Property> properties = this.properties.getAllElements();
+        ArrayList<Land> lands = this.lands.getAllElements();
+        
+        ArrayList<Land> landsUnderProperty;
+        ArrayList<Property> propertiesOnLand;
+        
+        //App
+        
+        BufferedWriter fileApp = new BufferedWriter(new FileWriter( directory + "\\app.csv"));
+        
+        line = this.space.getStart().getX().getDirection().toString() + ";" +
+                this.space.getStart().getX().getRoundedValue(4)+ ";" +
+                this.space.getStart().getY().getDirection().toString() + ";" +
+                this.space.getStart().getY().getRoundedValue(4) + ";" +
+                this.space.getEnd().getX().getDirection().toString() + ";" +
+                this.space.getEnd().getX().getRoundedValue(4) + ";" +
+                this.space.getEnd().getY().getDirection().toString() + ";" +
+                this.space.getEnd().getY().getRoundedValue(4);
+        
+        line += "\n";
+        
+        fileApp.write(line);
+        
+        fileApp.flush();
+        fileApp.close();        
+    }
+    
+    public static App loadFromFile(String appFile) throws FileNotFoundException, IOException {
+        
+        String line;
+        
+        String[] app = {};
+        ArrayList<String[]> properties = new ArrayList<String[]>();
+        ArrayList<String[]> lands = new ArrayList<String[]>();
+        
+        App application;
+        
 //        ArrayList<Land> landsUnderProperty;
 //        ArrayList<Property> propertiesOnLand;
-//        
-//        //App
-//        
-//        BufferedWriter fileApp = new BufferedWriter(new FileWriter( directory + "\\app.csv"));
-//        
-//        line = this.space.getStart().getX().getDirection().toString() + ";" +
-//                this.space.getStart().getX().getRoundedValue(4)+ ";" +
-//                this.space.getStart().getY().getDirection().toString() + ";" +
-//                this.space.getStart().getY().getRoundedValue(4) + ";" +
-//                this.space.getEnd().getX().getDirection().toString() + ";" +
-//                this.space.getEnd().getX().getRoundedValue(4) + ";" +
-//                this.space.getEnd().getY().getDirection().toString() + ";" +
-//                this.space.getEnd().getY().getRoundedValue(4);
-//        
-//        line += "\n";
-//        
-//        fileApp.write(line);
-//        
-//        fileApp.flush();
-//        fileApp.close();
-//        
-//        //Nehnutelnosti
-//        
-//        BufferedWriter fileProp = new BufferedWriter(new FileWriter( directory + "\\properties.csv"));
-//        
-//        line = this.properties.getSpace().getStart().getX().getDirection().toString() + ";" +
-//                this.properties.getSpace().getStart().getX().getRoundedValue(4)+ ";" +
-//                this.properties.getSpace().getStart().getY().getDirection().toString() + ";" +
-//                this.properties.getSpace().getStart().getY().getRoundedValue(4) + ";" +
-//                this.properties.getSpace().getEnd().getX().getDirection().toString() + ";" +
-//                this.properties.getSpace().getEnd().getX().getRoundedValue(4) + ";" +
-//                this.properties.getSpace().getEnd().getY().getDirection().toString() + ";" +
-//                this.properties.getSpace().getEnd().getY().getRoundedValue(4) + ";" +
-//                this.properties.getMaxSize() + ";" +
-//                this.properties.isOptimal();
-//        
-//        line += "\n";
-//            
-//        fileProp.write(line);
-//        
-//        for (Property property : properties) {
-//            line = property.getRegNumber() + ";" +
-//                    property.getDescription() + ";" +
-//                    property.getSpace().getStart().getX().getDirection().toString() + ";" +
-//                    property.getSpace().getStart().getX().getRoundedValue(4)+ ";" +
-//                    property.getSpace().getStart().getY().getDirection().toString() + ";" +
-//                    property.getSpace().getStart().getY().getRoundedValue(4) + ";" +
-//                    property.getSpace().getEnd().getX().getDirection().toString() + ";" +
-//                    property.getSpace().getEnd().getX().getRoundedValue(4) + ";" +
-//                    property.getSpace().getEnd().getY().getDirection().toString() + ";" +
-//                    property.getSpace().getEnd().getY().getRoundedValue(4) + ";";
-//            
-////            landsUnderProperty = property.getLands();
-////            
-////            for (Land landUnderProperty : landsUnderProperty) {
-////                line += landUnderProperty.getKey(); 
-////            }
-//            
-//            line += "\n";
-//            
-//            fileProp.write(line);
-//        }
-//        
-//        fileProp.flush();
-//        
-//        fileProp.close();
-//        
-//        
-//        //Pozemky
-//
-//        BufferedWriter fileLand = new BufferedWriter(new FileWriter( directory + "\\lands.csv"));
-//        
-//        line = this.lands.getSpace().getStart().getX().getDirection().toString() + ";" +
-//                this.lands.getSpace().getStart().getX().getRoundedValue(4)+ ";" +
-//                this.lands.getSpace().getStart().getY().getDirection().toString() + ";" +
-//                this.lands.getSpace().getStart().getY().getRoundedValue(4) + ";" +
-//                this.lands.getSpace().getEnd().getX().getDirection().toString() + ";" +
-//                this.lands.getSpace().getEnd().getX().getRoundedValue(4) + ";" +
-//                this.lands.getSpace().getEnd().getY().getDirection().toString() + ";" +
-//                this.lands.getSpace().getEnd().getY().getRoundedValue(4) + ";" +
-//                this.lands.getMaxSize() + ";" +
-//                this.lands.isOptimal();
-//        
-//        line += "\n";
-//            
-//        fileLand.write(line);
-//        
-//        for (Land land : lands) {
-//            line = land.getLandNumber()+ ";" +
-//                    land.getDescription() + ";" +
-//                    land.getSpace().getStart().getX().getDirection().toString() + ";" +
-//                    land.getSpace().getStart().getX().getRoundedValue(4)+ ";" +
-//                    land.getSpace().getStart().getY().getDirection().toString() + ";" +
-//                    land.getSpace().getStart().getY().getRoundedValue(4) + ";" +
-//                    land.getSpace().getEnd().getX().getDirection().toString() + ";" +
-//                    land.getSpace().getEnd().getX().getRoundedValue(4) + ";" +
-//                    land.getSpace().getEnd().getY().getDirection().toString() + ";" +
-//                    land.getSpace().getEnd().getY().getRoundedValue(4) + ";";
-//            
-////            propertiesOnLand = land.getProperties();
-////            
-////            for (Property propertyOnLand : propertiesOnLand) {
-////                line += propertyOnLand.getKey() + ";"; 
-////            }
-//            
-//            line += "\n";
-//            
-//            fileLand.write(line);
-//        }
-//        
-//        fileLand.flush();
-//        
-//        fileLand.close();
-//        
-//    }
-//    
-//    public static App loadFromFile(String appFile, String propertiesFile, String landsFile) throws FileNotFoundException, IOException {
-//        String line;
-//        
-//        String[] app = {};
-//        ArrayList<String[]> properties = new ArrayList<String[]>();
-//        ArrayList<String[]> lands = new ArrayList<String[]>();
-//        
-//        App application;
-//        
-////        ArrayList<Land> landsUnderProperty;
-////        ArrayList<Property> propertiesOnLand;
-//
-//        BufferedReader fileApp = new BufferedReader(new FileReader(appFile));
-//
-//        if( (line = fileApp.readLine()) != null ) {
-//           app = line.split(";");
-//        }
-//        else {
-//            //dakde problem
-//            return null;
-//        }
-//
-//        
-//        BufferedReader fileProp = new BufferedReader(new FileReader(propertiesFile));
-//
-//        while ((line = fileProp.readLine()) != null) {
-//            properties.add(line.split(";"));
-//        }
-//        
-//        BufferedReader fileLand = new BufferedReader(new FileReader(landsFile));
-//
-//        while ((line = fileLand.readLine()) != null) {
-//            lands.add(line.split(";"));
-//        }
-//        
-//        application = new App(new Area(new Point(new Coordinate(Direction.getDirectFromString(app[0]), Double.valueOf(app[1])), 
-//                                                new Coordinate(Direction.getDirectFromString(app[2]), Double.valueOf(app[3]))), 
-//                                        new Point(new Coordinate(Direction.getDirectFromString(app[4]), Double.valueOf(app[5])), 
-//                                                new Coordinate(Direction.getDirectFromString(app[6]), Double.valueOf(app[7])))));
-//        
-//        //Nehnutelnosti
-//        application.properties.setSpace(new Area(new Point(new Coordinate(Direction.getDirectFromString(properties.get(0)[0]), Double.valueOf(properties.get(0)[1])), 
-//                                                            new Coordinate(Direction.getDirectFromString(properties.get(0)[2]), Double.valueOf(properties.get(0)[3]))), 
-//                                                    new Point(new Coordinate(Direction.getDirectFromString(properties.get(0)[4]), Double.valueOf(properties.get(0)[5])), 
-//                                                            new Coordinate(Direction.getDirectFromString(properties.get(0)[6]), Double.valueOf(properties.get(0)[7]))))); 
-//        application.properties.setMaxSize(Integer.valueOf(properties.get(0)[8]));
-//        
-//        for (int i = 1; i < properties.size(); i++) {
-//            application.addProperty(new Property(new Area(new Point(new Coordinate(Direction.getDirectFromString(properties.get(i)[2]), Double.valueOf(properties.get(i)[3])), 
-//                                                            new Coordinate(Direction.getDirectFromString(properties.get(i)[4]), Double.valueOf(properties.get(i)[5]))), 
-//                                                    new Point(new Coordinate(Direction.getDirectFromString(properties.get(i)[6]), Double.valueOf(properties.get(i)[7])), 
-//                                                            new Coordinate(Direction.getDirectFromString(properties.get(i)[8]), Double.valueOf(properties.get(i)[9])))), 
-//                                            Integer.valueOf(properties.get(i)[0]), properties.get(i)[1]));
-//            
-//        }
-//        
-//        application.properties.setOptimal(Boolean.parseBoolean(properties.get(0)[9]));
-//
-//        
-//        //Pozemky
-//        application.lands.setSpace(new Area(new Point(new Coordinate(Direction.getDirectFromString(lands.get(0)[0]), Double.valueOf(lands.get(0)[1])), 
-//                                                            new Coordinate(Direction.getDirectFromString(lands.get(0)[2]), Double.valueOf(lands.get(0)[3]))), 
-//                                                    new Point(new Coordinate(Direction.getDirectFromString(lands.get(0)[4]), Double.valueOf(lands.get(0)[5])), 
-//                                                            new Coordinate(Direction.getDirectFromString(lands.get(0)[6]), Double.valueOf(lands.get(0)[7]))))); 
-//        application.lands.setMaxSize(Integer.valueOf(lands.get(0)[8]));
-//        
-//        for (int i = 1; i < lands.size(); i++) {
-//            application.addLand(new Land(new Area(new Point(new Coordinate(Direction.getDirectFromString(lands.get(i)[2]), Double.valueOf(lands.get(i)[3])), 
-//                                                            new Coordinate(Direction.getDirectFromString(lands.get(i)[4]), Double.valueOf(lands.get(i)[5]))), 
-//                                                    new Point(new Coordinate(Direction.getDirectFromString(lands.get(i)[6]), Double.valueOf(lands.get(i)[7])), 
-//                                                            new Coordinate(Direction.getDirectFromString(lands.get(i)[8]), Double.valueOf(lands.get(i)[9])))), 
-//                                            Integer.valueOf(lands.get(i)[0]), lands.get(i)[1]));
-//            
-//        }
-//        
-//        application.lands.setOptimal(Boolean.parseBoolean(lands.get(0)[9]));
-//        
-//        return application;
-//    }
+
+        BufferedReader fileApp = new BufferedReader(new FileReader(appFile));
+
+        if( (line = fileApp.readLine()) != null ) {
+           app = line.split(";");
+        }
+        else {
+            //dakde problem
+            return null;
+        }
+        
+        application = new App(new Area(new Point(new Coordinate(Direction.getDirectFromString(app[0]), Double.valueOf(app[1])), 
+                                                new Coordinate(Direction.getDirectFromString(app[2]), Double.valueOf(app[3]))), 
+                                        new Point(new Coordinate(Direction.getDirectFromString(app[4]), Double.valueOf(app[5])), 
+                                                new Coordinate(Direction.getDirectFromString(app[6]), Double.valueOf(app[7])))));
+        
+        application.propertiesDH.loadNodesFromFile("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\nodes_propertiesDH.txt");
+        application.landsDH.loadNodesFromFile("C:\\D\\Desktop\\School\\4.Rocnik\\AUS2\\Semestralka2\\Files\\nodes_landsDH.txt");
+        
+        //Naplnenie QuadStromu
+        //Nehnutelnosti
+        ArrayList<PropertyDH> propertiesQT = application.propertiesDH.readAllRecords();
+        for (PropertyDH propertyDH : propertiesQT) {
+            application.properties.insert(new Property(propertyDH.getSpace(), propertyDH.getIDRegNumber()), false);
+        }
+        
+        //Pozemky
+        ArrayList<LandDH> landsQT = application.landsDH.readAllRecords();
+        for (LandDH landDH : landsQT) {
+            application.lands.insert(new Land(landDH.getSpace(), landDH.getIDLandNumber()), false);
+        }
+        
+        return application;
+    }
     
     
 }

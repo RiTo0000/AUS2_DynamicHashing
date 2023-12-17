@@ -5,7 +5,11 @@
  */
 package DynamicHashing;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.math.BigInteger;
@@ -754,6 +758,149 @@ public class DynamicHashing <T extends IRecord> {
         this.freeMainBlockAddress = -1;
         this.freeSecondBlockAddress = -1;
         this.Root = new ExternalNode(null);
+    }
+    
+    public void saveNodesToFile(String filePath) throws IOException {
+        BufferedWriter fileDH = new BufferedWriter(new FileWriter(filePath));
+        
+        ArrayList<Node> unprocessedNodes = new ArrayList<>();
+        ArrayList<Node> processedNodes = new ArrayList<>();
+        ArrayList<Integer> bitsOfHash = new ArrayList<>();
+        int actualDepth = 0;
+        Node actualNode = this.Root;
+        processedNodes.add(actualNode);
+        String line = "";
+        
+        while (actualNode != null) {            
+            if (actualNode.isExternal()) {
+                //TODO zapiseme do suboru ako riadok
+                line = bitsOfHash.toString() + ";" +
+                        ((ExternalNode) actualNode).getAddress() + ";" +
+                        ((ExternalNode) actualNode).getCount() + ";" +
+                        ((ExternalNode) actualNode).getNumOfBlocksInExtFile();
+                
+                line += "\n";
+        
+                fileDH.write(line);
+                
+                //po spracovani aktualneho pokracujeme dalej
+                if (actualNode.getParent() == null) {
+                    actualNode = null;
+                }
+                else {
+                    if (processedNodes.contains(actualNode.getParent().getLeft())) { //ak lava noda bola spracovana treba ist k rodicovi
+                        actualNode = actualNode.getParent();
+                        bitsOfHash.remove(bitsOfHash.size() - 1);
+                    }
+                    else {
+                        actualNode = actualNode.getParent().getLeft();
+                        bitsOfHash.set(bitsOfHash.size() - 1, 0);
+                        processedNodes.add(actualNode);
+                    }
+                    
+                }
+            }
+            else {
+                if (processedNodes.contains(((InternalNode) actualNode).getRight())) { //prava uz bola spracovana
+                    if (processedNodes.contains(((InternalNode) actualNode).getLeft())) { //aj lava uz bola spracovana
+                        if (actualNode.getParent() == null) {
+                            actualNode = null;
+                        }
+                        else {
+                            actualNode = actualNode.getParent();
+                            bitsOfHash.remove(bitsOfHash.size() - 1);
+                        }
+                    }
+                    else {
+                        actualNode = ((InternalNode) actualNode).getLeft(); //lavu spracujem
+                        bitsOfHash.add(0);
+                        processedNodes.add(actualNode);
+                    }
+                }
+                else {
+                    actualNode = ((InternalNode) actualNode).getRight(); //pravu spracujem
+                    bitsOfHash.add(1);
+                    processedNodes.add(actualNode);
+                }
+                
+                
+            }
+        }
+        
+        fileDH.flush();
+        fileDH.close();
+    }
+    
+    public void loadNodesFromFile(String filePath) throws FileNotFoundException, IOException {
+        BufferedReader fileDH = new BufferedReader(new FileReader(filePath));
+        String line = "";
+        String[] nodeInfo = {};
+        String[] bitsOfHash;
+        
+        Node actualNode;
+        ExternalNode extNode;
+        
+        this.Root = null; //vycistenie Root nodu
+        
+        while ( (line = fileDH.readLine()) != null ) {
+            nodeInfo = line.split(";");
+            nodeInfo[0] = nodeInfo[0].substring(1, nodeInfo[0].length() - 1); //odstranenie zatvoriek
+            bitsOfHash = nodeInfo[0].split(", ");
+            
+            if (bitsOfHash.length == 0) { //su to info o Roote
+                this.Root = new ExternalNode(null);
+                ((ExternalNode) this.Root).setAddress(Long.parseLong(nodeInfo[1]));
+                ((ExternalNode) this.Root).setCount(Integer.parseInt(nodeInfo[2]));
+                ((ExternalNode) this.Root).setNumOfBlocksInExtFile(Integer.parseInt(nodeInfo[3]));
+            }
+            else {
+                if (this.Root == null) {
+                    this.Root = new InternalNode(null);
+                }
+                
+                actualNode = this.Root;
+                for (int i = 0; i < bitsOfHash.length; i++) {
+                    if (Integer.parseInt(bitsOfHash[i]) == 1) { //posuvam sa doprava
+                        if (((InternalNode) actualNode).getRight() == null) {
+                            if (i == bitsOfHash.length - 1) { //vytvaram externy node do ktoreho potom aj zapisem co treba
+                                extNode = new ExternalNode((InternalNode) actualNode);
+                                extNode.setAddress(Long.parseLong(nodeInfo[1]));
+                                extNode.setCount(Integer.parseInt(nodeInfo[2]));
+                                extNode.setNumOfBlocksInExtFile(Integer.parseInt(nodeInfo[3]));
+                                ((InternalNode) actualNode).setRight(extNode);
+                            }
+                            else {
+                                ((InternalNode) actualNode).setRight(new InternalNode((InternalNode) actualNode));
+                                actualNode = ((InternalNode) actualNode).getRight();
+                            }
+                        }
+                        else {
+                            actualNode = ((InternalNode) actualNode).getRight();
+                        }
+                    }
+                    else { //posuvam sa dolava
+                        if (((InternalNode) actualNode).getLeft()== null) {
+                            if (i == bitsOfHash.length - 1) { //vytvaram externy node do ktoreho potom aj zapisem co treba
+                                extNode = new ExternalNode((InternalNode) actualNode);
+                                extNode.setAddress(Long.parseLong(nodeInfo[1]));
+                                extNode.setCount(Integer.parseInt(nodeInfo[2]));
+                                extNode.setNumOfBlocksInExtFile(Integer.parseInt(nodeInfo[3]));
+                                ((InternalNode) actualNode).setLeft(extNode);
+                            }
+                            else {
+                                ((InternalNode) actualNode).setLeft(new InternalNode((InternalNode) actualNode));
+                                actualNode = ((InternalNode) actualNode).getLeft();
+                            }
+                        }
+                        else {
+                            actualNode = ((InternalNode) actualNode).getLeft();
+                        }
+                    }
+
+                }
+                
+            }
+        }
     }
     
 }

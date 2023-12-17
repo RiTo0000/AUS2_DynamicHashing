@@ -771,6 +771,9 @@ public class DynamicHashing <T extends IRecord> {
         processedNodes.add(actualNode);
         String line = "";
         
+        line = this.freeMainBlockAddress + ";" + this.freeSecondBlockAddress + "\n";
+        fileDH.write(line);
+        
         while (actualNode != null) {            
             if (actualNode.isExternal()) {
                 //zapisem do suboru ako riadok
@@ -841,6 +844,11 @@ public class DynamicHashing <T extends IRecord> {
         ExternalNode extNode;
         
         this.Root = null; //vycistenie Root nodu
+        
+        line = fileDH.readLine();
+        nodeInfo = line.split(";");
+        this.freeMainBlockAddress = Long.parseLong(nodeInfo[0]);
+        this.freeSecondBlockAddress = Long.parseLong(nodeInfo[1]);
         
         while ( (line = fileDH.readLine()) != null ) {
             nodeInfo = line.split(";");

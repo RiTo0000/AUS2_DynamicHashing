@@ -498,10 +498,10 @@ public class App {
     }
     
     public void printWholeFilesToConsole() throws IOException {
-//        System.out.println("MainFile (properties):");
-//        System.out.println(this.propertiesDH.readWholeMainFile());
-//        System.out.println("SecondFile (properties):");
-//        System.out.println(this.propertiesDH.readWholeSecondFile());
+        System.out.println("MainFile (properties):");
+        System.out.println(this.propertiesDH.readWholeMainFile());
+        System.out.println("SecondFile (properties):");
+        System.out.println(this.propertiesDH.readWholeSecondFile());
         
         System.out.println("MainFile (lands):");
         System.out.println(this.landsDH.readWholeMainFile());
